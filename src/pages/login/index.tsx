@@ -1,5 +1,5 @@
 import { Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { z, type infer as zodInfer } from 'zod'
@@ -16,7 +16,10 @@ import {
     FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { routes } from '@/config/routes'
 import { emailShape, passwordShape } from '@/config/validation-schemas'
+import { useAppSelector } from '@/store/hooks/hooks'
+import { selectIsAuth } from '@/store/slices/auth'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ForgetPassword } from './components/forget-password'
@@ -30,6 +33,7 @@ const loginSchema = z.object({
 type LoginFormData = zodInfer<typeof loginSchema>
 
 export const LoginPage = () => {
+    const isAuth = useAppSelector(selectIsAuth)
     const [rememberMe, setRememberMe] = useState(true)
 
     const navigate = useNavigate()
@@ -49,24 +53,32 @@ export const LoginPage = () => {
         try {
             await login(data).unwrap()
             if (!rememberMe) {
-                sessionStorage.setItem('rememberMe', JSON.stringify({ rememberMe: true }))
+                sessionStorage.setItem('rememberMe', JSON.stringify({ rememberMe }))
             }
-            navigate('/')
+            navigate(routes.main)
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
-            setError(isErrorMessage ? error.data.detail : 'An error occurred')
+            setError(isErrorMessage ? error.data.detail : 'Something went wrong')
         }
     }
 
     const onRememberMe = () => setRememberMe(!rememberMe)
 
     if (rememberMe) {
-        localStorage.setItem('rememberMe', JSON.stringify({ rememberMe: true }))
+        localStorage.setItem('rememberMe', JSON.stringify({ rememberMe }))
     } else {
         localStorage.removeItem('rememberMe')
     }
 
-    const onSubmit: SubmitHandler<LoginFormData> = (formData) => handleLogin(formData)
+    const onSubmit: SubmitHandler<LoginFormData> = (formData) => {
+        handleLogin(formData)
+    }
+
+    useEffect(() => {
+        if (isAuth) {
+            navigate(routes.main)
+        }
+    }, [])
 
     return (
         <div className='flex h-screen items-center justify-center'>

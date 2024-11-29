@@ -33,19 +33,18 @@ export const CalendarDay = ({
     return (
         <div
             className={cn(
-                'h-[90px]] flex max-h-[90px] min-w-[187px] flex-1 flex-col justify-between gap-y-2 rounded-sm border p-3',
+                'flex min-w-[187px] flex-1 flex-col justify-between gap-y-2 rounded-sm border p-2',
                 isToday(date) && 'border-primary',
-
                 !isSameMonth(date, firstDayCurrentMonth) && 'opacity-50'
             )}>
-            <span
+            <div
                 className={cn(
-                    'self-end',
+                    'self-end text-sm',
                     isToday(date) &&
-                        'flex h-8 w-8 items-center justify-center rounded-full bg-primary text-background'
+                        'flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground'
                 )}>
                 {format(date, 'd')}
-            </span>
+            </div>
             {isDisabled && !isWorkingWeekend ? (
                 ''
             ) : isFetching ? (
