@@ -6,11 +6,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { EditPriority } from './edit'
 import { RemovePriority } from './remove'
 
-interface PriorityActionsProps {
+interface PriorityMenuProps {
     priority: PrioritiesData
 }
 
-export const PriorityActions: React.FC<PriorityActionsProps> = ({ priority }) => {
+export const PriorityMenu: React.FC<PriorityMenuProps> = ({ priority }) => {
     return (
         <Popover>
             <PopoverTrigger asChild>

@@ -2,8 +2,8 @@ import { useGetPrioritiesQuery } from '@/api/priorities/priorities'
 import { Header } from '@/components/header'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { PriorityActions } from './components/actions'
 import { AddPriority } from './components/actions/add'
+import { PriorityMenu } from './components/actions/menu'
 
 export const PrioritiesPage = () => {
     const { data: priorities, isLoading } = useGetPrioritiesQuery()
@@ -36,7 +36,7 @@ export const PrioritiesPage = () => {
                                                     className='size-5 rounded-md'></div>
                                                 {priority.name} — {priority.position}
                                             </div>
-                                            <PriorityActions priority={priority!} />
+                                            <PriorityMenu priority={priority!} />
                                         </CardTitle>
                                     </CardHeader>
                                 </Card>

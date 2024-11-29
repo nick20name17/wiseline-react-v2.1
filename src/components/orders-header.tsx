@@ -1,6 +1,7 @@
+import { AppSidebar } from '@/components/app-sidebar'
+import { ProfileMenu } from '@/components/profile-menu'
 import { OrdersViewTabs } from './orders-view-tabs'
-import { SideBar } from './sidebar'
-import { UserMenu } from './user-menu'
+
 
 export const OrdersHeader = () => {
     return (
@@ -9,14 +10,14 @@ export const OrdersHeader = () => {
             id='order-header'>
             <div className='flex h-20 items-center justify-between gap-6'>
                 <div className='flex items-center gap-x-6'>
-                    <SideBar />
+                    <AppSidebar />
                     <OrdersViewTabs />
                 </div>
 
-                <div className='flex items-center gap-x-6'>
-                    {/* <WeekFilters /> */}
-                    <UserMenu />
-                </div>
+                {/* <div className='flex items-center gap-x-6'> */}
+                {/* <WeekFilters /> */}
+                <ProfileMenu />
+                {/* </div> */}
             </div>
         </header>
     )

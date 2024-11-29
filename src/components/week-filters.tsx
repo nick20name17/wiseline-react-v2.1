@@ -1,32 +1,36 @@
 import { useEffect } from 'react'
-import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
+import { useGetCategoriesQuery } from '@/api/ebms/categories/categories'
+import { useGetCompanyProfilesQuery } from '@/api/profiles/profiles'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { useGetCategoriesQuery } from '@/store/api/ebms/categories/categories'
-import { useGetCompanyProfilesQuery } from '@/store/api/profiles/profiles'
-import { getWorkDays } from '@/utils'
 import type { FormattedDate } from '@/utils/get-work-days'
+import { getWorkDays } from '@/utils/get-work-days'
+import { useQueryState } from 'nuqs'
 
-const getColorClass = (percentage: number) => {
-    const colors = {
-        green: 'bg-green-500',
-        red: 'bg-red-500',
-        yellow: 'bg-yellow-500'
-    } as const
+// const getColorClass = (percentage: number) => {
+//     const colors = {
+//         green: 'bg-green-500',
+//         red: 'bg-red-500',
+//         yellow: 'bg-yellow-500'
+//     } as const
 
-    if (percentage < 50) return colors.green
-    if (percentage < 80) return colors.yellow
-    return colors.red
-}
+//     if (percentage < 50) return colors.green
+//     if (percentage < 80) return colors.yellow
+//     return colors.red
+// }
 
 export const WeekFilters = () => {
-    const [view] = useQueryParam('view', StringParam)
-    const [overdue, setOverdue] = useQueryParam('overdue', BooleanParam)
-    const [scheduled, setScheduled] = useQueryParam('scheduled', BooleanParam)
-    const [date, setDate] = useQueryParam('date', StringParam)
+    const [view] = useQueryState('view')
+    const [overdue, setOverdue] = useQueryState('overdue', {
+        parse: Boolean
+    })
+    const [scheduled, setScheduled] = useQueryState('scheduled', {
+        parse: Boolean
+    })
+    const [date, setDate] = useQueryState('date')
 
     const { data } = useGetCompanyProfilesQuery()
 
@@ -76,7 +80,7 @@ export const WeekFilters = () => {
 }
 
 const WeekFilter: React.FC<FormattedDate> = ({ date, dateToDisplay }) => {
-    const [category] = useQueryParam('category', StringParam)
+    const [category] = useQueryState('category')
 
     const { data, isLoading } = useGetCategoriesQuery({
         production_date: date
@@ -90,7 +94,8 @@ const WeekFilter: React.FC<FormattedDate> = ({ date, dateToDisplay }) => {
 
     const currentPercentage = ((total_capacity ?? 0) / capacity!) * 100 || 0
 
-    const currentColorClass = getColorClass(currentPercentage)
+    // const currentColorClass = getColorClass(currentPercentage)
+
 
     return (
         <ToggleGroupItem
@@ -111,7 +116,7 @@ const WeekFilter: React.FC<FormattedDate> = ({ date, dateToDisplay }) => {
 
             {category === 'Rollforming' || category === 'Trim' ? (
                 <Progress
-                    indicatorClassName={currentColorClass}
+                    // indicatorClassName={currentColorClass}
                     className='h-1 w-[80%] bg-neutral-200'
                     value={currentPercentage > 100 ? 100 : currentPercentage}
                 />

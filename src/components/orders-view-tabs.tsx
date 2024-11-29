@@ -1,14 +1,18 @@
 import { useEffect } from 'react'
-import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { tableConfig } from '@/config/table'
+import { useQueryState } from 'nuqs'
 
 export const OrdersViewTabs = () => {
-    const [view = 'orders', setView] = useQueryParam('view', StringParam)
-    const [, setOffset] = useQueryParam('offset', NumberParam)
-    const [, setLimit] = useQueryParam('limit', NumberParam)
-    const [, setOrdering] = useQueryParam('ordering', StringParam)
+    const [view = 'orders', setView] = useQueryState('view')
+    const [, setOffset] = useQueryState('offset', {
+        parse: Number
+    })
+    const [, setLimit] = useQueryState('limit', {
+        parse: Number
+    })
+    const [, setOrdering] = useQueryState('ordering')
 
     useEffect(() => {
         setView(view || 'orders')

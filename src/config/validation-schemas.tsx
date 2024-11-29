@@ -33,20 +33,3 @@ export const emailShape = z.string()
 
 
 
-// export const addUserSchema = object({
-//     ...userPatchSchema.shape,
-//     password: passwordSchema.password,
-//     role: string({
-//         required_error: 'Please select an role'
-//     }).min(1, 'Role is required')
-// })
-
-// export const editUserSchema = object({
-//     ...userPatchSchema.shape,
-//     password: passwordSchema.password,
-//     role: string({
-//         required_error: 'Please select an role'
-//     }).min(1, 'Role is required')
-// })
-
-
