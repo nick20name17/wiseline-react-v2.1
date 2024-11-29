@@ -5,7 +5,6 @@ import {
     createApi,
     fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
-import type { RootState } from '..'
 
 import type {
     AccessToken,
@@ -15,6 +14,7 @@ import type {
     RefreshToken
 } from '@/api/types/auth'
 import { apiBaseUrl } from '@/config/app'
+import type { RootState } from '@/store'
 import { logout, tokenUpdated } from '@/store/slices/auth'
 import type { User } from './users/users.types'
 
