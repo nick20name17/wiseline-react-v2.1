@@ -1,6 +1,6 @@
 import { api } from '..'
 
-import { getQueryParamString } from '@/utils'
+import { getQueryParamString } from '@/utils/get-query-param-string'
 import type {
     FlowData,
     FlowsAddData,

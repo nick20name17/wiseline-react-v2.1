@@ -33,7 +33,7 @@ export const PrioritiesPage = () => {
                                                     style={{
                                                         backgroundColor: priority.color
                                                     }}
-                                                    className='h-5 w-5 rounded-md'></div>
+                                                    className='size-5 rounded-md'></div>
                                                 {priority.name} — {priority.position}
                                             </div>
                                             <PriorityActions priority={priority!} />

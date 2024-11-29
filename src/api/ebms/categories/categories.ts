@@ -1,11 +1,11 @@
 import { api } from '../..'
 
+import { getQueryParamString } from '@/utils/get-query-param-string'
 import type {
     AllCategoriesData,
     CategoriesQueryParams,
     CategoriesResponse
 } from './categories.types'
-import { getQueryParamString } from '@/utils'
 
 export const categories = api.injectEndpoints({
     endpoints: (build) => ({

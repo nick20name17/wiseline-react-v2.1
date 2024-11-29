@@ -1,9 +1,11 @@
-import { Loader2, PlusCircleIcon } from 'lucide-react'
+import { Edit2Icon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { type SubmitHandler } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
-import type { infer as zodInfer } from 'zod'
+import { z, type infer as zodInfer } from 'zod'
 
+import { usePatchFlowMutation } from '@/api/flows/flows'
+import type { FlowsPatchPayload } from '@/api/flows/flows.types'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -21,31 +23,38 @@ import {
     FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { flowSchema } from '@/config/validation-schemas'
-import { useCustomForm } from '@/hooks'
-import { useAddFlowMutation } from '@/store/api/flows/flows'
-import type { FlowsAddData } from '@/store/api/flows/flows.types'
-import { isErrorWithMessage } from '@/utils'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-interface AddFlowDialogProps {
-    categoryId: string
+interface EditFlowProps {
+    id: number
+    name: string
 }
 
-type FormData = zodInfer<typeof flowSchema>
+const flowSchema = z.object({
+    name: z.string().min(1, 'Flow name is required')
+})
 
-export const AddFlowDialog: React.FC<AddFlowDialogProps> = ({ categoryId }) => {
-    const form = useCustomForm(flowSchema, { name: '' })
+type EditFlowFormData = zodInfer<typeof flowSchema>
 
-    const [addFlow, { isLoading }] = useAddFlowMutation()
+export const EditFlow: React.FC<EditFlowProps> = ({ id, name }) => {
+    const form = useForm({
+        defaultValues: {
+            name
+        },
+        resolver: zodResolver(flowSchema)
+    })
+
+    const [patch, { isLoading }] = usePatchFlowMutation()
 
     const reset = () => {
         form.reset()
         setOpen(false)
     }
 
-    const handleAddFlow = async (data: FlowsAddData) => {
+    const handlePatch = async (data: FlowsPatchPayload) => {
         try {
-            await addFlow(data).unwrap()
+            await patch(data).unwrap()
             reset()
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
@@ -53,11 +62,8 @@ export const AddFlowDialog: React.FC<AddFlowDialogProps> = ({ categoryId }) => {
         }
     }
 
-    const onSubmit: SubmitHandler<FormData> = (formData) =>
-        handleAddFlow({
-            ...formData,
-            category: categoryId
-        })
+    const onSubmit: SubmitHandler<EditFlowFormData> = (formData) =>
+        handlePatch({ id, data: formData })
 
     const [open, setOpen] = useState(false)
 
@@ -68,20 +74,23 @@ export const AddFlowDialog: React.FC<AddFlowDialogProps> = ({ categoryId }) => {
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
-                    className='flex w-full items-center gap-x-1.5'
-                    size='lg'>
-                    <PlusCircleIcon width='16px' />
-                    Add Flow
+                    className='justify-start'
+                    variant='ghost'
+                    size='sm'>
+                    <Edit2Icon  />
+                    Edit
                 </Button>
             </DialogTrigger>
-            <DialogContent className='mx-2 rounded-md'>
+            <DialogContent
+                onClick={(e) => e.stopPropagation()}
+                className='mx-2 rounded-md'>
                 <DialogHeader className='text-left'>
-                    <DialogTitle>Add flow</DialogTitle>
+                    <DialogTitle>Edit flow</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form
                         method='POST'
-                        className='mx-auto w-full space-y-5'
+                        className='mx-auto w-full space-y-4'
                         onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
@@ -108,7 +117,7 @@ export const AddFlowDialog: React.FC<AddFlowDialogProps> = ({ categoryId }) => {
                             {isLoading ? (
                                 <Loader2 className='size-4 animate-spin' />
                             ) : (
-                                'Add'
+                                'Edit'
                             )}
                         </Button>
                     </form>

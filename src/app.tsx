@@ -6,6 +6,7 @@ import { NuqsAdapter } from 'nuqs/adapters/react'
 import { CalendarPage } from './pages/calendar'
 import { CompanySettingsPage } from './pages/company-settings'
 import { ErrorPage } from './pages/error-page'
+import { FlowSettingsPage } from './pages/flow-settings'
 import { MainPage } from './pages/main'
 import { PrioritiesPage } from './pages/priorities'
 import { UserSettingsPage } from './pages/user-settings'
@@ -59,19 +60,19 @@ const router = createBrowserRouter([
 
                 )
             },
-            // {
-            //     path: routes.flowSettings,
-            //     element: (
+            {
+                path: routes.flowSettings,
+                element: (
 
-            //             <FlowSettingsPage />
+                    <FlowSettingsPage />
 
-            //     )
-            // },
+                )
+            },
             {
                 path: routes.priorities,
                 element: (
 
-                        <PrioritiesPage />
+                    <PrioritiesPage />
 
                 )
             },

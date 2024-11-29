@@ -1,18 +1,18 @@
 import { MoreHorizontal } from 'lucide-react'
 
-import { EditStatusDialog } from './edit-status-dialog'
-import { RemoveStatusDialog } from './remove-status-dialog'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { EditStatus } from './edit'
+import { RemoveStatus } from './remove'
 
-interface StatusActionsProps {
+interface StatusMenuProps {
     id: number
     name: string
     description: string
     color: string
 }
 
-export const StatusActions: React.FC<StatusActionsProps> = ({
+export const StatusMenu: React.FC<StatusMenuProps> = ({
     id,
     name,
     color,
@@ -28,13 +28,13 @@ export const StatusActions: React.FC<StatusActionsProps> = ({
                 </Button>
             </PopoverTrigger>
             <PopoverContent className='flex w-fit flex-col p-2'>
-                <EditStatusDialog
+                <EditStatus
                     id={id}
                     name={name}
                     color={color}
                     description={description}
                 />
-                <RemoveStatusDialog
+                <RemoveStatus
                     id={id}
                     name={name}
                 />

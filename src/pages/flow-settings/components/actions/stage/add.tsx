@@ -1,8 +1,8 @@
-import { Edit2Icon, Loader2 } from 'lucide-react'
+import { Loader2, PlusCircleIcon } from 'lucide-react'
 import { useState } from 'react'
-import { type SubmitHandler } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { toast } from 'sonner'
-import type { infer as zodInfer } from 'zod'
+import { z, type infer as zodInfer } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -24,43 +24,44 @@ import { Input } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { stagesColorPresets } from '@/config/stages'
-import { stageSchema } from '@/config/validation-schemas'
-import { useCustomForm } from '@/hooks'
-import { usePatchStageMutation } from '@/store/api/stages/stages'
-import type { StagePatchData } from '@/store/api/stages/stages.types'
-import { isErrorWithMessage } from '@/utils'
 
-interface EditStatusDialogProps {
-    id: number
-    name: string
-    description: string
-    color: string
+import { useAddStageMutation } from '@/api/stages/stages'
+import type { StageAddData } from '@/api/stages/stages.types'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
+
+interface AddStatusProps {
+    flowId: number
 }
+const stageSchema = z.object({
+    name: z.string().min(1, 'Stage name is required'),
+    description: z.string().optional()
+})
 
-type FormData = zodInfer<typeof stageSchema>
+type AddStatusFormData = zodInfer<typeof stageSchema>
 
-export const EditStatusDialog: React.FC<EditStatusDialogProps> = ({
-    id,
-    name,
-    description,
-    color
-}) => {
-    const form = useCustomForm(stageSchema, { name, description: description || '' })
+export const AddStatus: React.FC<AddStatusProps> = ({ flowId }) => {
+    const form = useForm({
+        defaultValues: {
+            name: '',
+            description: ''
+        }
+    })
 
     const [open, setOpen] = useState(false)
 
-    const [colorValue, setColorValue] = useState(color)
+    const [addStage, { isLoading }] = useAddStageMutation()
 
-    const [editStage, { isLoading }] = usePatchStageMutation()
+    const defaultColor = stagesColorPresets[0]
+    const [color, setColor] = useState(defaultColor)
 
     const reset = () => {
         form.reset()
         setOpen(false)
     }
 
-    const handleEditStage = async (data: StagePatchData) => {
+    const handleAddStage = async (data: StageAddData) => {
         try {
-            await editStage(data).unwrap()
+            await addStage(data).unwrap()
             reset()
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
@@ -68,17 +69,14 @@ export const EditStatusDialog: React.FC<EditStatusDialogProps> = ({
         }
     }
 
-    const onSubmit: SubmitHandler<FormData> = (formData) => {
-        handleEditStage({
-            id,
-            data: {
-                ...formData,
-                color: colorValue
-            }
-        })
-    }
+    const onValueChange = (value: string) => setColor(value)
 
-    const onValueChange = (value: string) => setColorValue(value)
+    const onSubmit: SubmitHandler<AddStatusFormData> = (formData) =>
+        handleAddStage({
+            ...formData,
+            color,
+            flow: flowId
+        })
 
     return (
         <Dialog
@@ -87,21 +85,21 @@ export const EditStatusDialog: React.FC<EditStatusDialogProps> = ({
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
-                    className='justify-start'
-                    variant='ghost'
-                    size='sm'>
-                    <Edit2Icon className='mr-2 h-3.5 w-3.5' />
-                    Edit
+                    className='mt-1 flex w-full items-center '
+                    variant='outline'
+                    size='lg'>
+                    <PlusCircleIcon />
+                    Add Status
                 </Button>
             </DialogTrigger>
             <DialogContent className='mx-2 rounded-md'>
                 <DialogHeader className='text-left'>
-                    <DialogTitle>Edit status</DialogTitle>
+                    <DialogTitle>Add status</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form
                         method='POST'
-                        className='mx-auto w-full space-y-5'
+                        className='mx-auto w-full space-y-4'
                         onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}
@@ -138,7 +136,7 @@ export const EditStatusDialog: React.FC<EditStatusDialogProps> = ({
                         />
                         <Tabs
                             onValueChange={onValueChange}
-                            defaultValue={color}>
+                            defaultValue={defaultColor}>
                             <TabsList className='gap-x-2 bg-transparent p-0'>
                                 {stagesColorPresets.map((color) => (
                                     <TabsTrigger
@@ -157,9 +155,9 @@ export const EditStatusDialog: React.FC<EditStatusDialogProps> = ({
                             className='w-full'
                             type='submit'>
                             {isLoading ? (
-                                <Loader2 className='size-4 animate-spin' />
+                                <Loader2 className='animate-spin' />
                             ) : (
-                                'Edit'
+                                'Add'
                             )}
                         </Button>
                     </form>

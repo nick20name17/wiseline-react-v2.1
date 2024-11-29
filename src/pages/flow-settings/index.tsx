@@ -1,3 +1,5 @@
+import { useGetAllCategoriesQuery } from '@/api/ebms/categories/categories'
+import { Header } from '@/components/header'
 import {
     Accordion,
     AccordionContent,
@@ -5,18 +7,19 @@ import {
     AccordionTrigger
 } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
-import { useGetAllCategoriesQuery } from '@/store/api/ebms/categories/categories'
-import { AddCapacityDialog } from './add-capacity-dialog'
+import { Skeleton } from '@/components/ui/skeleton'
+import { AddFlow } from './components/actions/flow/add'
+import { AddCapacityDialog } from './components/dialogs/add-capacity'
 import { FlowAccordionItem } from './flow-accordion-item'
-import { AddFlowDialog } from './flow-actions/add-flow-dialog'
-import { FlowsSkeleton } from './flows-skeleton'
 
-export const FlowSettings = () => {
+export const FlowSettingsPage = () => {
     const { data: categories, isLoading } = useGetAllCategoriesQuery()
 
     return (
-        <section className='mx-auto mt-4 max-w-[1000px] px-3'>
-            <h1 className='text-2xl font-semibold'>EBMS Production Categories:</h1>
+        <>
+        <Header title='Production Category Flow Settingss' />
+        <section className='mx-auto mt-4 max-w-[1000px] px-4'>
+            {/* <h2 className='scroll-m-20 text-xl font-semibold tracking-tight'>EBMS Production Categories</h2> */}
 
             {isLoading ? (
                 <FlowsSkeleton />
@@ -62,11 +65,11 @@ export const FlowSettings = () => {
                                         )}
                                     </div>
                                 </AccordionTrigger>
-                                <AccordionContent className='flex flex-col gap-y-3 px-4 pt-1'>
+                                <AccordionContent className='flex flex-col gap-y-4 px-4 pt-1'>
                                     <AccordionItem
                                         className='border-none'
                                         value='add-flow'>
-                                        <AddFlowDialog categoryId={category.id} />
+                                        <AddFlow categoryId={category.id} />
                                     </AccordionItem>
                                     <Accordion type='multiple'>
                                         {category.flows?.length ? (
@@ -89,5 +92,17 @@ export const FlowSettings = () => {
                 </Accordion>
             )}
         </section>
+        </>
     )
 }
+
+const FlowsSkeleton = () => (
+    <div className='mt-4 flex flex-col gap-y-2'>
+        {Array.from({ length: 5 }).map((_, index) => (
+            <Skeleton
+                key={index}
+                className='mt-1 h-20 w-full'
+            />
+        ))}
+    </div>
+)

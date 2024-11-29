@@ -2,6 +2,7 @@ import { Loader2, X } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { useRemoveStageMutation } from '@/api/stages/stages'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -10,22 +11,22 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog'
-import { useRemoveFlowMutation } from '@/store/api/flows/flows'
-import { isErrorWithMessage } from '@/utils'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
-interface RemoveFlowDialogProps {
+
+interface RemoveStatusProps {
     id: number
     name: string
 }
 
-export const RemoveFlowDialog: React.FC<RemoveFlowDialogProps> = ({ id, name }) => {
-    const [removeFlow, { isLoading }] = useRemoveFlowMutation()
+export const RemoveStatus: React.FC<RemoveStatusProps> = ({ id, name }) => {
+    const [removeStage, { isLoading }] = useRemoveStageMutation()
 
     const [open, setOpen] = useState(false)
 
-    const handleRemoveFlow = async (id: number) => {
+    const handleRemoveStage = async (id: number) => {
         try {
-            await removeFlow(id).unwrap()
+            await removeStage(id).unwrap()
             setOpen(false)
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
@@ -40,10 +41,9 @@ export const RemoveFlowDialog: React.FC<RemoveFlowDialogProps> = ({ id, name }) 
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
-                    className='justify-start'
                     variant='ghost'
                     size='sm'>
-                    <X className='mr-2 h-3.5 w-3.5' />
+                    <X />
                     Remove
                 </Button>
             </DialogTrigger>
@@ -51,17 +51,17 @@ export const RemoveFlowDialog: React.FC<RemoveFlowDialogProps> = ({ id, name }) 
                 <DialogHeader className='text-left'>
                     <DialogTitle>
                         Do you want to remove{' '}
-                        <span className='text-destructive'>{name}</span> flow?
+                        <span className='text-destructive'>{name}</span> status?
                     </DialogTitle>
                 </DialogHeader>
                 <Button
                     disabled={isLoading}
                     onClick={(e) => {
                         e.stopPropagation()
-                        handleRemoveFlow(id)
+                        handleRemoveStage(id)
                     }}
                     variant='destructive'
-                    className='flex w-24 items-center gap-x-1.5'>
+                    className='flex w-24 items-center '>
                     {isLoading ? (
                         <Loader2 className='mr-2 size-4 animate-spin' />
                     ) : (

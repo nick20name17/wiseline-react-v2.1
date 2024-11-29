@@ -17,9 +17,9 @@ import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { FlowActions } from './flow-actions/flow-actions'
-import { AddStatusDialog } from './status-actions/add-status-dialog'
-import { StatusActions } from './status-actions/status-actions'
+import type { FlowData } from '@/api/flows/flows.types'
+import { usePatchStageMutation } from '@/api/stages/stages'
+import type { StageData, StagePatchPayload } from '@/api/stages/stages.types'
 import {
     AccordionContent,
     AccordionItem,
@@ -32,10 +32,11 @@ import {
     CardHeader,
     CardTitle
 } from '@/components/ui/card'
-import type { FlowData } from '@/store/api/flows/flows.types'
-import { usePatchStageMutation } from '@/store/api/stages/stages'
-import type { StageData, StagePatchData } from '@/store/api/stages/stages.types'
-import { isErrorWithMessage } from '@/utils'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
+import { FlowMenu } from './components/actions/flow/menu'
+import { AddStatus } from './components/actions/stage/add'
+import { StatusMenu } from './components/actions/stage/menu'
+
 
 interface FlowAccordionItemProps {
     flow: FlowData
@@ -66,7 +67,7 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
         })
     )
 
-    const handlePatchStage = async (data: StagePatchData) => {
+    const handlePatchStage = async (data: StagePatchPayload) => {
         try {
             await patchStage(data).unwrap()
         } catch (error) {
@@ -116,7 +117,7 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
                 <AccordionTrigger className='px-4'>
                     <CardHeader className='flex w-full flex-row items-center justify-between gap-x-4 p-1 pr-4'>
                         <CardTitle className='text-lg'>{flow.name}</CardTitle>
-                        <FlowActions
+                        <FlowMenu
                             id={flow.id}
                             name={flow.name}
                         />
@@ -124,8 +125,8 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
                 </AccordionTrigger>
 
                 <AccordionContent>
-                    <CardContent className='flex flex-col gap-y-3'>
-                        <AddStatusDialog flowId={flow.id} />
+                    <CardContent className='flex flex-col gap-y-4'>
+                        <AddStatus flowId={flow.id} />
 
                         <Card>
                             <CardHeader>
@@ -155,7 +156,7 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
                                 strategy={verticalListSortingStrategy}>
                                 {items.map((stage) =>
                                     stage.name !== 'Done' &&
-                                    stage.name !== 'Unscheduled' ? (
+                                        stage.name !== 'Unscheduled' ? (
                                         <SortableCard
                                             key={stage.id}
                                             stage={stage}
@@ -224,7 +225,7 @@ const SortableCard: React.FC<SortableCardProps> = ({ stage }) => {
                         {stage.name}
                     </div>
                     {disabled ? null : (
-                        <StatusActions
+                        <StatusMenu
                             color={stage.color}
                             description={stage?.description!}
                             id={stage.id}

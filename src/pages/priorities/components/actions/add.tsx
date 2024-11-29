@@ -94,7 +94,7 @@ export const AddPriority = () => {
                 <Form {...form}>
                     <form
                         method='POST'
-                        className='mx-auto w-full space-y-5'
+                        className='mx-auto w-full space-y-4'
                         onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}

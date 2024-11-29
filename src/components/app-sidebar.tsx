@@ -10,9 +10,10 @@ import {
     SidebarMenuItem,
     useSidebar
 } from "@/components/ui/sidebar"
-import { routes } from "@/config/routes"
+import { isAdminRoute, routes } from "@/config/routes"
 import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu"
 
+import { useCurrentUserRole } from "@/hooks/use-current-user-role"
 import { cn } from "@/lib/utils"
 import {
     Asterisk,
@@ -87,6 +88,8 @@ const navItems = [
 
 
 export const AppSidebar = () => {
+    const isClientOrWorker = useCurrentUserRole(['client', 'worker'])
+
     const { pathname } = useLocation()
     const { setOpenMobile } = useSidebar()
 
@@ -97,7 +100,7 @@ export const AppSidebar = () => {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {navItems.map((navItem) => (
+                            {navItems.map((navItem) => isClientOrWorker && isAdminRoute(navItem.url) ? null : (
                                 <SidebarMenuItem aria-disabled={navItem.soon} key={navItem.title}>
                                     <SidebarMenuButton onClick={() => setOpenMobile(false)} aria-disabled={navItem.soon} disabled={navItem.soon} isActive={pathname === navItem.url} asChild>
                                         <NavLink to={navItem.url}>
@@ -122,13 +125,17 @@ export const AppSidebar = () => {
 
 export const AppSidebarHeader = () => {
     const { setOpenMobile } = useSidebar()
+    const { search } = useLocation()
     return (
         <SidebarHeader>
             <SidebarMenu>
                 <SidebarMenuItem>
                     <DropdownMenu>
                         <DropdownMenuTrigger onClick={() => setOpenMobile(false)} asChild>
-                            <NavLink to={routes.main}>
+                            <NavLink to={{
+                                pathname: routes.main,
+                                search
+                            }}>
                                 <SidebarMenuButton
                                     size="lg"
                                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"

@@ -21,20 +21,6 @@ export const emailShape = z.string()
 //     text: z.string()
 // })
 
-// export const stageSchema = object({
-//     name: string().min(1, 'Stage name is required'),
-//     description: string().optional()
-// })
-
-// export const flowSchema = object({
-//     name: string().min(1, 'Flow name is required')
-// })
-
-// export const capacitySchema = object({
-//     per_day: string().min(1, 'Per day is required')
-// })
-
-
 
 
 // export const passwordResetConfirmSchema = object({

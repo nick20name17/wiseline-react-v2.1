@@ -90,7 +90,7 @@ export const UserSettingsForms = () => {
                     <Form {...form}>
                         <form
                             method='POST'
-                            className='mx-auto mt-4 w-full space-y-5'
+                            className='mx-auto mt-4 w-full space-y-4'
                             onSubmit={form.handleSubmit(onSubmit)}>
                             <FormField
                                 disabled={!open}

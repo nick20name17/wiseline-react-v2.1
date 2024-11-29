@@ -97,9 +97,9 @@ export const CalendarPage = () => {
                         <ArrowLeft />
                     </Button>
 
-                    <h1 className='scroll-m-20 font-bold'>
+                    <h2 className='scroll-m-20 font-bold'>
                         {format(firstDayCurrentMonth, 'MMM yyyy')}
-                    </h1>
+                    </h2>
 
                     <Button
                         onClick={getNextMonth}
