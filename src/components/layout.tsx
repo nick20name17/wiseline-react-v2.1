@@ -1,28 +1,33 @@
 import { ErrorBoundary } from 'react-error-boundary'
 import { Outlet } from 'react-router-dom'
 
+import { AppSidebar } from '@/components/app-sidebar'
+import { MetaHead } from '@/components/meta-head'
 import { Toaster } from '@/components/ui/sonner'
 import { ErrorPage } from '@/pages/error-page'
 import { RoleProvider } from '@/providers/role'
-import { MetaHead } from './meta-head'
+import { SidebarProvider } from './ui/sidebar'
 
 export const Layout = () => {
     return (
-         <>
-             <MetaHead />
-            <main>
-                <ErrorBoundary fallback={<ErrorPage />}>
-                    <div className='mx-auto'>
+        <>
+            <MetaHead />
+            <SidebarProvider>
+                <AppSidebar />
+
+                <main>
+                    <ErrorBoundary fallback={<ErrorPage />}>
                         <RoleProvider>
                             <Outlet />
                         </RoleProvider>
-                    </div>
-                </ErrorBoundary>
-            </main>
+                    </ErrorBoundary>
+                </main>
+            </SidebarProvider>
+
             <Toaster
                 richColors
                 duration={5000}
             />
-         </>
+        </>
     )
 }
