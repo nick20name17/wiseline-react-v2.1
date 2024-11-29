@@ -111,7 +111,7 @@ export const AddUser = () => {
                 </DialogHeader>
                 <Form {...form}>
                     <form
-                        className='space-y-5'
+                        className='space-y-4'
                         onSubmit={form.handleSubmit(onSubmit)}>
                         <FormField
                             control={form.control}

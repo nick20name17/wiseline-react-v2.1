@@ -7,7 +7,7 @@ interface MetaHeadProps {
     description?: string
 }
 
-export const MetaHead: React.FC<MetaHeadProps> = ({ description }) => {
+export const MetaHead = ({ description }: MetaHeadProps) => {
     const pageTitle = usePageTitle()
 
     return (

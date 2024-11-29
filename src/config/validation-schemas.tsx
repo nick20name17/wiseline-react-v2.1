@@ -21,15 +21,3 @@ export const emailShape = z.string()
 //     text: z.string()
 // })
 
-
-
-// export const passwordResetConfirmSchema = object({
-//     ...newPasswordSchema.shape
-// }).refine((data) => data.new_password1 === data.new_password2, {
-//     message: "Passwords don't match",
-//     path: ['new_password2']
-// })
-
-
-
-
