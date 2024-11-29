@@ -8,6 +8,7 @@ import {
 
 import type { User } from '@/api/users/users.types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
     Table,
     TableBody,
@@ -17,7 +18,6 @@ import {
     TableRow
 } from '@/components/ui/table'
 import { useQueryState } from 'nuqs'
-import { TableSkeleton } from './table-skeleton'
 
 interface UsersTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -104,10 +104,10 @@ export const UsersTable = <_, TValue>({
                             </TableRow>
                         ))
                     ) : (
-                        <TableRow>
+                        <TableRow className="!bg-transparent">
                             <TableCell
                                 colSpan={columns.length}
-                                className='h-24 pl-3 text-left'>
+                                className=" text-left py-8 pl-8 !bg-transparent">
                                 No results
                             </TableCell>
                         </TableRow>
@@ -117,4 +117,19 @@ export const UsersTable = <_, TValue>({
             <ScrollBar orientation='horizontal' />
         </ScrollArea>
     )
+}
+
+const TableSkeleton = () => {
+    return Array.from({ length: 10 }).map((_, index) => (
+        <TableRow
+            key={index}>
+            {Array.from({ length: 5 }).map((_, index) => (
+                <TableCell
+                    key={index}
+                >
+                    <Skeleton className='w-full h-8' />
+                </TableCell>
+            ))}
+        </TableRow>
+    ))
 }

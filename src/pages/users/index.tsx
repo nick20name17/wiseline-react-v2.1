@@ -1,8 +1,8 @@
 import { useGetAllUsersQuery } from '@/api/users/users'
 import { Header } from '@/components/header'
+import { Controls } from './components/controls'
 import { columns } from './components/table/columns'
 import { UsersTable } from './components/table/table'
-import { Controls } from './controls'
 
 
 export const UsersPage = () => {
