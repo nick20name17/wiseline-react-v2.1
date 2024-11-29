@@ -7,6 +7,7 @@ import { CalendarPage } from './pages/calendar'
 import { CompanySettingsPage } from './pages/company-settings'
 import { ErrorPage } from './pages/error-page'
 import { MainPage } from './pages/main'
+import { PrioritiesPage } from './pages/priorities'
 import { UserSettingsPage } from './pages/user-settings'
 import { UsersPage } from './pages/users'
 import { RequireAuthProvider } from './providers/require-auth'
@@ -66,14 +67,14 @@ const router = createBrowserRouter([
 
             //     )
             // },
-            // {
-            //     path: routes.priorities,
-            //     element: (
+            {
+                path: routes.priorities,
+                element: (
 
-            //             <PrioritiesPage />
+                        <PrioritiesPage />
 
-            //     )
-            // },
+                )
+            },
             // {
             //     path: routes.passwordResetConfirm,
             //     element: <PasswordResetConfirmPage />

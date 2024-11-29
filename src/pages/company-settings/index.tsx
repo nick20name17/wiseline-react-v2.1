@@ -6,7 +6,7 @@ import {
     useGetCompanyProfilesQuery
 } from '@/api/profiles/profiles'
 import type { CompanyProfileData } from '@/api/profiles/profiles.types'
-import { Header } from '@/components/layout/header'
+import { Header } from '@/components/header'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { useCurrentUserRole } from '@/hooks/use-current-user-role'

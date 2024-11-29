@@ -63,7 +63,4 @@ export const emailShape = z.string()
 //     }).min(1, 'Role is required')
 // })
 
-// export const prioritySchema = object({
-//     name: string().min(1, 'Priority name is required'),
-//     position: string().min(1, 'Priority number is required')
-// })
+

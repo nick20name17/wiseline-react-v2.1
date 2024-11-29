@@ -3,8 +3,13 @@ import { Edit2Icon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import type { infer as zodInfer } from 'zod'
+import { z, type infer as zodInfer } from 'zod'
 
+import { usePatchPriorityMutation } from '@/api/priorities/priorities'
+import type {
+    PrioritiesData,
+    PrioritiesPatchPayload
+} from '@/api/priorities/priorities.types'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -23,15 +28,15 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { prioritySchema } from '@/config/validation-schemas'
-import { usePatchPriorityMutation } from '@/store/api/priorities/priorities'
-import type {
-    PrioritiesData,
-    PrioritiesPatchData
-} from '@/store/api/priorities/priorities.types'
-import { isErrorWithMessage } from '@/utils'
+import { stagesColorPresets } from '@/config/stages'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
-type FormData = zodInfer<typeof prioritySchema>
+const prioritySchema = z.object({
+    name: z.string().min(1, 'Priority name is required'),
+    position: z.string().min(1, 'Priority number is required')
+})
+
+type EditPriorityFormData = zodInfer<typeof prioritySchema>
 
 interface EditPriorityProps {
     priority: PrioritiesData
@@ -41,10 +46,8 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
     const [color, setColor] = useState(priority?.color)
     const [open, setOpen] = useState(false)
 
-    const form = useForm<FormData>({
+    const form = useForm<EditPriorityFormData>({
         resolver: zodResolver(prioritySchema),
-        mode: 'onSubmit',
-        shouldFocusError: true,
         defaultValues: {
             name: priority.name,
             position: priority.position.toString()
@@ -53,7 +56,7 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
 
     const [patchPriority, { isLoading }] = usePatchPriorityMutation()
 
-    const handleAddStage = async (data: PrioritiesPatchData) => {
+    const handleAddStage = async (data: PrioritiesPatchPayload) => {
         form.reset()
         setOpen(false)
         try {
@@ -64,19 +67,8 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
         }
     }
 
-    const colorPresets = [
-        '#0090FF',
-        '#09D8B5',
-        '#222222',
-        '#FFCA14',
-        '#EF5E01',
-        '#3E9B4F',
-        '#CA244C',
-        '#8145B5',
-        '#CE2C31'
-    ]
 
-    const onSubmit: SubmitHandler<FormData> = (formData) =>
+    const onSubmit: SubmitHandler<EditPriorityFormData> = (formData) =>
         handleAddStage({
             id: priority.id,
             data: {
@@ -98,7 +90,7 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
                     className='justify-start'
                     variant='ghost'
                     size='sm'>
-                    <Edit2Icon className='mr-1 h-3.5 w-3.5' />
+                    <Edit2Icon />
                     Edit
                 </Button>
             </DialogTrigger>
@@ -148,7 +140,7 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
                             onValueChange={onValueChange}
                             defaultValue={priority?.color}>
                             <TabsList className='gap-x-2 bg-transparent p-0'>
-                                {colorPresets.map((color) => (
+                                {stagesColorPresets.map((color) => (
                                     <TabsTrigger
                                         key={color}
                                         value={color}

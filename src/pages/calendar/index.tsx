@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 
 import { useGetCalendarQuery } from '@/api/ebms/calendar/calendar'
 import type { CapacityCategory } from '@/api/ebms/ebms.types'
-import { Header } from '@/components/layout/header'
+import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useQueryState } from 'nuqs'

@@ -1,10 +1,11 @@
-import { PriorityActions } from './actions'
-import { AddPriority } from './actions/add-priority'
-import { PrioritiesSkeleton } from './priorities-skeleton'
+import { useGetPrioritiesQuery } from '@/api/priorities/priorities'
+import { Header } from '@/components/header'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import { useGetPrioritiesQuery } from '@/store/api/priorities/priorities'
+import { Skeleton } from '@/components/ui/skeleton'
+import { PriorityActions } from './components/actions'
+import { AddPriority } from './components/actions/add'
 
-export const Priorities = () => {
+export const PrioritiesPage = () => {
     const { data: priorities, isLoading } = useGetPrioritiesQuery()
 
     const newPriorities = priorities
@@ -12,10 +13,12 @@ export const Priorities = () => {
         : []
 
     return (
-        <section className='mx-auto mt-10 max-w-[1000px] px-3'>
+      <>
+      <Header title='Production Priorities Settings'/>
+      <section className='mx-auto mt-8 max-w-[1000px] px-r'>
             <AddPriority />
 
-            <div className='mt-5'>
+            <div className='mt-4'>
                 {isLoading ? (
                     <PrioritiesSkeleton />
                 ) : (
@@ -51,5 +54,17 @@ export const Priorities = () => {
                 )}
             </div>
         </section>
+      </>
     )
 }
+
+const PrioritiesSkeleton = () => (
+    <div className='mt-4 flex flex-col gap-y-2'>
+        {Array.from({ length: 10 }).map((_, index) => (
+            <Skeleton
+                key={index}
+                className='mt-1 h-20 w-full'
+            />
+        ))}
+    </div>
+)

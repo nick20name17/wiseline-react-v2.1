@@ -2,6 +2,8 @@ import { Loader2, X } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { useRemovePriorityMutation } from '@/api/priorities/priorities'
+import type { PrioritiesData } from '@/api/priorities/priorities.types'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -10,9 +12,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog'
-import { useRemovePriorityMutation } from '@/store/api/priorities/priorities'
-import type { PrioritiesData } from '@/store/api/priorities/priorities.types'
-import { isErrorWithMessage } from '@/utils'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 interface RemovePriorityProps {
     priority: PrioritiesData
@@ -47,7 +47,7 @@ export const RemovePriority: React.FC<RemovePriorityProps> = ({ priority }) => {
                     onClick={(e) => e.stopPropagation()}
                     variant='ghost'
                     size='sm'>
-                    <X className='mr-1 h-3.5 w-3.5' />
+                    <X />
                     Remove
                 </Button>
             </DialogTrigger>
@@ -63,9 +63,9 @@ export const RemovePriority: React.FC<RemovePriorityProps> = ({ priority }) => {
                     disabled={isLoading}
                     onClick={onRemove}
                     variant='destructive'
-                    className='flex w-24 items-center gap-x-1.5'>
+                    className='flex w-24 items-center'>
                     {isLoading ? (
-                        <Loader2 className='mr-2 size-4 animate-spin' />
+                        <Loader2 className='animate-spin' />
                     ) : (
                         'Remove'
                     )}

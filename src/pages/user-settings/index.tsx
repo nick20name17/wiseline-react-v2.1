@@ -1,7 +1,7 @@
 import { toast } from 'sonner'
 
 import { useRemoveUserProfilesMutation } from '@/api/profiles/profiles'
-import { Header } from '@/components/layout/header'
+import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 import { PasswordChange } from './components/password-change'
@@ -34,7 +34,7 @@ export const UserSettingsPage = () => {
        <>
        <Header title='User Settings' />
         <section className='mx-auto mt-8 max-w-[1120px] px-4'>
-            <div className='flex flex-wrap gap-5'>
+            <div className='flex flex-wrap gap-4'>
                 <UserSettingsForms />
                 <PasswordChange />
             </div>

@@ -1,7 +1,3 @@
-import { AddCapacityDialog } from './add-capacity-dialog'
-import { FlowAccordionItem } from './flow-accordion-item'
-import { AddFlowDialog } from './flow-actions/add-flow-dialog'
-import { FlowsSkeleton } from './flows-skeleton'
 import {
     Accordion,
     AccordionContent,
@@ -10,12 +6,16 @@ import {
 } from '@/components/ui/accordion'
 import { Badge } from '@/components/ui/badge'
 import { useGetAllCategoriesQuery } from '@/store/api/ebms/categories/categories'
+import { AddCapacityDialog } from './add-capacity-dialog'
+import { FlowAccordionItem } from './flow-accordion-item'
+import { AddFlowDialog } from './flow-actions/add-flow-dialog'
+import { FlowsSkeleton } from './flows-skeleton'
 
 export const FlowSettings = () => {
     const { data: categories, isLoading } = useGetAllCategoriesQuery()
 
     return (
-        <section className='mx-auto mt-5 max-w-[1000px] px-3'>
+        <section className='mx-auto mt-4 max-w-[1000px] px-3'>
             <h1 className='text-2xl font-semibold'>EBMS Production Categories:</h1>
 
             {isLoading ? (

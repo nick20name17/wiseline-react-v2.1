@@ -1,10 +1,10 @@
 import { MoreHorizontal } from 'lucide-react'
 
-import { EditPriority } from './edit-priority'
-import { RemovePriority } from './remove-priority'
+import type { PrioritiesData } from '@/api/priorities/priorities.types'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import type { PrioritiesData } from '@/store/api/priorities/priorities.types'
+import { EditPriority } from './edit'
+import { RemovePriority } from './remove'
 
 interface PriorityActionsProps {
     priority: PrioritiesData

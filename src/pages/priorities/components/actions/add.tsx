@@ -3,8 +3,10 @@ import { Loader2, PlusCircleIcon } from 'lucide-react'
 import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import type { infer as zodInfer } from 'zod'
+import { z, type infer as zodInfer } from 'zod'
 
+import { useAddPriorityMutation } from '@/api/priorities/priorities'
+import type { PrioritiesAddData } from '@/api/priorities/priorities.types'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -23,18 +25,20 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { prioritySchema } from '@/config/validation-schemas'
-import { useAddPriorityMutation } from '@/store/api/priorities/priorities'
-import type { PrioritiesAddData } from '@/store/api/priorities/priorities.types'
-import { isErrorWithMessage } from '@/utils'
+import { stagesColorPresets } from '@/config/stages'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
-type FormData = zodInfer<typeof prioritySchema>
+const prioritySchema = z.object({
+    name: z.string().min(1, 'Priority name is required'),
+    position: z.string().min(1, 'Priority number is required')
+})
+
+type AddPriorityFormData = zodInfer<typeof prioritySchema>
 
 export const AddPriority = () => {
-    const form = useForm<FormData>({
+    const form = useForm<AddPriorityFormData>({
         resolver: zodResolver(prioritySchema),
-        mode: 'onSubmit',
-        shouldFocusError: true,
+
         defaultValues: {
             name: '',
             position: ''
@@ -54,24 +58,14 @@ export const AddPriority = () => {
         }
     }
 
-    const colorPresets = [
-        '#0090FF',
-        '#09D8B5',
-        '#222222',
-        '#FFCA14',
-        '#EF5E01',
-        '#3E9B4F',
-        '#CA244C',
-        '#8145B5',
-        '#CE2C31'
-    ]
 
-    const defaultColor = colorPresets[0]
+
+    const defaultColor = stagesColorPresets[0]
 
     const [color, setColor] = useState(defaultColor)
     const [open, setOpen] = useState(false)
 
-    const onSubmit: SubmitHandler<FormData> = (formData) =>
+    const onSubmit: SubmitHandler<AddPriorityFormData> = (formData) =>
         handleAddStage({
             name: formData.name,
             position: +formData.position,
@@ -87,9 +81,9 @@ export const AddPriority = () => {
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
-                    className='mt-1 flex w-full items-center gap-x-1.5'
+                    className='flex w-full items-center'
                     size='lg'>
-                    <PlusCircleIcon width='16px' />
+                    <PlusCircleIcon />
                     Add Priority
                 </Button>
             </DialogTrigger>
@@ -139,7 +133,7 @@ export const AddPriority = () => {
                             onValueChange={onValueChange}
                             defaultValue={defaultColor}>
                             <TabsList className='gap-x-2 bg-transparent p-0'>
-                                {colorPresets.map((color) => (
+                                {stagesColorPresets.map((color) => (
                                     <TabsTrigger
                                         key={color}
                                         value={color}
@@ -156,7 +150,7 @@ export const AddPriority = () => {
                             className='w-full'
                             type='submit'>
                             {isLoading ? (
-                                <Loader2 className='size-4 animate-spin' />
+                                <Loader2 className='animate-spin' />
                             ) : (
                                 'Add'
                             )}

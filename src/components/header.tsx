@@ -1,5 +1,5 @@
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { ProfileMenu } from "../profile-menu"
+import { ProfileMenu } from "./profile-menu"
 
 
 interface HeaderProps {
