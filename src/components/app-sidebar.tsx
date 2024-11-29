@@ -87,30 +87,32 @@ const navItems = [
 
 
 export const AppSidebar = () => {
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
+    const { setOpenMobile } = useSidebar()
+
     return (
         <Sidebar>
             <AppSidebarHeader />
             <SidebarContent>
-            <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map((navItem) => (
-                <SidebarMenuItem aria-disabled={navItem.soon} key={navItem.title}>
-                 <SidebarMenuButton aria-disabled={navItem.soon} disabled={navItem.soon} isActive={pathname === navItem.url} asChild>
-                    <NavLink to={navItem.url}>
-                      <navItem.icon />
-                      <span>{navItem.title}</span>
-                    </NavLink>
-                  </SidebarMenuButton>
-                 {
-                    navItem.soon ?  <SidebarMenuBadge className={cn(badgeVariants({variant: 'outline'}))}>Soon</SidebarMenuBadge> : null
-                 }
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+                <SidebarGroup>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {navItems.map((navItem) => (
+                                <SidebarMenuItem aria-disabled={navItem.soon} key={navItem.title}>
+                                    <SidebarMenuButton onClick={() => setOpenMobile(false)} aria-disabled={navItem.soon} disabled={navItem.soon} isActive={pathname === navItem.url} asChild>
+                                        <NavLink to={navItem.url}>
+                                            <navItem.icon />
+                                            <span>{navItem.title}</span>
+                                        </NavLink>
+                                    </SidebarMenuButton>
+                                    {
+                                        navItem.soon ? <SidebarMenuBadge className={cn(badgeVariants({ variant: 'outline' }))}>Soon</SidebarMenuBadge> : null
+                                    }
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
 
             </SidebarContent>
         </Sidebar>

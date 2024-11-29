@@ -2,6 +2,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { Layout } from '@/components/layout'
 import { routes } from '@/config/routes'
+import { NuqsAdapter } from 'nuqs/adapters/react'
+import { CalendarPage } from './pages/calendar'
 import { CompanySettingsPage } from './pages/company-settings'
 import { ErrorPage } from './pages/error-page'
 import { MainPage } from './pages/main'
@@ -13,14 +15,14 @@ import { RequireAuthProvider } from './providers/require-auth'
 const router = createBrowserRouter([
     {
         path: routes.main,
-        element:    <RequireAuthProvider><Layout /></RequireAuthProvider>,
+        element: <RequireAuthProvider><Layout /></RequireAuthProvider>,
         errorElement: <ErrorPage message='Page not found' />,
         children: [
             {
                 index: true,
                 element: (
 
-                        <MainPage />
+                    <MainPage />
 
                 )
             },
@@ -28,7 +30,7 @@ const router = createBrowserRouter([
                 path: routes.users,
                 element: (
 
-                        <UsersPage />
+                    <UsersPage />
 
                 )
             },
@@ -36,7 +38,7 @@ const router = createBrowserRouter([
                 path: routes.companySettings,
                 element: (
 
-                        <CompanySettingsPage />
+                    <CompanySettingsPage />
 
                 )
             },
@@ -44,18 +46,18 @@ const router = createBrowserRouter([
                 path: routes.userSettings,
                 element: (
 
-                        <UserSettingsPage />
+                    <UserSettingsPage />
 
                 )
             },
-            // {
-            //     path: routes.calendar,
-            //     element: (
+            {
+                path: routes.calendar,
+                element: (
 
-            //             <CalendarPage />
+                    <CalendarPage />
 
-            //     )
-            // },
+                )
+            },
             // {
             //     path: routes.flowSettings,
             //     element: (
@@ -88,4 +90,6 @@ const router = createBrowserRouter([
     }
 ])
 
-export const App = () => <RouterProvider router={router} />
+export const App = () => <NuqsAdapter>
+    <RouterProvider router={router} />
+</NuqsAdapter>
