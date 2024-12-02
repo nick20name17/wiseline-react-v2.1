@@ -1,3 +1,9 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
+import { type SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z, type infer as zodInfer } from 'zod'
+
 import { useChangePasswordMutation } from '@/api/passwords/passwords'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,31 +17,27 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { passwordShape } from '@/config/validation-schemas'
-
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectUser } from '@/store/slices/auth'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
-import { toast } from 'sonner'
-import { z, type infer as zodInfer } from 'zod'
 
- const changePasswordSchema = z.object({
-    old_password: passwordShape,
-    new_password1: passwordShape,
-    new_password2: z.string().min(1, 'New password confirmation is required')
-}).refine((data) => data.new_password1 === data.new_password2, {
-    message: "Passwords don't match",
-    path: ['new_password2']
-})
+const changePasswordSchema = z
+    .object({
+        old_password: passwordShape,
+        new_password1: passwordShape,
+        new_password2: z.string().min(1, 'New password confirmation is required')
+    })
+    .refine((data) => data.new_password1 === data.new_password2, {
+        message: "Passwords don't match",
+        path: ['new_password2']
+    })
 
 type PasswordChangeFormData = zodInfer<typeof changePasswordSchema>
 
 export const PasswordChange = () => {
     const [changePassword, { isLoading }] = useChangePasswordMutation()
 
-    const form =useForm({
+    const form = useForm({
         defaultValues: {
             old_password: '',
             new_password1: '',
@@ -65,7 +67,8 @@ export const PasswordChange = () => {
         form.reset()
     }
 
-    const onSubmit: SubmitHandler<PasswordChangeFormData> = (formData) => handleChangePassword(formData)
+    const onSubmit: SubmitHandler<PasswordChangeFormData> = (formData) =>
+        handleChangePassword(formData)
 
     return (
         <Card className='min-w-80 flex-1'>
@@ -77,7 +80,8 @@ export const PasswordChange = () => {
                     <form
                         method='POST'
                         className='mx-auto mt-4 w-full space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='old_password'
@@ -137,7 +141,8 @@ export const PasswordChange = () => {
                                 e.stopPropagation()
                             }}
                             className='w-full'
-                            type='submit'>
+                            type='submit'
+                        >
                             {isLoading ? (
                                 <Loader2 className='size-4 animate-spin' />
                             ) : (

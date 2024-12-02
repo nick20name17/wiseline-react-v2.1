@@ -67,7 +67,6 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
         }
     }
 
-
     const onSubmit: SubmitHandler<EditPriorityFormData> = (formData) =>
         handleAddStage({
             id: priority.id,
@@ -83,13 +82,15 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     className='justify-start'
                     variant='ghost'
-                    size='sm'>
+                    size='sm'
+                >
                     <Edit2Icon />
                     Edit
                 </Button>
@@ -102,7 +103,8 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
                     <form
                         method='POST'
                         className='mx-auto w-full space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='name'
@@ -138,7 +140,8 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
                         />
                         <Tabs
                             onValueChange={onValueChange}
-                            defaultValue={priority?.color}>
+                            defaultValue={priority?.color}
+                        >
                             <TabsList className='gap-x-2 bg-transparent p-0'>
                                 {stagesColorPresets.map((color) => (
                                     <TabsTrigger
@@ -155,7 +158,8 @@ export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
                             disabled={isLoading}
                             onClick={(e) => e.stopPropagation()}
                             className='w-full'
-                            type='submit'>
+                            type='submit'
+                        >
                             {isLoading ? (
                                 <Loader2 className='size-4 animate-spin' />
                             ) : (

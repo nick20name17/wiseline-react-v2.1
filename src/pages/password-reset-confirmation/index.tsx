@@ -1,5 +1,5 @@
 import { Loader2 } from 'lucide-react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
@@ -19,14 +19,15 @@ import { routes } from '@/config/routes'
 import { passwordShape } from '@/config/validation-schemas'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
-const passwordResetConfirmSchema = z.object({
-    new_password1: passwordShape,
-    new_password2: z.string().min(1, 'New password confirmation is required')
-    }).refine((data) => data.new_password1 === data.new_password2, {
+const passwordResetConfirmSchema = z
+    .object({
+        new_password1: passwordShape,
+        new_password2: z.string().min(1, 'New password confirmation is required')
+    })
+    .refine((data) => data.new_password1 === data.new_password2, {
         message: "Passwords don't match",
         path: ['new_password2']
     })
-
 
 type PasswordResetConfirmationFormData = zodInfer<typeof passwordResetConfirmSchema>
 
@@ -38,7 +39,7 @@ export const PasswordResetConfirmationPage = () => {
     const form = useForm({
         defaultValues: {
             new_password1: '',
-            new_password2: '',
+            new_password2: ''
         }
     })
 
@@ -55,7 +56,9 @@ export const PasswordResetConfirmationPage = () => {
 
     const [resetPasswordConfirm, { isLoading }] = usePasswordResetConfirmMutation()
 
-    const handleResetPasswordConfirm = async (data: PasswordResetConfirmationFormData) => {
+    const handleResetPasswordConfirm = async (
+        data: PasswordResetConfirmationFormData
+    ) => {
         try {
             await resetPasswordConfirm({
                 uidb64: uidb64!,
@@ -82,7 +85,8 @@ export const PasswordResetConfirmationPage = () => {
             <Form {...form}>
                 <form
                     className='mx-auto w-[300px] space-y-4'
-                    onSubmit={form.handleSubmit(onSubmit)}>
+                    onSubmit={form.handleSubmit(onSubmit)}
+                >
                     <FormField
                         control={form.control}
                         name='new_password1'
@@ -121,7 +125,8 @@ export const PasswordResetConfirmationPage = () => {
                     <Button
                         disabled={isLoading}
                         className='w-full'
-                        type='submit'>
+                        type='submit'
+                    >
                         {isLoading ? (
                             <Loader2 className='h-4 w-4 animate-spin' />
                         ) : (

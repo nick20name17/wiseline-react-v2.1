@@ -58,8 +58,6 @@ export const AddPriority = () => {
         }
     }
 
-
-
     const defaultColor = stagesColorPresets[0]
 
     const [color, setColor] = useState(defaultColor)
@@ -77,12 +75,14 @@ export const AddPriority = () => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     className='flex w-full items-center'
-                    size='lg'>
+                    size='lg'
+                >
                     <PlusCircleIcon />
                     Add Priority
                 </Button>
@@ -95,7 +95,8 @@ export const AddPriority = () => {
                     <form
                         method='POST'
                         className='mx-auto w-full space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='name'
@@ -131,7 +132,8 @@ export const AddPriority = () => {
                         />
                         <Tabs
                             onValueChange={onValueChange}
-                            defaultValue={defaultColor}>
+                            defaultValue={defaultColor}
+                        >
                             <TabsList className='gap-x-2 bg-transparent p-0'>
                                 {stagesColorPresets.map((color) => (
                                     <TabsTrigger
@@ -148,12 +150,9 @@ export const AddPriority = () => {
                             disabled={isLoading}
                             onClick={(e) => e.stopPropagation()}
                             className='w-full'
-                            type='submit'>
-                            {isLoading ? (
-                                <Loader2 className='animate-spin' />
-                            ) : (
-                                'Add'
-                            )}
+                            type='submit'
+                        >
+                            {isLoading ? <Loader2 className='animate-spin' /> : 'Add'}
                         </Button>
                     </form>
                 </Form>

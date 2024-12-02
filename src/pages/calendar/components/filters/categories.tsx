@@ -1,7 +1,7 @@
+import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useQueryState } from 'nuqs'
 
 export const Categories = () => {
     const [category, setCategory] = useQueryState('category', {
@@ -18,16 +18,19 @@ export const Categories = () => {
     return (
         <Tabs
             onValueChange={onValueChange}
-            defaultValue={category}>
-            <TabsList >
+            defaultValue={category}
+        >
+            <TabsList>
                 <TabsTrigger
                     value='Rollforming'
-                    key='Rollforming'>
+                    key='Rollforming'
+                >
                     Rollforming
                 </TabsTrigger>
                 <TabsTrigger
                     value='Trim'
-                    key='Trim'>
+                    key='Trim'
+                >
                     Trim
                 </TabsTrigger>
             </TabsList>

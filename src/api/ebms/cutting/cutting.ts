@@ -1,12 +1,12 @@
 import { api } from '../..'
 
-import { getQueryParamString } from '@/utils/get-query-param-string'
 import type {
     ColorsData,
     CuttingItem,
     CuttingItemQueryParams,
     CuttingItemResponse
 } from './cutting.types'
+import { getQueryParamString } from '@/utils/get-query-param-string'
 
 export const cutting = api.injectEndpoints({
     endpoints: (build) => ({

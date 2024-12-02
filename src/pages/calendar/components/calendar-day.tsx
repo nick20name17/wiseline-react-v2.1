@@ -1,11 +1,11 @@
 import { format, isSameMonth, isToday, isWeekend } from 'date-fns'
 
+import { Capacity } from './calendar-capacity'
 import type { CalendarResponse } from '@/api/ebms/calendar/calendar.types'
 import type { CapacityCategory } from '@/api/ebms/ebms.types'
 import { useGetCompanyProfilesQuery } from '@/api/profiles/profiles'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { Capacity } from './calendar-capacity'
 
 export const CalendarDay = ({
     date,
@@ -36,13 +36,15 @@ export const CalendarDay = ({
                 'flex min-w-[187px] flex-1 flex-col justify-between gap-y-2 rounded-sm border p-2',
                 isToday(date) && 'border-primary',
                 !isSameMonth(date, firstDayCurrentMonth) && 'opacity-50'
-            )}>
+            )}
+        >
             <div
                 className={cn(
                     'self-end text-sm',
                     isToday(date) &&
                         'flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground'
-                )}>
+                )}
+            >
                 {format(date, 'd')}
             </div>
             {isDisabled && !isWorkingWeekend ? (

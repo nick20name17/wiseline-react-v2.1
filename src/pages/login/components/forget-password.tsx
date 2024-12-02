@@ -1,6 +1,7 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
 
@@ -24,11 +25,10 @@ import { Input } from '@/components/ui//input'
 import { Button } from '@/components/ui/button'
 import { emailShape } from '@/config/validation-schemas'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 const emailSchema = z.object({
-        email: emailShape,
-    })
+    email: emailShape
+})
 
 type ForgetPasswordFormData = zodInfer<typeof emailSchema>
 
@@ -68,12 +68,14 @@ export const ForgetPassword = () => {
         }
     }
 
-    const onSubmit: SubmitHandler<ForgetPasswordFormData> = (formData) => handlePasswordReset(formData)
+    const onSubmit: SubmitHandler<ForgetPasswordFormData> = (formData) =>
+        handlePasswordReset(formData)
 
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger className='text-sm text-neutral-400 transition-colors hover:text-neutral-600'>
                 Forgot password?
             </DialogTrigger>
@@ -84,7 +86,8 @@ export const ForgetPassword = () => {
                 <Form {...form}>
                     <form
                         className='mx-auto w-full space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='email'
@@ -105,7 +108,8 @@ export const ForgetPassword = () => {
                         <Button
                             disabled={isLoading}
                             className='w-full'
-                            type='submit'>
+                            type='submit'
+                        >
                             {isLoading ? (
                                 <Loader2 className='h-4 w-4 animate-spin' />
                             ) : (

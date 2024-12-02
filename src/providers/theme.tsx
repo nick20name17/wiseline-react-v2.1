@@ -58,7 +58,8 @@ export const ThemeProvider = ({
     return (
         <ThemeProviderContext.Provider
             {...props}
-            value={value}>
+            value={value}
+        >
             {children}
         </ThemeProviderContext.Provider>
     )

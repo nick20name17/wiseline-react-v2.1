@@ -1,7 +1,7 @@
+import { useQueryState } from 'nuqs'
 import { useDebouncedCallback } from 'use-debounce'
 
 import { Input } from '@/components/ui/input'
-import { useQueryState } from 'nuqs'
 
 interface SearchBarProps {
     placeholder?: string
@@ -16,7 +16,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         defaultValue: ''
     })
     const [, setOffset] = useQueryState('offset', {
-        parse:Number
+        parse: Number
     })
 
     const debouncedSetSearch = useDebouncedCallback((searchTerm: string | null) => {

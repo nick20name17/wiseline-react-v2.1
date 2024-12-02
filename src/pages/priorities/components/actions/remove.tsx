@@ -41,12 +41,14 @@ export const RemovePriority: React.FC<RemovePriorityProps> = ({ priority }) => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     variant='ghost'
-                    size='sm'>
+                    size='sm'
+                >
                     <X />
                     Remove
                 </Button>
@@ -63,12 +65,9 @@ export const RemovePriority: React.FC<RemovePriorityProps> = ({ priority }) => {
                     disabled={isLoading}
                     onClick={onRemove}
                     variant='destructive'
-                    className='flex w-24 items-center'>
-                    {isLoading ? (
-                        <Loader2 className='animate-spin' />
-                    ) : (
-                        'Remove'
-                    )}
+                    className='flex w-24 items-center'
+                >
+                    {isLoading ? <Loader2 className='animate-spin' /> : 'Remove'}
                 </Button>
             </DialogContent>
         </Dialog>

@@ -1,6 +1,5 @@
 import { api } from '..'
 
-import { getQueryParamString } from '@/utils/get-query-param-string'
 import type {
     FlowData,
     FlowsAddData,
@@ -8,6 +7,7 @@ import type {
     FlowsQueryParams,
     FlowsResponse
 } from './flows.types'
+import { getQueryParamString } from '@/utils/get-query-param-string'
 
 export const flows = api.injectEndpoints({
     endpoints: (build) => ({

@@ -10,7 +10,7 @@ interface DataTableColumnHeaderProps<TData, TValue> {
 
 export const DataTableColumnHeader = <TData, TValue>({
     column,
-    title,
+    title
 }: DataTableColumnHeaderProps<TData, TValue>) => {
     const [grouped] = useQueryState('grouped', {
         parse: Boolean
@@ -23,22 +23,23 @@ export const DataTableColumnHeader = <TData, TValue>({
     const isLinesDisabled = view === 'lines' && (completed! || grouped!)
 
     if (!column.getCanSort()) {
-        return <div>{title}</div>;
+        return <div>{title}</div>
     }
 
     return (
         <button
             disabled={isLinesDisabled}
             onClick={column.getToggleSortingHandler()}
-            className="inline-flex items-center size-full justify-between whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0">
+            className='inline-flex size-full items-center justify-between whitespace-nowrap rounded-md text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0'
+        >
             <span>{title}</span>
-            {column.getIsSorted() === "desc" ? (
+            {column.getIsSorted() === 'desc' ? (
                 <ArrowDown />
-            ) : column.getIsSorted() === "asc" ? (
+            ) : column.getIsSorted() === 'asc' ? (
                 <ArrowUp />
             ) : (
                 <ChevronsUpDown />
             )}
         </button>
-    );
+    )
 }

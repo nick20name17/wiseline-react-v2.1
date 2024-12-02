@@ -3,13 +3,13 @@ import { api } from '..'
 import { embs } from '../ebms/ebms'
 import type { OrdersQueryParams } from '../ebms/ebms.types'
 
-import type { BaseQueryParams } from '@/api/types/query'
-import { store } from '@/store'
 import type {
     SalesOrdersAddData,
     SalesOrdersPatchPayload,
     SalesOrdersResponse
 } from './sales-orders.types'
+import type { BaseQueryParams } from '@/api/types/query'
+import { store } from '@/store'
 
 export const salesOrders = api.injectEndpoints({
     endpoints: (build) => ({

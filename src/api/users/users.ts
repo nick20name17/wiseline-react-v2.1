@@ -1,7 +1,5 @@
 import { api } from '..'
 
-import type { BaseQueryParams } from '@/api/types/query'
-import { getQueryParamString } from '@/utils/get-query-param-string'
 import type {
     User,
     UserAllQueryParams,
@@ -9,6 +7,8 @@ import type {
     UsersPatchPayload,
     UsersResponse
 } from './users.types'
+import type { BaseQueryParams } from '@/api/types/query'
+import { getQueryParamString } from '@/utils/get-query-param-string'
 
 export const users = api.injectEndpoints({
     endpoints: (build) => ({

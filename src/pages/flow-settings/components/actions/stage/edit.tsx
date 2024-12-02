@@ -1,6 +1,7 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit2Icon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
 
@@ -27,7 +28,6 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { stagesColorPresets } from '@/config/stages'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 interface EditStatusProps {
     id: number
@@ -40,7 +40,6 @@ const stageSchema = z.object({
     name: z.string().min(1, 'Stage name is required'),
     description: z.string().optional()
 })
-
 
 type EditStatusFormData = zodInfer<typeof stageSchema>
 
@@ -91,13 +90,15 @@ export const EditStatus: React.FC<EditStatusProps> = ({
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     className='justify-start'
                     variant='ghost'
-                    size='sm'>
+                    size='sm'
+                >
                     <Edit2Icon />
                     Edit
                 </Button>
@@ -110,7 +111,8 @@ export const EditStatus: React.FC<EditStatusProps> = ({
                     <form
                         method='POST'
                         className='mx-auto w-full space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='name'
@@ -146,7 +148,8 @@ export const EditStatus: React.FC<EditStatusProps> = ({
                         />
                         <Tabs
                             onValueChange={onValueChange}
-                            defaultValue={color}>
+                            defaultValue={color}
+                        >
                             <TabsList className='gap-x-2 bg-transparent p-0'>
                                 {stagesColorPresets.map((color) => (
                                     <TabsTrigger
@@ -163,12 +166,9 @@ export const EditStatus: React.FC<EditStatusProps> = ({
                             disabled={isLoading}
                             onClick={(e) => e.stopPropagation()}
                             className='w-full'
-                            type='submit'>
-                            {isLoading ? (
-                                <Loader2 className='animate-spin' />
-                            ) : (
-                                'Edit'
-                            )}
+                            type='submit'
+                        >
+                            {isLoading ? <Loader2 className='animate-spin' /> : 'Edit'}
                         </Button>
                     </form>
                 </Form>

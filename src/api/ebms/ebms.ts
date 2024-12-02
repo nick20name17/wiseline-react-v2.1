@@ -1,7 +1,5 @@
 import { api } from '..'
 
-import { store } from '@/store'
-import { getQueryParamString } from '@/utils/get-query-param-string'
 import type {
     EBMSItemsQueryParams,
     EBMSItemsResponse,
@@ -12,6 +10,8 @@ import type {
     OrdersQueryParams,
     OrdersResponse
 } from './ebms.types'
+import { store } from '@/store'
+import { getQueryParamString } from '@/utils/get-query-param-string'
 
 export const embs = api.injectEndpoints({
     endpoints: (build) => ({

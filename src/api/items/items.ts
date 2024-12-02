@@ -8,13 +8,13 @@ import type {
 } from '../ebms/ebms.types'
 import type { FlowData } from '../flows/flows.types'
 
-import { store } from '@/store'
 import type {
     ItemAddData,
     ItemData,
     ItemPatchPayload,
     ItemsPatchCuttingCompleteData
 } from './items.types'
+import { store } from '@/store'
 
 export const items = api.injectEndpoints({
     endpoints: (build) => ({

@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { api } from '@/api'
 import { listenerMiddleware } from './middleware/auth'
 import { authReducer } from './slices/auth'
 import { queryParams } from './slices/query-params'
+import { api } from '@/api'
 
 export const store = configureStore({
     reducer: {

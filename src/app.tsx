@@ -1,3 +1,4 @@
+import { NuqsAdapter } from 'nuqs/adapters/react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { Layout } from '@/components/layout'
@@ -13,70 +14,45 @@ import { PrioritiesPage } from '@/pages/priorities'
 import { UserSettingsPage } from '@/pages/user-settings'
 import { UsersPage } from '@/pages/users'
 import { RequireAuthProvider } from '@/providers/require-auth'
-import { NuqsAdapter } from 'nuqs/adapters/react'
-
 
 const router = createBrowserRouter([
     {
         path: routes.main,
-        element: <RequireAuthProvider>
-            <Layout />
-        </RequireAuthProvider>,
+        element: (
+            <RequireAuthProvider>
+                <Layout />
+            </RequireAuthProvider>
+        ),
         errorElement: <ErrorPage message='Page not found' />,
         children: [
             {
                 index: true,
-                element: (
-                    <MainPage />
-                )
+                element: <MainPage />
             },
             {
                 path: routes.users,
-                element: (
-
-                    <UsersPage />
-
-                )
+                element: <UsersPage />
             },
             {
                 path: routes.companySettings,
-                element: (
-
-                    <CompanySettingsPage />
-
-                )
+                element: <CompanySettingsPage />
             },
             {
                 path: routes.userSettings,
-                element: (
-
-                    <UserSettingsPage />
-
-                )
+                element: <UserSettingsPage />
             },
             {
                 path: routes.calendar,
-                element: (
-
-                    <CalendarPage />
-
-                )
+                element: <CalendarPage />
             },
             {
                 path: routes.flowSettings,
-                element: (
-
-                    <FlowSettingsPage />
-
-                )
+                element: <FlowSettingsPage />
             },
             {
                 path: routes.priorities,
-                element: (
-                    <PrioritiesPage />
-                )
-            },
-
+                element: <PrioritiesPage />
+            }
         ]
     },
     {
@@ -89,10 +65,12 @@ const router = createBrowserRouter([
     },
     {
         path: '*',
-        element: <ErrorPage message='Page not found' />,
+        element: <ErrorPage message='Page not found' />
     }
 ])
 
-export const App = () => <NuqsAdapter>
-    <RouterProvider router={router} />
-</NuqsAdapter>
+export const App = () => (
+    <NuqsAdapter>
+        <RouterProvider router={router} />
+    </NuqsAdapter>
+)

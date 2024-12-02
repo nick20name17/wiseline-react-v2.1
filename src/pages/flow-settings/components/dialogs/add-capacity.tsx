@@ -1,9 +1,18 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit2Icon, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
 
+import {
+    useAddCapacityMutation,
+    usePatchCapacityMutation
+} from '@/api/capacities/capacities'
+import type {
+    CapacitiesAddData,
+    CapacitiesPatchPayload
+} from '@/api/capacities/capacities.types'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -21,18 +30,7 @@ import {
     FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-
-
-import {
-    useAddCapacityMutation,
-    usePatchCapacityMutation
-} from '@/api/capacities/capacities'
-import type {
-    CapacitiesAddData,
-    CapacitiesPatchPayload
-} from '@/api/capacities/capacities.types'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 interface AddCapacityDialogProps {
     categoryId: string
@@ -41,8 +39,8 @@ interface AddCapacityDialogProps {
 }
 
 const capacitySchema = z.object({
-        per_day: z.string().min(1, 'Per day is required')
-    })
+    per_day: z.string().min(1, 'Per day is required')
+})
 
 type FormData = zodInfer<typeof capacitySchema>
 
@@ -100,19 +98,22 @@ export const AddCapacityDialog: React.FC<AddCapacityDialogProps> = ({
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     className='size-5'
                     size='icon'
-                    variant='ghost'>
+                    variant='ghost'
+                >
                     <Edit2Icon className='!size-3' />
                 </Button>
             </DialogTrigger>
             <DialogContent
                 onClick={(e) => e.stopPropagation()}
-                className='mx-2 rounded-md'>
+                className='mx-2 rounded-md'
+            >
                 <DialogHeader className='text-left'>
                     <DialogTitle>Сapacity</DialogTitle>
                 </DialogHeader>
@@ -120,7 +121,8 @@ export const AddCapacityDialog: React.FC<AddCapacityDialogProps> = ({
                     <form
                         method='POST'
                         className='mx-auto w-full space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='per_day'
@@ -141,7 +143,8 @@ export const AddCapacityDialog: React.FC<AddCapacityDialogProps> = ({
                         <Button
                             disabled={isLoading || isPatching}
                             className='w-full'
-                            type='submit'>
+                            type='submit'
+                        >
                             {isLoading || isPatching ? (
                                 <Loader2 className='animate-spin' />
                             ) : capacityId ? (

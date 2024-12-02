@@ -1,9 +1,11 @@
 import { Loader2, PlusCircleIcon } from 'lucide-react'
 import { useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
 
+import { useAddStageMutation } from '@/api/stages/stages'
+import type { StageAddData } from '@/api/stages/stages.types'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -24,9 +26,6 @@ import { Input } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { stagesColorPresets } from '@/config/stages'
-
-import { useAddStageMutation } from '@/api/stages/stages'
-import type { StageAddData } from '@/api/stages/stages.types'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 interface AddStatusProps {
@@ -81,13 +80,15 @@ export const AddStatus: React.FC<AddStatusProps> = ({ flowId }) => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
-                    className='mt-1 flex w-full items-center '
+                    className='mt-1 flex w-full items-center'
                     variant='outline'
-                    size='lg'>
+                    size='lg'
+                >
                     <PlusCircleIcon />
                     Add Status
                 </Button>
@@ -100,7 +101,8 @@ export const AddStatus: React.FC<AddStatusProps> = ({ flowId }) => {
                     <form
                         method='POST'
                         className='mx-auto w-full space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='name'
@@ -136,7 +138,8 @@ export const AddStatus: React.FC<AddStatusProps> = ({ flowId }) => {
                         />
                         <Tabs
                             onValueChange={onValueChange}
-                            defaultValue={defaultColor}>
+                            defaultValue={defaultColor}
+                        >
                             <TabsList className='gap-x-2 bg-transparent p-0'>
                                 {stagesColorPresets.map((color) => (
                                     <TabsTrigger
@@ -153,12 +156,9 @@ export const AddStatus: React.FC<AddStatusProps> = ({ flowId }) => {
                             disabled={isLoading}
                             onClick={(e) => e.stopPropagation()}
                             className='w-full'
-                            type='submit'>
-                            {isLoading ? (
-                                <Loader2 className='animate-spin' />
-                            ) : (
-                                'Add'
-                            )}
+                            type='submit'
+                        >
+                            {isLoading ? <Loader2 className='animate-spin' /> : 'Add'}
                         </Button>
                     </form>
                 </Form>

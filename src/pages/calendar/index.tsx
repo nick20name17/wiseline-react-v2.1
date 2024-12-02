@@ -9,17 +9,17 @@ import {
     startOfWeek
 } from 'date-fns'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
 
+import { CalendarBody } from './components/calendar-body'
+import { Categories } from './components/filters/categories'
+import { Weeks } from './components/weeks'
 import { useGetCalendarQuery } from '@/api/ebms/calendar/calendar'
 import type { CapacityCategory } from '@/api/ebms/ebms.types'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { useQueryState } from 'nuqs'
-import { CalendarBody } from './components/calendar-body'
-import { Categories } from './components/filters/categories'
-import { Weeks } from './components/weeks'
 
 export const CalendarPage = () => {
     const today = startOfToday()
@@ -83,48 +83,46 @@ export const CalendarPage = () => {
     }, [currentDate])
 
     return (
-       <>
-       <Header title='Production Calendar'/>
-        <section className='px-4'>
-            <div className='flex flex-wrap-reverse items-center justify-between gap-4 py-3'>
-                <Categories />
-                <div className='flex w-48 items-center justify-between gap-x-4 max-[440px]:w-full'>
-                    <Button
-                        onClick={getPreviousMonth}
-                        variant='outline'
-                        size='icon'
-                    >
-                        <ArrowLeft />
-                    </Button>
+        <>
+            <Header title='Production Calendar' />
+            <section className='px-4'>
+                <div className='flex flex-wrap-reverse items-center justify-between gap-4 py-3'>
+                    <Categories />
+                    <div className='flex w-48 items-center justify-between gap-x-4 max-[440px]:w-full'>
+                        <Button
+                            onClick={getPreviousMonth}
+                            variant='outline'
+                            size='icon'
+                        >
+                            <ArrowLeft />
+                        </Button>
 
-                    <h2 className='scroll-m-20 font-bold'>
-                        {format(firstDayCurrentMonth, 'MMM yyyy')}
-                    </h2>
+                        <h2 className='scroll-m-20 font-bold'>
+                            {format(firstDayCurrentMonth, 'MMM yyyy')}
+                        </h2>
 
-                    <Button
-                        onClick={getNextMonth}
-                        variant='outline'
-                        size='icon'
-                    >
-                        <ArrowRight />
-                    </Button>
+                        <Button
+                            onClick={getNextMonth}
+                            variant='outline'
+                            size='icon'
+                        >
+                            <ArrowRight />
+                        </Button>
+                    </div>
                 </div>
-            </div>
 
-            <ScrollArea className='!w-full'>
-                <Weeks />
-                <CalendarBody
-                    category={category as CapacityCategory}
-                    calendarData={calendarData!}
-                    isFetching={isFetching}
-                    currentDays={getCurrentMonthDays()}
-                    firstDayCurrentMonth={firstDayCurrentMonth}
-                />
-                <ScrollBar orientation='horizontal'/>
-            </ScrollArea>
-        </section>
-
-       </>
+                <ScrollArea className='!w-full'>
+                    <Weeks />
+                    <CalendarBody
+                        category={category as CapacityCategory}
+                        calendarData={calendarData!}
+                        isFetching={isFetching}
+                        currentDays={getCurrentMonthDays()}
+                        firstDayCurrentMonth={firstDayCurrentMonth}
+                    />
+                    <ScrollBar orientation='horizontal' />
+                </ScrollArea>
+            </section>
+        </>
     )
 }
-

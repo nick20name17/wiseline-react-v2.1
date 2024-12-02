@@ -1,21 +1,4 @@
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuBadge,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    useSidebar
-} from "@/components/ui/sidebar"
-import { isAdminRoute, routes } from "@/config/routes"
-import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu"
-
-import { useCurrentUserRole } from "@/hooks/use-current-user-role"
-import { cn } from "@/lib/utils"
-import {
     Asterisk,
     Calendar,
     CircleUserRound,
@@ -26,8 +9,25 @@ import {
     PackageIcon,
     Truck
 } from 'lucide-react'
-import { NavLink, useLocation } from "react-router-dom"
-import { badgeVariants } from "./ui/badge"
+import { NavLink, useLocation } from 'react-router-dom'
+
+import { badgeVariants } from './ui/badge'
+import { DropdownMenu, DropdownMenuTrigger } from './ui/dropdown-menu'
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarHeader,
+    SidebarMenu,
+    SidebarMenuBadge,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    useSidebar
+} from '@/components/ui/sidebar'
+import { isAdminRoute, routes } from '@/config/routes'
+import { useCurrentUserRole } from '@/hooks/use-current-user-role'
+import { cn } from '@/lib/utils'
 
 const navItems = [
     {
@@ -86,7 +86,6 @@ const navItems = [
     }
 ]
 
-
 export const AppSidebar = () => {
     const isClientOrWorker = useCurrentUserRole(['client', 'worker'])
 
@@ -100,28 +99,43 @@ export const AppSidebar = () => {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {navItems.map((navItem) => isClientOrWorker && isAdminRoute(navItem.url) ? null : (
-                                <SidebarMenuItem aria-disabled={navItem.soon} key={navItem.title}>
-                                    <SidebarMenuButton onClick={() => setOpenMobile(false)} aria-disabled={navItem.soon} disabled={navItem.soon} isActive={pathname === navItem.url} asChild>
-                                        <NavLink to={navItem.url}>
-                                            <navItem.icon />
-                                            <span>{navItem.title}</span>
-                                        </NavLink>
-                                    </SidebarMenuButton>
-                                    {
-                                        navItem.soon ? <SidebarMenuBadge className={cn(badgeVariants({ variant: 'outline' }))}>Soon</SidebarMenuBadge> : null
-                                    }
-                                </SidebarMenuItem>
-                            ))}
+                            {navItems.map((navItem) =>
+                                isClientOrWorker && isAdminRoute(navItem.url) ? null : (
+                                    <SidebarMenuItem
+                                        aria-disabled={navItem.soon}
+                                        key={navItem.title}
+                                    >
+                                        <SidebarMenuButton
+                                            onClick={() => setOpenMobile(false)}
+                                            aria-disabled={navItem.soon}
+                                            disabled={navItem.soon}
+                                            isActive={pathname === navItem.url}
+                                            asChild
+                                        >
+                                            <NavLink to={navItem.url}>
+                                                <navItem.icon />
+                                                <span>{navItem.title}</span>
+                                            </NavLink>
+                                        </SidebarMenuButton>
+                                        {navItem.soon ? (
+                                            <SidebarMenuBadge
+                                                className={cn(
+                                                    badgeVariants({ variant: 'outline' })
+                                                )}
+                                            >
+                                                Soon
+                                            </SidebarMenuBadge>
+                                        ) : null}
+                                    </SidebarMenuItem>
+                                )
+                            )}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
-
             </SidebarContent>
         </Sidebar>
     )
 }
-
 
 export const AppSidebarHeader = () => {
     const { setOpenMobile } = useSidebar()
@@ -131,30 +145,39 @@ export const AppSidebarHeader = () => {
             <SidebarMenu>
                 <SidebarMenuItem>
                     <DropdownMenu>
-                        <DropdownMenuTrigger onClick={() => setOpenMobile(false)} asChild>
-                            <NavLink to={{
-                                pathname: routes.main,
-                                search
-                            }}>
+                        <DropdownMenuTrigger
+                            onClick={() => setOpenMobile(false)}
+                            asChild
+                        >
+                            <NavLink
+                                to={{
+                                    pathname: routes.main,
+                                    search
+                                }}
+                            >
                                 <SidebarMenuButton
-                                    size="lg"
-                                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                    size='lg'
+                                    className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
                                 >
-                                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                        <img src="/logo.svg" alt="Wiseline" className="size-4" />
+                                    <div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
+                                        <img
+                                            src='/logo.svg'
+                                            alt='Wiseline'
+                                            className='size-4'
+                                        />
                                     </div>
-                                    <div className="flex flex-col gap-0.5 leading-none">
-                                        <span className="font-semibold">Wiseline</span>
-                                        <span className="text-xs">Production management</span>
+                                    <div className='flex flex-col gap-0.5 leading-none'>
+                                        <span className='font-semibold'>Wiseline</span>
+                                        <span className='text-xs'>
+                                            Production management
+                                        </span>
                                     </div>
                                 </SidebarMenuButton>
                             </NavLink>
                         </DropdownMenuTrigger>
-
                     </DropdownMenu>
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarHeader>
-
     )
 }

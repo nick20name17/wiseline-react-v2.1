@@ -1,9 +1,8 @@
-import { useGetAllUsersQuery } from '@/api/users/users'
-import { Header } from '@/components/header'
 import { Controls } from './components/controls'
 import { columns } from './components/table/columns'
 import { UsersTable } from './components/table/table'
-
+import { useGetAllUsersQuery } from '@/api/users/users'
+import { Header } from '@/components/header'
 
 export const UsersPage = () => {
     const { data, isLoading } = useGetAllUsersQuery({})

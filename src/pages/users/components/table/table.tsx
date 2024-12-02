@@ -5,6 +5,7 @@ import {
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
+import { useQueryState } from 'nuqs'
 
 import type { User } from '@/api/users/users.types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
@@ -17,7 +18,6 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table'
-import { useQueryState } from 'nuqs'
 
 interface UsersTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -44,16 +44,16 @@ export const UsersTable = <_, TValue>({
         clearOnDefault: false
     })
 
-    const filteredData = searchTerm ? table
-        .getRowModel()
-        .rows.filter(
-            ({ original: { email, first_name, last_name } }) =>
-                email.toLowerCase().includes(searchTerm!) ||
-                first_name.toLowerCase().includes(searchTerm!) ||
-                last_name.toLowerCase().includes(searchTerm!)
-        ) : table
-            .getRowModel()
-        .rows
+    const filteredData = searchTerm
+        ? table
+              .getRowModel()
+              .rows.filter(
+                  ({ original: { email, first_name, last_name } }) =>
+                      email.toLowerCase().includes(searchTerm!) ||
+                      first_name.toLowerCase().includes(searchTerm!) ||
+                      last_name.toLowerCase().includes(searchTerm!)
+              )
+        : table.getRowModel().rows
 
     return (
         <ScrollArea className='mt-4 rounded-md border'>
@@ -67,13 +67,14 @@ export const UsersTable = <_, TValue>({
                                         minWidth: header.column.columnDef.size,
                                         maxWidth: header.column.columnDef.size
                                     }}
-                                    key={header.id}>
+                                    key={header.id}
+                                >
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
+                                              header.column.columnDef.header,
+                                              header.getContext()
+                                          )}
                                 </TableHead>
                             ))}
                         </TableRow>
@@ -87,14 +88,16 @@ export const UsersTable = <_, TValue>({
                         filteredData.map((row) => (
                             <TableRow
                                 key={row.id}
-                                data-state={row.getIsSelected() && 'selected'}>
+                                data-state={row.getIsSelected() && 'selected'}
+                            >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell
                                         style={{
                                             minWidth: cell.column.columnDef.size,
                                             maxWidth: cell.column.columnDef.size
                                         }}
-                                        key={cell.id}>
+                                        key={cell.id}
+                                    >
                                         {flexRender(
                                             cell.column.columnDef.cell,
                                             cell.getContext()
@@ -104,10 +107,11 @@ export const UsersTable = <_, TValue>({
                             </TableRow>
                         ))
                     ) : (
-                        <TableRow className="!bg-transparent">
+                        <TableRow className='!bg-transparent'>
                             <TableCell
                                 colSpan={columns.length}
-                                className=" text-left py-8 pl-8 !bg-transparent">
+                                className='!bg-transparent py-8 pl-8 text-left'
+                            >
                                 No results
                             </TableCell>
                         </TableRow>
@@ -121,13 +125,10 @@ export const UsersTable = <_, TValue>({
 
 const TableSkeleton = () => {
     return Array.from({ length: 10 }).map((_, index) => (
-        <TableRow
-            key={index}>
+        <TableRow key={index}>
             {Array.from({ length: 5 }).map((_, index) => (
-                <TableCell
-                    key={index}
-                >
-                    <Skeleton className='w-full h-8' />
+                <TableCell key={index}>
+                    <Skeleton className='h-8 w-full' />
                 </TableCell>
             ))}
         </TableRow>

@@ -1,6 +1,6 @@
 import { Edit2Icon, Loader2 } from 'lucide-react'
 import React, { useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
 
@@ -30,7 +30,6 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select'
-
 import { emailShape, passwordShape } from '@/config/validation-schemas'
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectUser } from '@/store/slices/auth'
@@ -56,7 +55,7 @@ export const EditUser: React.FC<EditUserProps> = ({ user }) => {
 
     const form = useForm<EditUserFormData>({
         defaultValues: {
-            ...user,
+            ...user
         }
     })
 
@@ -93,18 +92,21 @@ export const EditUser: React.FC<EditUserProps> = ({ user }) => {
         }
     }
 
-    const onSubmit: SubmitHandler<EditUserFormData> = (formData) => handlePatchUser(formData)
+    const onSubmit: SubmitHandler<EditUserFormData> = (formData) =>
+        handlePatchUser(formData)
 
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     className='justify-start'
                     variant='ghost'
-                    size='sm'>
+                    size='sm'
+                >
                     <Edit2Icon />
                     Edit
                 </Button>
@@ -116,7 +118,8 @@ export const EditUser: React.FC<EditUserProps> = ({ user }) => {
                 <Form {...form}>
                     <form
                         className='space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='email'
@@ -177,7 +180,8 @@ export const EditUser: React.FC<EditUserProps> = ({ user }) => {
                                     <Select
                                         disabled={isSelf}
                                         onValueChange={field.onChange}
-                                        defaultValue={field.value}>
+                                        defaultValue={field.value}
+                                    >
                                         <SelectTrigger className='w-full min-w-[160px] text-left'>
                                             <SelectValue placeholder='Select role' />
                                         </SelectTrigger>
@@ -200,7 +204,8 @@ export const EditUser: React.FC<EditUserProps> = ({ user }) => {
                         <Button
                             className='w-full'
                             type='submit'
-                            disabled={isLoading}>
+                            disabled={isLoading}
+                        >
                             {isLoading ? (
                                 <Loader2 className='h-4 w-4 animate-spin' />
                             ) : false ? (

@@ -1,6 +1,6 @@
-import type { EBMSItemsQueryParams, OrdersQueryParams } from '@/api/ebms/ebms.types'
 import { type PayloadAction, createSlice } from '@reduxjs/toolkit'
 
+import type { EBMSItemsQueryParams, OrdersQueryParams } from '@/api/ebms/ebms.types'
 
 type QueryKeyParams = Partial<OrdersQueryParams | EBMSItemsQueryParams> | {}
 
@@ -16,10 +16,7 @@ export const queryParams = createSlice({
     name: 'queryParams',
     initialState,
     reducers: {
-        setCurrentQueryParams(
-            state,
-            action: PayloadAction<QueryKeyParams>
-        ) {
+        setCurrentQueryParams(state, action: PayloadAction<QueryKeyParams>) {
             state.currentQueryParams = action.payload
         }
     }

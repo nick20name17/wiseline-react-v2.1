@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 import type { EBMSItemsData, OrdersData } from '@/api/ebms/ebms.types'
 import type { AccessToken } from '@/api/types/auth'
-import { useQueryState } from 'nuqs'
 
 interface OrdersWebSocket {
     endpoint: 'orders'
@@ -26,7 +25,7 @@ export const useWebSocket = <T extends UseWebsocketProps>({
     const [dataToRender, setDataToRender] = useState<(OrdersData | EBMSItemsData)[]>(
         currentData || []
     )
-    const [category] = useQueryState('category')
+    const [category] = ['']
 
     useEffect(() => {
         setDataToRender(currentData || [])
@@ -74,7 +73,7 @@ export const useWebSocket = <T extends UseWebsocketProps>({
             websocket.removeEventListener('message', handleWebSocketMessage)
             websocket.close()
         }
-    }, [endpoint, refetch, category])
+    }, [endpoint, refetch])
 
     return {
         dataToRender

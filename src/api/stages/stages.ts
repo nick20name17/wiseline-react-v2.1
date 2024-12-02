@@ -1,12 +1,12 @@
 import { api } from '..'
 
-import { getQueryParamString } from '@/utils/get-query-param-string'
 import type {
     StageAddData,
     StagePatchPayload,
     StagesQueryParams,
     StagesResponse
 } from './stages.types'
+import { getQueryParamString } from '@/utils/get-query-param-string'
 
 export const stage = api.injectEndpoints({
     endpoints: (build) => ({

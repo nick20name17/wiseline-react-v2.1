@@ -1,12 +1,12 @@
 import { api } from '..'
 
-import type { BaseQueryParams } from '@/api/types/query'
 import type {
     CapacitiesAddData,
     CapacitiesData,
     CapacitiesPatchPayload,
     CapacitiesResponse
 } from './capacities.types'
+import type { BaseQueryParams } from '@/api/types/query'
 
 export const capacities = api.injectEndpoints({
     endpoints: (build) => ({

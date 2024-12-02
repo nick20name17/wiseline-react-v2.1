@@ -1,6 +1,6 @@
 import type { FetchBaseQueryMeta } from '@reduxjs/toolkit/query'
-import type { User } from '../users/users.types'
 
+import type { User } from '../users/users.types'
 
 export interface AccessToken {
     access: string

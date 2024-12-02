@@ -1,10 +1,10 @@
 import { MoreHorizontal } from 'lucide-react'
 
+import { EditPriority } from './edit'
+import { RemovePriority } from './remove'
 import type { PrioritiesData } from '@/api/priorities/priorities.types'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { EditPriority } from './edit'
-import { RemovePriority } from './remove'
 
 interface PriorityMenuProps {
     priority: PrioritiesData
@@ -16,7 +16,8 @@ export const PriorityMenu: React.FC<PriorityMenuProps> = ({ priority }) => {
             <PopoverTrigger asChild>
                 <Button
                     variant='ghost'
-                    size='icon'>
+                    size='icon'
+                >
                     <MoreHorizontal />
                 </Button>
             </PopoverTrigger>

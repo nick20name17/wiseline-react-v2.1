@@ -1,9 +1,9 @@
 import { type PropsWithChildren } from 'react'
 import { Provider } from 'react-redux'
 
-import { store } from '@/store/index'
 import { AuthProvider } from './auth'
 import { ThemeProvider } from './theme'
+import { store } from '@/store/index'
 
 export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
     return (
@@ -11,7 +11,8 @@ export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
             <AuthProvider>
                 <ThemeProvider
                     defaultTheme='light'
-                    storageKey='vite-ui-theme'>
+                    storageKey='vite-ui-theme'
+                >
                     {children}
                 </ThemeProvider>
             </AuthProvider>

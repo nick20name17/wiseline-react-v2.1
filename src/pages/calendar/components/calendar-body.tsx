@@ -1,6 +1,6 @@
+import { CalendarDay } from './calendar-day'
 import type { CalendarResponse } from '@/api/ebms/calendar/calendar.types'
 import type { CapacityCategory } from '@/api/ebms/ebms.types'
-import { CalendarDay } from './calendar-day'
 
 export const CalendarBody = ({
     currentDays,

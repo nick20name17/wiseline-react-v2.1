@@ -1,6 +1,7 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, PlusCircleIcon } from 'lucide-react'
 import { useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
 
@@ -24,7 +25,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 interface AddFlowProps {
     categoryId: string
@@ -71,13 +71,15 @@ export const AddFlow: React.FC<AddFlowProps> = ({ categoryId }) => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
-                    className='flex w-full items-center '
-                    size='lg'>
-                    <PlusCircleIcon  />
+                    className='flex w-full items-center'
+                    size='lg'
+                >
+                    <PlusCircleIcon />
                     Add Flow
                 </Button>
             </DialogTrigger>
@@ -89,7 +91,8 @@ export const AddFlow: React.FC<AddFlowProps> = ({ categoryId }) => {
                     <form
                         method='POST'
                         className='mx-auto w-full space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='name'
@@ -111,7 +114,8 @@ export const AddFlow: React.FC<AddFlowProps> = ({ categoryId }) => {
                             disabled={isLoading}
                             onClick={(e) => e.stopPropagation()}
                             className='w-full'
-                            type='submit'>
+                            type='submit'
+                        >
                             {isLoading ? (
                                 <Loader2 className='size-4 animate-spin' />
                             ) : (

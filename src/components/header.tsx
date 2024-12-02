@@ -1,6 +1,5 @@
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { ProfileMenu } from "./profile-menu"
-
+import { ProfileMenu } from './profile-menu'
+import { SidebarTrigger } from '@/components/ui/sidebar'
 
 interface HeaderProps {
     title: string
@@ -14,7 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ title }) => (
                     <div className='flex items-center gap-x-2'>
                         <SidebarTrigger />
                     </div>
-                    <h1 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                    <h1 className='scroll-m-20 text-2xl font-semibold tracking-tight'>
                         {title}
                     </h1>
                 </div>

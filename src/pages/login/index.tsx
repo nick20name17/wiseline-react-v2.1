@@ -1,9 +1,11 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { z, type infer as zodInfer } from 'zod'
 
+import { ForgetPassword } from './components/forget-password'
 import { useLoginMutation } from '@/api'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -21,9 +23,6 @@ import { emailShape, passwordShape } from '@/config/validation-schemas'
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectIsAuth } from '@/store/slices/auth'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { ForgetPassword } from './components/forget-password'
-
 
 const loginSchema = z.object({
     email: emailShape,
@@ -86,7 +85,8 @@ export const LoginPage = () => {
                 <Form {...form}>
                     <form
                         className='space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             disabled={isLoading}
                             control={form.control}
@@ -126,7 +126,8 @@ export const LoginPage = () => {
                         <Button
                             className='w-full'
                             disabled={isLoading}
-                            type='submit'>
+                            type='submit'
+                        >
                             {isLoading ? (
                                 <Loader2 className='h-4 w-4 animate-spin' />
                             ) : (
@@ -152,7 +153,8 @@ export const LoginPage = () => {
                         />
                         <label
                             htmlFor='terms'
-                            className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
+                            className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                        >
                             Remember me
                         </label>
                     </div>

@@ -4,7 +4,6 @@ import { MoreHorizontal } from 'lucide-react'
 import { EditUser } from '../actions/edit'
 import { RemoveUser } from '../actions/remove'
 
-
 import type { Roles, User } from '@/api/users/users.types'
 import { DataTableColumnHeader } from '@/components/data-table-column-header'
 import { Badge } from '@/components/ui/badge'
@@ -28,12 +27,12 @@ const getRoleBadge = (role: Roles) => {
     return (
         <Badge
             className={cn(colors[role])}
-            variant='outline'>
+            variant='outline'
+        >
             {role === 'client' ? 'View only' : role}
         </Badge>
     )
 }
-
 
 export const columns: ColumnDef<User>[] = [
     {
@@ -92,12 +91,16 @@ export const columns: ColumnDef<User>[] = [
                         <Button
                             variant='ghost'
                             size='icon'
-                            className='mx-auto'>
+                            className='mx-auto'
+                        >
                             <span className='sr-only'>Open menu</span>
                             <MoreHorizontal />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className='flex flex-col' align='end'>
+                    <DropdownMenuContent
+                        className='flex flex-col'
+                        align='end'
+                    >
                         <DropdownMenuItem asChild>
                             <RemoveUser user={row.original} />
                         </DropdownMenuItem>

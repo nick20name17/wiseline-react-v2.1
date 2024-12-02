@@ -17,6 +17,9 @@ import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
+import { FlowMenu } from './components/actions/flow/menu'
+import { AddStatus } from './components/actions/stage/add'
+import { StatusMenu } from './components/actions/stage/menu'
 import type { FlowData } from '@/api/flows/flows.types'
 import { usePatchStageMutation } from '@/api/stages/stages'
 import type { StageData, StagePatchPayload } from '@/api/stages/stages.types'
@@ -33,10 +36,6 @@ import {
     CardTitle
 } from '@/components/ui/card'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { FlowMenu } from './components/actions/flow/menu'
-import { AddStatus } from './components/actions/stage/add'
-import { StatusMenu } from './components/actions/stage/menu'
-
 
 interface FlowAccordionItemProps {
     flow: FlowData
@@ -112,7 +111,8 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
         <AccordionItem
             key={flow.id}
             className='mb-4 w-full border-none last:mb-0'
-            value={flow.id.toString()}>
+            value={flow.id.toString()}
+        >
             <Card>
                 <AccordionTrigger className='px-4'>
                     <CardHeader className='flex w-full flex-row items-center justify-between gap-x-4 p-1 pr-4'>
@@ -136,7 +136,8 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
                                             style={{
                                                 backgroundColor: unscheduledStage?.color
                                             }}
-                                            className='h-5 w-5 rounded-md'></div>
+                                            className='h-5 w-5 rounded-md'
+                                        ></div>
                                         {unscheduledStage?.name}
                                     </div>
                                 </CardTitle>
@@ -150,13 +151,15 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
                         <DndContext
                             sensors={sensors}
                             collisionDetection={closestCenter}
-                            onDragEnd={handleDragEnd}>
+                            onDragEnd={handleDragEnd}
+                        >
                             <SortableContext
                                 items={items}
-                                strategy={verticalListSortingStrategy}>
+                                strategy={verticalListSortingStrategy}
+                            >
                                 {items.map((stage) =>
                                     stage.name !== 'Done' &&
-                                        stage.name !== 'Unscheduled' ? (
+                                    stage.name !== 'Unscheduled' ? (
                                         <SortableCard
                                             key={stage.id}
                                             stage={stage}
@@ -174,7 +177,8 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
                                             style={{
                                                 backgroundColor: doneStage?.color
                                             }}
-                                            className='h-5 w-5 rounded-md'></div>
+                                            className='h-5 w-5 rounded-md'
+                                        ></div>
                                         {doneStage?.name}
                                     </div>
                                 </CardTitle>
@@ -213,7 +217,8 @@ const SortableCard: React.FC<SortableCardProps> = ({ stage }) => {
             ref={setNodeRef}
             style={style}
             {...attributes}
-            {...listeners}>
+            {...listeners}
+        >
             <CardHeader>
                 <CardTitle className='flex items-center justify-between gap-x-4'>
                     <div className='flex items-center gap-x-2 text-lg'>
@@ -221,7 +226,8 @@ const SortableCard: React.FC<SortableCardProps> = ({ stage }) => {
                             style={{
                                 backgroundColor: stage.color
                             }}
-                            className='h-5 w-5 rounded-md'></div>
+                            className='h-5 w-5 rounded-md'
+                        ></div>
                         {stage.name}
                     </div>
                     {disabled ? null : (

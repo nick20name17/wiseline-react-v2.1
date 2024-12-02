@@ -14,5 +14,3 @@ export interface BaseQueryParams {
     offset: number
     limit: number
 }
-
-

@@ -1,9 +1,11 @@
 import { Loader2, PlusCircle } from 'lucide-react'
 import { useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
 
+import { useAddUserMutation } from '@/api/users/users'
+import type { Roles } from '@/api/users/users.types'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -28,9 +30,6 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select'
-
-import { useAddUserMutation } from '@/api/users/users'
-import type { Roles } from '@/api/users/users.types'
 import { emailShape, passwordShape } from '@/config/validation-schemas'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
@@ -96,11 +95,13 @@ export const AddUser = () => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
-                    variant='ghost'>
+                    variant='ghost'
+                >
                     <PlusCircle />
                     Add new user
                 </Button>
@@ -112,7 +113,8 @@ export const AddUser = () => {
                 <Form {...form}>
                     <form
                         className='space-y-4'
-                        onSubmit={form.handleSubmit(onSubmit)}>
+                        onSubmit={form.handleSubmit(onSubmit)}
+                    >
                         <FormField
                             control={form.control}
                             name='email'
@@ -189,7 +191,8 @@ export const AddUser = () => {
                                     <FormLabel>Role</FormLabel>
                                     <Select
                                         onValueChange={field.onChange}
-                                        defaultValue={field.value}>
+                                        defaultValue={field.value}
+                                    >
                                         <SelectTrigger className='w-full min-w-[160px] text-left'>
                                             <SelectValue placeholder='Select role' />
                                         </SelectTrigger>
@@ -213,7 +216,8 @@ export const AddUser = () => {
                         <Button
                             disabled={isLoading}
                             className='w-full'
-                            type='submit'>
+                            type='submit'
+                        >
                             {isLoading ? (
                                 <Loader2 className='h-4 w-4 animate-spin' />
                             ) : (

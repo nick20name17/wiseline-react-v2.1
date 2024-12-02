@@ -1,9 +1,9 @@
 import { MoreHorizontal } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { EditStatus } from './edit'
 import { RemoveStatus } from './remove'
+import { Button } from '@/components/ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 interface StatusMenuProps {
     id: number
@@ -23,7 +23,8 @@ export const StatusMenu: React.FC<StatusMenuProps> = ({
             <PopoverTrigger onClick={(e) => e.stopPropagation()}>
                 <Button
                     variant='ghost'
-                    size='icon'>
+                    size='icon'
+                >
                     <MoreHorizontal />
                 </Button>
             </PopoverTrigger>

@@ -36,14 +36,16 @@ export const RemoveFlow: React.FC<RemoveFlowProps> = ({ id, name }) => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     className='justify-start'
                     variant='ghost'
-                    size='sm'>
-                    <X  />
+                    size='sm'
+                >
+                    <X />
                     Remove
                 </Button>
             </DialogTrigger>
@@ -61,12 +63,9 @@ export const RemoveFlow: React.FC<RemoveFlowProps> = ({ id, name }) => {
                         handleRemoveFlow(id)
                     }}
                     variant='destructive'
-                    className='flex w-24 items-center'>
-                    {isLoading ? (
-                        <Loader2 className=' animate-spin' />
-                    ) : (
-                        'Remove'
-                    )}
+                    className='flex w-24 items-center'
+                >
+                    {isLoading ? <Loader2 className='animate-spin' /> : 'Remove'}
                 </Button>
             </DialogContent>
         </Dialog>

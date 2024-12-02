@@ -1,8 +1,8 @@
+import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { tableConfig } from '@/config/table'
-import { useQueryState } from 'nuqs'
 
 export const OrdersViewTabs = () => {
     const [view = 'orders', setView] = useQueryState('view')
@@ -35,7 +35,8 @@ export const OrdersViewTabs = () => {
     return (
         <Tabs
             onValueChange={onValueChange}
-            defaultValue={view!}>
+            defaultValue={view!}
+        >
             <TabsList className='bg-secondary'>
                 <TabsTrigger value='orders'>All Orders</TabsTrigger>
                 <TabsTrigger value='lines'>All Lines</TabsTrigger>

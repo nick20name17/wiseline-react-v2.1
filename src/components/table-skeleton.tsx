@@ -12,10 +12,12 @@ export const TableSkeleton: React.FC<TableSkeletonProps> = ({
     return Array.from({ length: tableConfig.pagination.pageSize }).map((_, index) => (
         <TableRow
             className='p-0'
-            key={index}>
+            key={index}
+        >
             <TableCell
                 colSpan={cellCount}
-                className='h-[41px] px-1 py-1.5'>
+                className='h-[41px] px-1 py-1.5'
+            >
                 <Skeleton className='h-[41px] w-full' />
             </TableCell>
         </TableRow>

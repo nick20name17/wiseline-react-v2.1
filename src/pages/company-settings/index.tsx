@@ -43,19 +43,19 @@ export const CompanySettingsPage = () => {
     }, [data?.working_weekend])
 
     return (
-      <>
-        <Header title='Company Settings' />
-        <section className='mx-auto mt-8 max-w-[1120px] px-4'>
-            <div className='mx-auto flex w-64 items-center justify-between gap-x-4 rounded-md border bg-muted/40 p-4'>
-                <Label htmlFor='working_weekend'>Working weekend</Label>
-                <Switch
-                    disabled={!isAdmin || isLoading}
-                    checked={checked}
-                    onCheckedChange={onCheckedChange}
-                    id='working_weekend'
-                />
-            </div>
-        </section>
-      </>
+        <>
+            <Header title='Company Settings' />
+            <section className='mx-auto mt-8 max-w-[1120px] px-4'>
+                <div className='mx-auto flex w-64 items-center justify-between gap-x-4 rounded-md border bg-muted/40 p-4'>
+                    <Label htmlFor='working_weekend'>Working weekend</Label>
+                    <Switch
+                        disabled={!isAdmin || isLoading}
+                        checked={checked}
+                        onCheckedChange={onCheckedChange}
+                        id='working_weekend'
+                    />
+                </div>
+            </section>
+        </>
     )
 }

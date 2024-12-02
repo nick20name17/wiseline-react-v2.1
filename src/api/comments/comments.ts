@@ -5,14 +5,14 @@ import type { EBMSItemsQueryParams, OrdersQueryParams } from '../ebms/ebms.types
 import type { ItemData } from '../items/items.types'
 import type { User } from '../users/users.types'
 
-import type { BaseQueryParams } from '@/api/types/query'
-import { type RootState, store } from '@/store/index'
 import type {
     CommentsAddData,
     CommentsData,
     CommentsPatchPayload,
     CommentsResponse
 } from './comments.types'
+import type { BaseQueryParams } from '@/api/types/query'
+import { type RootState, store } from '@/store/index'
 
 export const comments = api.injectEndpoints({
     endpoints: (build) => ({

@@ -13,7 +13,8 @@ export const Capacity = ({
             <div className='mx-auto flex h-8 items-center justify-between gap-x-2 rounded-md border bg-muted px-2'>
                 <Badge
                     className='pointer-events-none'
-                    variant={dailyData?.count_orders ? 'default' : 'outline'}>
+                    variant={dailyData?.count_orders ? 'default' : 'outline'}
+                >
                     {dailyData?.count_orders || '0'}
                 </Badge>
                 {dailyData?.capacity || '0'} / {totalCapacity || '0'}

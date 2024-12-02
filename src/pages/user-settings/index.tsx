@@ -1,11 +1,11 @@
 import { toast } from 'sonner'
 
+import { PasswordChange } from './components/password-change'
+import { UserSettingsForms } from './components/user-settings-forms'
 import { useRemoveUserProfilesMutation } from '@/api/profiles/profiles'
 import { Header } from '@/components/header'
 import { Button } from '@/components/ui/button'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { PasswordChange } from './components/password-change'
-import { UserSettingsForms } from './components/user-settings-forms'
 
 export const UserSettingsPage = () => {
     const [removeUserProfiles, { isLoading }] = useRemoveUserProfilesMutation()
@@ -31,28 +31,29 @@ export const UserSettingsPage = () => {
     }
 
     return (
-       <>
-       <Header title='User Settings' />
-        <section className='mx-auto mt-8 max-w-[1120px] px-4'>
-            <div className='flex flex-wrap gap-4'>
-                <UserSettingsForms />
-                <PasswordChange />
-            </div>
-            <div className='mt-8'>
-                <h2 className='scroll-m-20 text-xl font-semibold tracking-tight'>
-                    Accounts settings
-                </h2>
-
-                <div className='mt-4'>
-                    <Button
-                        disabled={isLoading}
-                        onClick={handleRemoveUserProfiles}
-                        variant='outline'>
-                        Reset columns settings
-                    </Button>
+        <>
+            <Header title='User Settings' />
+            <section className='mx-auto mt-8 max-w-[1120px] px-4'>
+                <div className='flex flex-wrap gap-4'>
+                    <UserSettingsForms />
+                    <PasswordChange />
                 </div>
-            </div>
-        </section>
-       </>
+                <div className='mt-8'>
+                    <h2 className='scroll-m-20 text-xl font-semibold tracking-tight'>
+                        Accounts settings
+                    </h2>
+
+                    <div className='mt-4'>
+                        <Button
+                            disabled={isLoading}
+                            onClick={handleRemoveUserProfiles}
+                            variant='outline'
+                        >
+                            Reset columns settings
+                        </Button>
+                    </div>
+                </div>
+            </section>
+        </>
     )
 }

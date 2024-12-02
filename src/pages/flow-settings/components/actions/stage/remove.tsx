@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/dialog'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
-
 interface RemoveStatusProps {
     id: number
     name: string
@@ -37,12 +36,14 @@ export const RemoveStatus: React.FC<RemoveStatusProps> = ({ id, name }) => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     variant='ghost'
-                    size='sm'>
+                    size='sm'
+                >
                     <X />
                     Remove
                 </Button>
@@ -61,7 +62,8 @@ export const RemoveStatus: React.FC<RemoveStatusProps> = ({ id, name }) => {
                         handleRemoveStage(id)
                     }}
                     variant='destructive'
-                    className='flex w-24 items-center '>
+                    className='flex w-24 items-center'
+                >
                     {isLoading ? (
                         <Loader2 className='mr-2 size-4 animate-spin' />
                     ) : (

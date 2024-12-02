@@ -1,3 +1,4 @@
+import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
 
 import { useGetCategoriesQuery } from '@/api/ebms/categories/categories'
@@ -8,7 +9,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import type { FormattedDate } from '@/utils/get-work-days'
 import { getWorkDays } from '@/utils/get-work-days'
-import { useQueryState } from 'nuqs'
 
 // const getColorClass = (percentage: number) => {
 //     const colors = {
@@ -62,7 +62,8 @@ export const WeekFilters = () => {
                     key={date!}
                     defaultValue={date!}
                     onValueChange={onValueChange}
-                    type='single'>
+                    type='single'
+                >
                     {workingDays.map((date) => (
                         <WeekFilter
                             key={date.date}
@@ -96,11 +97,11 @@ const WeekFilter: React.FC<FormattedDate> = ({ date, dateToDisplay }) => {
 
     // const currentColorClass = getColorClass(currentPercentage)
 
-
     return (
         <ToggleGroupItem
             value={date}
-            className='data-[state=on]:shadow-custom flex h-9 w-[176px] flex-col gap-1 bg-secondary px-1 py-1.5 text-xs text-secondary-foreground shadow-foreground -outline-offset-1 data-[state=on]:outline data-[state=on]:outline-1 data-[state=on]:outline-foreground max-[1118px]:flex-1'>
+            className='data-[state=on]:shadow-custom flex h-9 w-[176px] flex-col gap-1 bg-secondary px-1 py-1.5 text-xs text-secondary-foreground shadow-foreground -outline-offset-1 data-[state=on]:outline data-[state=on]:outline-1 data-[state=on]:outline-foreground max-[1118px]:flex-1'
+        >
             {isLoading ? (
                 <Skeleton className='h-5 w-full' />
             ) : (

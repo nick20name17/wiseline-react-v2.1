@@ -50,13 +50,15 @@ export const RemoveUser: React.FC<RemoveUserProps> = ({ user }) => {
     return (
         <Dialog
             open={open}
-            onOpenChange={setOpen}>
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button
                     onClick={(e) => e.stopPropagation()}
                     className='justify-start'
                     variant='ghost'
-                    size='sm'>
+                    size='sm'
+                >
                     <X />
                     Remove
                 </Button>
@@ -75,7 +77,8 @@ export const RemoveUser: React.FC<RemoveUserProps> = ({ user }) => {
                         handleRemoveUser(userId)
                     }}
                     variant='destructive'
-                    className='flex w-fit items-center'>
+                    className='flex w-fit items-center'
+                >
                     {isLoading ? (
                         <Loader2 className='animate-spin' />
                     ) : false ? (

@@ -1,6 +1,7 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Edit, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
 
@@ -25,9 +26,8 @@ import { emailShape } from '@/config/validation-schemas'
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectUser } from '@/store/slices/auth'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
-import { zodResolver } from '@hookform/resolvers/zod'
 
- const userPatchSchema = z.object({
+const userPatchSchema = z.object({
     first_name: z.string().min(1, 'First name is required'),
     last_name: z.string().min(1, 'Last name is required'),
     email: emailShape
@@ -48,7 +48,7 @@ export const UserSettingsForms = () => {
             first_name,
             last_name
         },
-        resolver: zodResolver(userPatchSchema),
+        resolver: zodResolver(userPatchSchema)
     })
 
     const successToast = () =>
@@ -68,19 +68,24 @@ export const UserSettingsForms = () => {
         }
     }
 
-    const onSubmit: SubmitHandler<UserSettingsFormData> = (formData) => handlePatchUser(formData)
+    const onSubmit: SubmitHandler<UserSettingsFormData> = (formData) =>
+        handlePatchUser(formData)
 
     return (
         <Collapsible
             open={open}
             onOpenChange={setOpen}
-            className='min-w-80 flex-1'>
+            className='min-w-80 flex-1'
+        >
             <Card className='h-[430px]'>
                 <CardHeader>
                     <CardTitle className='flex items-center justify-between gap-x-4'>
                         User info
                         <CollapsibleTrigger asChild>
-                            <Button size='icon' variant='ghost'>
+                            <Button
+                                size='icon'
+                                variant='ghost'
+                            >
                                 <Edit />
                             </Button>
                         </CollapsibleTrigger>
@@ -91,7 +96,8 @@ export const UserSettingsForms = () => {
                         <form
                             method='POST'
                             className='mx-auto mt-4 w-full space-y-4'
-                            onSubmit={form.handleSubmit(onSubmit)}>
+                            onSubmit={form.handleSubmit(onSubmit)}
+                        >
                             <FormField
                                 disabled={!open}
                                 control={form.control}
@@ -153,7 +159,8 @@ export const UserSettingsForms = () => {
                                         e.stopPropagation()
                                     }}
                                     className='w-full'
-                                    type='submit'>
+                                    type='submit'
+                                >
                                     {isLoading ? (
                                         <Loader2 className='animate-spin' />
                                     ) : (

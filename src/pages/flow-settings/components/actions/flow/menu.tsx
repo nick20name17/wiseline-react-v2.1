@@ -1,9 +1,9 @@
 import { MoreHorizontal } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { EditFlow } from './edit'
 import { RemoveFlow } from './remove'
+import { Button } from '@/components/ui/button'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
 interface FlowMenuProps {
     id: number
@@ -17,7 +17,8 @@ export const FlowMenu: React.FC<FlowMenuProps> = ({ id, name }) => {
                 <Button
                     className='-mt-1.5'
                     variant='ghost'
-                    size='icon'>
+                    size='icon'
+                >
                     <MoreHorizontal />
                 </Button>
             </PopoverTrigger>

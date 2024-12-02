@@ -6,6 +6,7 @@ import {
     fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
 
+import type { User } from './users/users.types'
 import type {
     AccessToken,
     LoginData,
@@ -16,7 +17,6 @@ import type {
 import { apiBaseUrl } from '@/config/app'
 import type { RootState } from '@/store'
 import { logout, tokenUpdated } from '@/store/slices/auth'
-import type { User } from './users/users.types'
 
 const baseQuery = fetchBaseQuery({
     baseUrl: apiBaseUrl,
