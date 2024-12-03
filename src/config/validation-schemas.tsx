@@ -10,12 +10,3 @@ export const passwordShape = z
     .regex(/[^a-zA-Z0-9]/, 'Password must contain at least one special character')
 
 export const emailShape = z.string().min(1, 'Email is required').email('Email is invalid')
-
-// export const loginSchema = object({
-//     email: string().min(1, 'Email is required').email(),
-//     ...passwordSchema
-// })
-
-// export const commentSchema = object({
-//     text: z.string()
-// })

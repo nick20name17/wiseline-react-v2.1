@@ -1,26 +1,26 @@
 import { type Row, flexRender } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { useQueryState } from 'nuqs'
 import { Fragment, useState } from 'react'
-import { StringParam, useQueryParam } from 'use-query-params'
 
-import { getCommonPinningStyles } from '../../cut-view/utils'
 import { SubTable } from '../sub-table/sub-table'
 
 import { columns } from './columns'
+import type { OrdersData } from '@/api/ebms/ebms.types'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { shouldRenderCell } from '@/config/table'
-import { useCurrentUserRole, useMatchMedia } from '@/hooks'
+import { useCurrentUserRole } from '@/hooks/use-current-user-role'
+import { useMatchMedia } from '@/hooks/use-match-media'
 import { cn } from '@/lib/utils'
-import type { OrdersData } from '@/store/api/ebms/ebms.types'
 
 interface GroupedRowsProps {
     originRow: Row<OrdersData>
     groupByDate: [string, Row<OrdersData>[]][]
 }
 
-export const CollapsibleGroupedRows: React.FC<GroupedRowsProps> = ({ groupByDate }) => {
+export const CollapsibleGroupedRows = ({ groupByDate }: GroupedRowsProps) => {
     const columnsCount = columns.length
 
     return groupByDate.map((group) =>
@@ -80,8 +80,8 @@ interface CollapsibleRowProps {
     row: Row<OrdersData>
 }
 
-export const CollapsibleRow: React.FC<CollapsibleRowProps> = ({ row }) => {
-    const [category] = useQueryParam('category', StringParam)
+export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
+    const [category] = useQueryState('category')
     const [open, setOpen] = useState(false)
 
     const { isTablet } = useMatchMedia()
@@ -124,7 +124,7 @@ export const CollapsibleRow: React.FC<CollapsibleRowProps> = ({ row }) => {
                                     !open
                                         ? cell.column.id === 'select' ||
                                           cell.column.id === 'arrow'
-                                            ? getCommonPinningStyles(cell.column)
+                                            ? ''
                                             : ''
                                         : '',
                                     !open

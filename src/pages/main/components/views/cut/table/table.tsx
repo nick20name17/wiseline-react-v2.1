@@ -362,7 +362,6 @@ const GroupedByColorRow = ({
                 const totalQuantity = trimQuantities.reduce((a, b) => a + b, 0)
 
                 // const isCuttingComplete = cell.column.id === 'cutting_complete'
-                // const commonPinningStyles = getCommonPinningStyles(cell.column)
 
                 return trimFlowsNames?.includes(cell.column.id) ? (
                     <TableCell
