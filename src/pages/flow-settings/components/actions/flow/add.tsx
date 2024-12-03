@@ -35,7 +35,7 @@ const flowSchema = z.object({
 
 type AddFlowFormData = zodInfer<typeof flowSchema>
 
-export const AddFlow: React.FC<AddFlowProps> = ({ categoryId }) => {
+export const AddFlow = ({ categoryId }: AddFlowProps) => {
     const form = useForm({
         defaultValues: {
             name: ''

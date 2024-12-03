@@ -18,7 +18,7 @@ interface RemovePriorityProps {
     priority: PrioritiesData
 }
 
-export const RemovePriority: React.FC<RemovePriorityProps> = ({ priority }) => {
+export const RemovePriority = ({ priority }: RemovePriorityProps) => {
     const [removePriority, { isLoading }] = useRemovePriorityMutation()
 
     const [open, setOpen] = useState(false)

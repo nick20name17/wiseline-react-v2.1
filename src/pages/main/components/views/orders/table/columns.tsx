@@ -9,9 +9,8 @@ import { PriorityCell } from '../cells/priority-cell'
 import { SalesOrderCell } from '../cells/sales-order-cell'
 import { ShipDatePickerCell } from '../cells/ship-date-picker'
 
-import { DataTableColumnHeader } from '@/components/shared'
-import { Button } from '@/components/ui/button'
-import type { OrdersData } from '@/store/api/ebms/ebms.types'
+import type { OrdersData } from '@/api/ebms/ebms.types'
+import { DataTableColumnHeader } from '@/components/data-table-column-header'
 
 export const columns: ColumnDef<OrdersData>[] = [
     {
@@ -24,16 +23,11 @@ export const columns: ColumnDef<OrdersData>[] = [
     },
     {
         id: 'arrow',
-        header: () => (
-            <div className='w-12'>
-                <Button
-                    tabIndex={-1}
-                    variant='ghost'
-                    className='pointer-events-none w-full'
-                >
-                    <div className='size-4 flex-shrink-0' />
-                </Button>
-            </div>
+        header: ({ column }) => (
+            <DataTableColumnHeader
+                column={column}
+                title=''
+            />
         ),
         cell: ({ row }) => (
             <CollapsibleCell disabled={!row.original?.origin_items.length} />

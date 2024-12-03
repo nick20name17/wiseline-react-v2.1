@@ -42,7 +42,7 @@ interface EditPriorityProps {
     priority: PrioritiesData
 }
 
-export const EditPriority: React.FC<EditPriorityProps> = ({ priority }) => {
+export const EditPriority = ({ priority }: EditPriorityProps) => {
     const [color, setColor] = useState(priority?.color)
     const [open, setOpen] = useState(false)
 

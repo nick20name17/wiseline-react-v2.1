@@ -4,9 +4,7 @@ interface ErrorPageProps {
     message?: string
 }
 
-export const ErrorPage: React.FC<ErrorPageProps> = ({
-    message = 'Something went wrong'
-}) => {
+export const ErrorPage = ({ message = 'Something went wrong' }: ErrorPageProps) => {
     return (
         <div className='flex min-h-[100vh] items-center justify-center'>
             <div className='flex flex-col items-center gap-y-4'>

@@ -5,7 +5,7 @@ import { AuthProvider } from './auth'
 import { ThemeProvider } from './theme'
 import { store } from '@/store/index'
 
-export const Providers: React.FC<PropsWithChildren> = ({ children }) => {
+export const Providers = ({ children }: PropsWithChildren) => {
     return (
         <Provider store={store}>
             <AuthProvider>

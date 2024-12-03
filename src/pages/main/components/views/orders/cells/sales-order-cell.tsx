@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useDebouncedCallback } from 'use-debounce'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useCurrentUserRole } from '@/hooks'
 import {
     useAddSalesOrderMutation,
     usePatchSalesOrderMutation
-} from '@/store/api/sales-orders/sales-orders'
-import { capitalize } from '@/utils/capitalize'
+} from '@/api/sales-orders/sales-orders'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
+import { capitalize } from '@/utils/text'
 
-interface Props {
+interface SalesOrderCellProps {
     name: 'packages' | 'location'
     value: number
     orderId: string
@@ -20,13 +20,13 @@ interface Props {
     invoice: string
 }
 
-export const SalesOrderCell: React.FC<Props> = ({
+export const SalesOrderCell = ({
     value,
     orderId,
     name,
     itemId,
     invoice
-}) => {
+}: SalesOrderCellProps) => {
     const [addSalesOrder] = useAddSalesOrderMutation()
     const [patchSalesOrder] = usePatchSalesOrderMutation()
 

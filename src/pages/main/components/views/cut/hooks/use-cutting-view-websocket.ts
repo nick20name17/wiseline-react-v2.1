@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import type { CuttingItem } from '@/store/api/ebms/cutting/cutting.types'
-import type { AccessToken } from '@/types/auth'
+import type { CuttingItem } from '@/api/ebms/cutting/cutting.types'
+import type { AccessToken } from '@/api/types/auth'
 
 interface CuttingItemsWebSocket {
     currentData: CuttingItem[]

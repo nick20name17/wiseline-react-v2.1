@@ -1,16 +1,9 @@
-import {
-    flexRender,
-    getCoreRowModel,
-    getSortedRowModel,
-    useReactTable
-} from '@tanstack/react-table'
-import { useRef } from 'react'
-import { StringParam, useQueryParam } from 'use-query-params'
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { AnimatePresence } from 'motion/react'
 
 import { CollapsibleRow } from './collapsible-row'
-import { TableFooter } from './table-footer'
-import { TableSkeleton } from '@/components/shared'
-import { Skeleton } from '@/components/ui/skeleton'
+import type { OrdersData } from '@/api/ebms/ebms.types'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import {
     Table,
     TableBody,
@@ -19,121 +12,54 @@ import {
     TableHeader,
     TableRow
 } from '@/components/ui/table'
-import { shouldRenderCell } from '@/config/table'
-import {
-    useColumnDragDrop,
-    useColumnOrder,
-    useColumnVisibility,
-    useCurrentUserRole,
-    useMatchMedia,
-    useSorting,
-    useTableScroll
-} from '@/hooks'
-import type { OrdersData } from '@/store/api/ebms/ebms.types'
-import {
-    useAddUsersProfilesMutation,
-    useGetUsersProfilesQuery
-} from '@/store/api/profiles/profiles'
+import { cn } from '@/lib/utils'
 import type { DataTableProps } from '@/types/table'
 
-export const AllOrdersViewTable: React.FC<DataTableProps<OrdersData, OrdersData>> = ({
+export const OrdersViewTable = ({
     columns,
     data,
-    isDataLoading,
-    isDataFetching,
+    // isDataLoading,
+    // isDataFetching,
     pageCount
-}) => {
-    const [category] = useQueryParam('category', StringParam)
-    const [view] = useQueryParam('view', StringParam)
-
-    const { data: usersProfilesData } = useGetUsersProfilesQuery()
-    const [addUsersProfiles] = useAddUsersProfilesMutation()
-
-    const { columnOrder } = useColumnOrder(usersProfilesData!, 'orders')
-
-    const { columnVisibility } = useColumnVisibility(
-        usersProfilesData!,
-        'orders',
-        columns
-    )
-
-    const { sorting, setSorting } = useSorting([
-        {
-            id: 'priority',
-            desc: true
-        }
-    ])
-
+}: DataTableProps<OrdersData, OrdersData>) => {
     const table = useReactTable({
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        onSortingChange: setSorting,
         data,
         columns,
-        manualPagination: true,
-        manualSorting: true,
-        pageCount,
         state: {
-            columnVisibility,
-            sorting,
-            columnOrder
-        }
+            columnPinning: {
+                left: ['select', 'arrow']
+            }
+        },
+        pageCount,
+        enableRowSelection: true,
+
+        getCoreRowModel: getCoreRowModel()
     })
-
-    const { onDragStart, onDrop } = useColumnDragDrop(table, 'orders', addUsersProfiles)
-
-    const tableRef = useRef<HTMLTableElement>(null)
-
-    const { isTablet } = useMatchMedia()
-
-    useTableScroll({
-        tableRef,
-        enableScroll: !isTablet,
-        isCuttingView: view === 'cut'
-    })
-
-    const isClientOrWorker = useCurrentUserRole(['client', 'worker'])
-
-    const columnsCount = columns?.length
 
     return (
-        <div className='mt-4'>
-            <Table ref={tableRef}>
-                <TableHeader>
-                    {isDataLoading ? (
-                        <TableRow>
-                            <TableCell
-                                colSpan={columnsCount + 1}
-                                className='h-[39px] px-1 py-0.5'
-                            >
-                                <Skeleton className='h-[39px] w-full' />
-                            </TableCell>
-                        </TableRow>
-                    ) : (
-                        table.getHeaderGroups().map((headerGroup) => (
+        <div className='space-y-4'>
+            <ScrollArea className={cn('h-[440px] overflow-auto rounded-md border')}>
+                <Table>
+                    <TableHeader className='sticky top-0 z-50 bg-background bg-neutral-100'>
+                        {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header, i) =>
-                                    shouldRenderCell(
-                                        header.column.id,
-                                        category!,
-                                        isClientOrWorker,
-                                        i
-                                    ) ? (
+                                {headerGroup.headers.map((header) => {
+                                    return (
                                         <TableHead
-                                            className='w-2 border-t-0 !px-1 first:!p-0 last:w-auto [&:nth-child(2)]:!p-0'
-                                            draggable={
-                                                !table.getState().columnSizingInfo
-                                                    .isResizingColumn
-                                            }
-                                            data-column-index={header.index}
-                                            onDragStart={onDragStart}
-                                            onDragOver={(e) => {
-                                                e.stopPropagation()
-                                                e.preventDefault()
+                                            className={cn(
+                                                header.column.getIsPinned()
+                                                    ? 'sticky left-0 border-b-0 border-r-0 bg-secondary shadow-[inset_-1px_-1px_0] shadow-border'
+                                                    : '',
+                                                header.column.id === 'arrow'
+                                                    ? 'left-10'
+                                                    : ''
+                                            )}
+                                            style={{
+                                                maxWidth: header.column.columnDef.size,
+                                                minWidth: header.column.columnDef.size
                                             }}
-                                            onDrop={onDrop}
-                                            colSpan={header.colSpan}
                                             key={header.id}
+                                            colSpan={header.colSpan}
                                         >
                                             {header.isPlaceholder
                                                 ? null
@@ -142,41 +68,35 @@ export const AllOrdersViewTable: React.FC<DataTableProps<OrdersData, OrdersData>
                                                       header.getContext()
                                                   )}
                                         </TableHead>
-                                    ) : null
-                                )}
+                                    )
+                                })}
                             </TableRow>
-                        ))
-                    )}
-                </TableHeader>
-                <TableBody>
-                    {isDataLoading ||
-                    (isDataFetching && !table.getRowModel().rows?.length) ? (
-                        <TableSkeleton columnsCount={columnsCount} />
-                    ) : table.getRowModel().rows?.length ? (
-                        table.getRowModel().rows.map((row) => (
-                            <CollapsibleRow
-                                key={row?.original?.id}
-                                row={row}
-                            />
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell
-                                colSpan={columnsCount + 1}
-                                className='h-24 pl-4 text-left'
-                            >
-                                No results
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-            <TableFooter
-                isDataFetching={isDataFetching}
-                isDataLoading={isDataLoading}
-                table={table}
-                pageCount={pageCount}
-            />
+                        ))}
+                    </TableHeader>
+                    <TableBody className='[&_tr:last-child]:border-b'>
+                        <AnimatePresence initial={false}>
+                            {table.getRowModel().rows?.length ? (
+                                table.getRowModel().rows.map((row) => (
+                                    <CollapsibleRow
+                                        key={row.original.id}
+                                        row={row}
+                                    />
+                                ))
+                            ) : (
+                                <TableRow className='!bg-transparent'>
+                                    <TableCell
+                                        colSpan={columns.length}
+                                        className='h-24 !bg-transparent pl-10 pt-9 text-left'
+                                    >
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </AnimatePresence>
+                    </TableBody>
+                </Table>
+                <ScrollBar orientation='horizontal' />
+            </ScrollArea>
         </div>
     )
 }

@@ -16,12 +16,12 @@ interface MultipatchDatePickerProps {
     placeholder?: string
     setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
 }
-export const MultipatchDatePicker: React.FC<MultipatchDatePickerProps> = ({
+export const MultipatchDatePicker = ({
     date,
     setDate,
     disabled = false,
     placeholder = 'Pick a date'
-}) => {
+}: MultipatchDatePickerProps) => {
     const [open, setOpen] = useState(false)
 
     const close = () => setOpen(false)

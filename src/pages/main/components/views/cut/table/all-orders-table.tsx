@@ -1,17 +1,22 @@
+import { useQueryState } from 'nuqs'
 import { useEffect, useMemo } from 'react'
-import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
-import { columns } from '../../all-orders-view/table/columns'
-import { AllOrdersViewTable2 } from '../../all-orders-view/table/table2'
+import { columns } from '../../orders/table/columns'
+import { OrdersViewTable } from '../../orders/table/table'
 
-import { useCurrentValue, useWebSocket } from '@/hooks'
-import { useGetOrdersQuery } from '@/store/api/ebms/ebms'
+import { useGetOrdersQuery } from '@/api/ebms/ebms'
+import { useCurrentValue } from '@/hooks/use-current-value'
+import { useWebSocket } from '@/hooks/use-web-socket'
 
 export const AllOrdersTable = () => {
-    const [offsetParam] = useQueryParam('offset', NumberParam)
-    const [limitParam] = useQueryParam('limit', NumberParam)
-    const [ordering, setOrdering] = useQueryParam('ordering', StringParam)
-    const [cutView] = useQueryParam('cut-view', StringParam)
+    const [offsetParam] = useQueryState('offset', {
+        parse: Number
+    })
+    const [limitParam] = useQueryState('limit', {
+        parse: Number
+    })
+    const [ordering, setOrdering] = useQueryState('ordering')
+    const [cutView] = useQueryState('cut-view')
 
     const { currentData, isLoading, isFetching, refetch } = useGetOrdersQuery({
         limit: limitParam!,
@@ -41,7 +46,7 @@ export const AllOrdersTable = () => {
     }, [cutView])
 
     return (
-        <AllOrdersViewTable2
+        <OrdersViewTable
             data={dataToRender || []}
             isDataFetching={isFetching}
             isDataLoading={isLoading}

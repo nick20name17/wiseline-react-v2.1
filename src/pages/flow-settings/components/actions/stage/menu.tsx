@@ -12,12 +12,7 @@ interface StatusMenuProps {
     color: string
 }
 
-export const StatusMenu: React.FC<StatusMenuProps> = ({
-    id,
-    name,
-    color,
-    description
-}) => {
+export const StatusMenu = ({ id, name, color, description }: StatusMenuProps) => {
     return (
         <Popover>
             <PopoverTrigger onClick={(e) => e.stopPropagation()}>

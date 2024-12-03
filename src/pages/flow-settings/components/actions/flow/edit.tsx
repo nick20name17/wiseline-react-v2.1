@@ -37,7 +37,7 @@ const flowSchema = z.object({
 
 type EditFlowFormData = zodInfer<typeof flowSchema>
 
-export const EditFlow: React.FC<EditFlowProps> = ({ id, name }) => {
+export const EditFlow = ({ id, name }: EditFlowProps) => {
     const form = useForm({
         defaultValues: {
             name

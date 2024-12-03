@@ -37,7 +37,7 @@ export const OrdersViewTabs = () => {
             onValueChange={onValueChange}
             defaultValue={view!}
         >
-            <TabsList className='bg-secondary'>
+            <TabsList>
                 <TabsTrigger value='orders'>All Orders</TabsTrigger>
                 <TabsTrigger value='lines'>All Lines</TabsTrigger>
                 <TabsTrigger value='cut'>Cut View</TabsTrigger>

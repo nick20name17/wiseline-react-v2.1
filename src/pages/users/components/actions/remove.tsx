@@ -1,5 +1,5 @@
 import { Loader2, X } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { useRemoveUserMutation } from '@/api/users/users'
@@ -18,7 +18,7 @@ interface RemoveUserProps {
     user: User
 }
 
-export const RemoveUser: React.FC<RemoveUserProps> = ({ user }) => {
+export const RemoveUser = ({ user }: RemoveUserProps) => {
     const userName = `${user.first_name} ${user.last_name}`
     const userId = user.id
 

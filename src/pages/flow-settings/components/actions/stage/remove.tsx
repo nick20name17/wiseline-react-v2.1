@@ -18,7 +18,7 @@ interface RemoveStatusProps {
     name: string
 }
 
-export const RemoveStatus: React.FC<RemoveStatusProps> = ({ id, name }) => {
+export const RemoveStatus = ({ id, name }: RemoveStatusProps) => {
     const [removeStage, { isLoading }] = useRemoveStageMutation()
 
     const [open, setOpen] = useState(false)

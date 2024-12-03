@@ -1,36 +1,33 @@
 import type { ColumnDef } from '@tanstack/react-table'
-import { StringParam, useQueryParam } from 'use-query-params'
+import { useQueryState } from 'nuqs'
 
 import { CommentsCell } from '../../../cells/comments-cell'
 import { FlowCell } from '../../../cells/flow-cell'
 import { OnHandCell } from '../../../cells/on-hand-cell'
 import { StatusCell } from '../../../cells/status-cell'
-import { DatePickerCell } from '../../all-details-view/cells/date-picker-cell'
+import { DatePickerCell } from '../../details/cells/date-picker-cell'
 import { CollapsibleCell } from '../cells/collapsible-cell'
 
 import { dateFn, flowFn, notesFn, statusFn } from './sorting'
-import { DataTableColumnHeader } from '@/components/shared'
+import type { EBMSItemsData } from '@/api/ebms/ebms.types'
+import { DataTableColumnHeader } from '@/components/data-table-column-header'
 import { Button } from '@/components/ui/button'
-import type { EBMSItemsData } from '@/store/api/ebms/ebms.types'
 
 export const subColumns: ColumnDef<EBMSItemsData>[] = [
     {
         id: 'arrow',
-        header: () => {
-            const [category] = useQueryParam('category', StringParam)
+        header: ({ column }) => {
+            const [category] = useQueryState('category')
 
             return category === 'Trim' ? (
-                <Button
-                    tabIndex={-1}
-                    variant='ghost'
-                    className='pointer-events-none w-full'
-                >
-                    <div className='size-4 flex-shrink-0' />
-                </Button>
+                <DataTableColumnHeader
+                    column={column}
+                    title=''
+                />
             ) : null
         },
         cell: ({ row }) => {
-            const [category] = useQueryParam('category', StringParam)
+            const [category] = useQueryState('category')
 
             return category === 'Trim' ? (
                 <CollapsibleCell disabled={!row.original?.cutting_items?.length} />

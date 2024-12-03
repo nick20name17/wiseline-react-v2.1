@@ -2,6 +2,12 @@ import { RefreshCcw } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
+import type { OrdersData } from '@/api/ebms/ebms.types'
+import { useGetPrioritiesQuery } from '@/api/priorities/priorities'
+import {
+    useAddSalesOrderMutation,
+    usePatchSalesOrderMutation
+} from '@/api/sales-orders/sales-orders'
 import { Button } from '@/components/ui/button'
 import {
     Select,
@@ -11,20 +17,14 @@ import {
     SelectValue
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useCurrentUserRole } from '@/hooks'
-import type { OrdersData } from '@/store/api/ebms/ebms.types'
-import { useGetPrioritiesQuery } from '@/store/api/priorities/priorities'
-import {
-    useAddSalesOrderMutation,
-    usePatchSalesOrderMutation
-} from '@/store/api/sales-orders/sales-orders'
+import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 interface PriorityCellProps {
     order: OrdersData
 }
 
-export const PriorityCell: React.FC<PriorityCellProps> = ({ order }) => {
+export const PriorityCell = ({ order }: PriorityCellProps) => {
     const { data: priorities, isLoading } = useGetPrioritiesQuery()
 
     const priorityId = order?.sales_order?.priority?.id

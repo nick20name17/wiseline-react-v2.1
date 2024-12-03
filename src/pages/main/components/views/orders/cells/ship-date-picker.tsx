@@ -1,31 +1,32 @@
 import { format, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
-import * as React from 'react'
+import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 import { toast } from 'sonner'
-import { StringParam, useQueryParam } from 'use-query-params'
 
+import { usePatchEBMSOrdersMutation } from '@/api/ebms/ebms'
+import type { EBMSOrdersPatchPayload, OrdersData } from '@/api/ebms/ebms.types'
+import { useGetCompanyProfilesQuery } from '@/api/profiles/profiles'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { useCurrentUserRole } from '@/hooks'
+import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { cn } from '@/lib/utils'
-import { usePatchEBMSOrdersMutation } from '@/store/api/ebms/ebms'
-import type { EBMSOrdersPatchData, OrdersData } from '@/store/api/ebms/ebms.types'
-import { useGetCompanyProfilesQuery } from '@/store/api/profiles/profiles'
-import { isErrorWithMessage } from '@/utils'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 interface ShipDatePickerCellProps {
     order: OrdersData
 }
-export const ShipDatePickerCell: React.FC<ShipDatePickerCellProps> = ({ order }) => {
+export const ShipDatePickerCell = ({ order }: ShipDatePickerCellProps) => {
     const orderId = order?.id
     const shipDate = order?.ship_date ? parseISO(order?.ship_date) : undefined
 
     const [date, setDate] = useState<Date | undefined>(shipDate)
 
-    const [scheduled] = useQueryParam('scheduled', StringParam)
+    const [scheduled] = useQueryState('scheduled', {
+        parse: Boolean
+    })
 
     const [open, setOpen] = useState(false)
     const [disabledDays, setDisabledDays] = useState<Matcher[]>([])
@@ -61,7 +62,7 @@ export const ShipDatePickerCell: React.FC<ShipDatePickerCellProps> = ({ order })
             description
         })
 
-    const handlePatchSalesOrder = async (data: EBMSOrdersPatchData) => {
+    const handlePatchSalesOrder = async (data: EBMSOrdersPatchPayload) => {
         try {
             await patchEBMSOrders(data)
                 .unwrap()

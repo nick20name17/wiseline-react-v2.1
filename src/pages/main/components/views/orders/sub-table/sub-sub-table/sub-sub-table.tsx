@@ -4,9 +4,10 @@ import {
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
-import { StringParam, useQueryParam } from 'use-query-params'
+import { useQueryState } from 'nuqs'
 
 import { subSubColumns } from './sub-sub-columns'
+import type { EBMSItemData } from '@/api/ebms/ebms.types'
 import {
     Table,
     TableBody,
@@ -16,13 +17,12 @@ import {
     TableRow
 } from '@/components/ui/table'
 import { trimOnlyColumns } from '@/config/table'
-import type { EBMSItemData } from '@/store/api/ebms/ebms.types'
 
 interface SubSubTableProps {
     data: EBMSItemData[]
 }
 
-export const SubSubTable: React.FC<SubSubTableProps> = ({ data }) => {
+export const SubSubTable = ({ data }: SubSubTableProps) => {
     const subSubTable = useReactTable({
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -30,7 +30,7 @@ export const SubSubTable: React.FC<SubSubTableProps> = ({ data }) => {
         columns: subSubColumns
     })
 
-    const [category] = useQueryParam('category', StringParam)
+    const [category] = useQueryState('category')
 
     return (
         <Table className='border-t shadow-neutral-400'>

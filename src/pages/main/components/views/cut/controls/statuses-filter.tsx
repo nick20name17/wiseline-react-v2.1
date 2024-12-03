@@ -1,4 +1,4 @@
-import { BooleanParam, useQueryParam } from 'use-query-params'
+import { useQueryState } from 'nuqs'
 
 import {
     Select,
@@ -10,10 +10,9 @@ import {
 import { cn } from '@/lib/utils'
 
 export const StatusesFilter = () => {
-    const [cuttingComplete, setCuttingComplete] = useQueryParam(
-        'cutting_complete',
-        BooleanParam
-    )
+    const [cuttingComplete, setCuttingComplete] = useQueryState('cutting_complete', {
+        parse: Boolean
+    })
 
     const onCuttingComplete = (value: string | null) => {
         if (value === 'all') {

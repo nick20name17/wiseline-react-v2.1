@@ -7,7 +7,7 @@ interface CollapsibleCellProps {
     disabled?: boolean
 }
 
-export const CollapsibleCell: React.FC<CollapsibleCellProps> = ({ disabled = false }) => {
+export const CollapsibleCell = ({ disabled = false }: CollapsibleCellProps) => {
     return (
         <CollapsibleTrigger
             data-icon

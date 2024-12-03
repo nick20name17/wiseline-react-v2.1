@@ -1,5 +1,4 @@
 import type { Row } from '@tanstack/react-table'
-import React from 'react'
 
 import type { EBMSItemsData } from '@/api/ebms/ebms.types'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -8,7 +7,7 @@ interface CheckboxCellProps {
     row: Row<EBMSItemsData>
 }
 
-export const CheckboxCell: React.FC<CheckboxCellProps> = ({ row }) => {
+export const CheckboxCell = ({ row }: CheckboxCellProps) => {
     return (
         <div className='flex items-center justify-center'>
             <Checkbox

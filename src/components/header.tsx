@@ -5,7 +5,7 @@ interface HeaderProps {
     title: string
 }
 
-export const Header: React.FC<HeaderProps> = ({ title }) => (
+export const Header = ({ title }: HeaderProps) => (
     <header className='relative border-b px-4'>
         <div className='py-4'>
             <div className='flex items-center justify-between gap-4'>

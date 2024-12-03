@@ -1,11 +1,13 @@
+import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
-import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export const CutViewTabs = () => {
-    const [cutView = 'pipeline', setCutView] = useQueryParam('cut-view', StringParam)
-    const [, setOffset] = useQueryParam('offset', NumberParam)
+    const [cutView = 'pipeline', setCutView] = useQueryState('cut-view')
+    const [, setOffset] = useQueryState('offset', {
+        parse: Number
+    })
 
     const onValueChange = (tab: string) => {
         setCutView(tab)

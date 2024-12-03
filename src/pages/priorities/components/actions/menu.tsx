@@ -10,7 +10,7 @@ interface PriorityMenuProps {
     priority: PrioritiesData
 }
 
-export const PriorityMenu: React.FC<PriorityMenuProps> = ({ priority }) => {
+export const PriorityMenu = ({ priority }: PriorityMenuProps) => {
     return (
         <Popover>
             <PopoverTrigger asChild>

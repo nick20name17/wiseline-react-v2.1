@@ -6,9 +6,7 @@ interface TableSkeletonProps {
     columnsCount: number
 }
 
-export const TableSkeleton: React.FC<TableSkeletonProps> = ({
-    columnsCount: cellCount
-}) => {
+export const TableSkeleton = ({ columnsCount: cellCount }: TableSkeletonProps) => {
     return Array.from({ length: tableConfig.pagination.pageSize }).map((_, index) => (
         <TableRow
             className='p-0'

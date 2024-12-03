@@ -1,7 +1,8 @@
 import { Check, ChevronsUpDown } from 'lucide-react'
+import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
-import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
+import { useGetColorsQuery } from '@/api/ebms/cutting/cutting'
 import { Button } from '@/components/ui/button'
 import {
     Command,
@@ -15,13 +16,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
-import { useGetColorsQuery } from '@/store/api/ebms/cutting/cutting'
 
 export const Colorfilter = () => {
-    const [colorParam, setColorParam] = useQueryParam('color', StringParam)
+    const [colorParam, setColorParam] = useQueryState('color')
     const [open, setOpen] = useState(false)
-    const [view] = useQueryParam('view', StringParam)
-    const [, setOffset] = useQueryParam('offset', NumberParam)
+    const [view] = useQueryState('view')
+    const [, setOffset] = useQueryState('offset', {
+        parse: Number
+    })
 
     const { data: colorsData, isLoading } = useGetColorsQuery()
 

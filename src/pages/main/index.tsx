@@ -1,12 +1,11 @@
-import { useQueryState } from 'nuqs'
-
-import { DetailsView } from './components/views/details'
+import { OrdersView } from './components/views/orders'
 import { useGetPrioritiesQuery } from '@/api/priorities/priorities'
+import { OrdersHeader } from '@/components/orders-header'
 import { useBodyScrollLock } from '@/hooks/use-body-scroll-lock'
 import { useMatchMedia } from '@/hooks/use-match-media'
 
 export const MainPage = () => {
-    const [view] = useQueryState('view')
+    // const [view] = useQueryState('view')
 
     const { isTablet } = useMatchMedia()
 
@@ -25,5 +24,10 @@ export const MainPage = () => {
     //     }
     // }, [view])
 
-    return <DetailsView />
+    return (
+        <>
+            <OrdersHeader />
+            <OrdersView />
+        </>
+    )
 }

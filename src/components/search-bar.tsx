@@ -8,10 +8,10 @@ interface SearchBarProps {
     resetOffset?: boolean
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({
+export const SearchBar = ({
     placeholder = 'Search...',
     resetOffset = true
-}) => {
+}: SearchBarProps) => {
     const [search, setSearch] = useQueryState('search', {
         defaultValue: ''
     })

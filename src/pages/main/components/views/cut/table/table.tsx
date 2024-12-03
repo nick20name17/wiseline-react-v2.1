@@ -12,7 +12,11 @@ import { Fragment, useRef } from 'react'
 import { groupByPriority, mergeItems } from '../utils'
 
 import { TableFooter } from './table-footer'
-import { DataTableColumnHeader, TableSkeleton } from '@/components/shared'
+import type { CuttingItem } from '@/api/ebms/cutting/cutting.types'
+import { useGetAllFlowsQuery } from '@/api/flows/flows'
+import type { FlowData } from '@/api/flows/flows.types'
+import { DataTableColumnHeader } from '@/components/data-table-column-header'
+import { TableSkeleton } from '@/components/table-skeleton'
 import { Button } from '@/components/ui/button'
 import {
     Collapsible,
@@ -31,9 +35,6 @@ import {
 import { useMatchMedia } from '@/hooks/use-match-media'
 import { useTableScroll } from '@/hooks/use-table-scroll'
 import { cn } from '@/lib/utils'
-import type { CuttingItem } from '@/store/api/ebms/cutting/cutting.types'
-import { useGetAllFlowsQuery } from '@/store/api/flows/flows'
-import type { FlowData } from '@/store/api/flows/flows.types'
 import type { DataTableProps } from '@/types/table'
 
 export interface MergedCuttingItem {
@@ -83,13 +84,13 @@ const groupByFields = (items: Row<MergedCuttingItem>[]): GroupedItems[] => {
     }, [])
 }
 
-export const CutViewTable: React.FC<DataTableProps<CuttingItem, MergedCuttingItem>> = ({
+export const CutViewTable = ({
     data,
     isDataLoading,
     isDataFetching,
     columns,
     pageCount
-}) => {
+}: DataTableProps<CuttingItem, MergedCuttingItem>) => {
     const { data: trimFlows, isLoading: isLoadingTrimFlows } = useGetAllFlowsQuery({
         category__prod_type: 'Trim'
     })
@@ -103,11 +104,11 @@ export const CutViewTable: React.FC<DataTableProps<CuttingItem, MergedCuttingIte
                 <DataTableColumnHeader
                     column={column}
                     title={flow.name}
-                    sortable={false}
                 />
             ),
             cell: () => <div className='text-center'></div>,
-            size: 140
+            size: 140,
+            enableSorting: false
         })) || []
 
     const allColumns = [...columns]

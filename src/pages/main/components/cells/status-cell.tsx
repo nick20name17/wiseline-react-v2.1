@@ -28,7 +28,7 @@ interface StatusCellProps {
     item: EBMSItemData | EBMSItemsData | undefined
 }
 
-export const StatusCell: React.FC<StatusCellProps> = ({ item }) => {
+export const StatusCell = ({ item }: StatusCellProps) => {
     const { flow, stage, id: itemId } = item?.item || {}
 
     const originOrderId = item?.origin_order

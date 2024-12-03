@@ -1,5 +1,5 @@
+import { useQueryState } from 'nuqs'
 import { useRef } from 'react'
-import { StringParam, useQueryParam } from 'use-query-params'
 
 import { Colorfilter } from './color-filter'
 import { StatusesFilter } from './statuses-filter'
@@ -8,7 +8,7 @@ import { useIsSticky } from '@/hooks/use-is-sticky'
 import { cn } from '@/lib/utils'
 
 export const Controls = () => {
-    const [cutView] = useQueryParam('cut-view', StringParam)
+    const [cutView] = useQueryState('cut-view')
 
     const ref = useRef<HTMLDivElement>(null)
 

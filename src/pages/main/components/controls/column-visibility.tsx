@@ -35,11 +35,11 @@ type ItemsColumnVisibilityProps = {
 
 type ColumnVisibilityProps = OrdersColumnVisibilityProps | ItemsColumnVisibilityProps
 
-export const ColumnVisibility: React.FC<ColumnVisibilityProps> = ({
+export const ColumnVisibility = ({
     page,
     table,
     isDataLoading
-}) => {
+}: ColumnVisibilityProps) => {
     const [category] = useQueryState('category')
 
     const alwaysVisibleColumns =

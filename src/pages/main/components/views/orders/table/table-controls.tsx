@@ -6,8 +6,9 @@ import { FlowFilter } from '../../../controls/flow-filter'
 import { StageFilter } from '../../../controls/stage-filter'
 import { Statuses } from '../../../controls/statuses'
 
-import { SearchBar } from '@/components/shared'
-import { useIsSticky, useMatchMedia } from '@/hooks'
+import { SearchBar } from '@/components/search-bar'
+import { useIsSticky } from '@/hooks/use-is-sticky'
+import { useMatchMedia } from '@/hooks/use-match-media'
 import { cn } from '@/lib/utils'
 
 export const TableControls = () => {
@@ -49,7 +50,7 @@ export const TableControls = () => {
             </div>
 
             <div className='flex items-center gap-4'>
-                <Filters />
+                {/* <Filters /> */}
                 <CategoryFilter />
             </div>
         </div>

@@ -6,11 +6,11 @@ interface TableFooterProps {
     pageCount: number
 }
 
-export const TableFooter: React.FC<TableFooterProps> = ({
+export const TableFooter = ({
     isDataLoading,
     isDataFetching,
     pageCount
-}) => {
+}: TableFooterProps) => {
     return (
         <div
             className='flex h-14 items-center justify-between gap-3 py-2'

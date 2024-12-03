@@ -3,7 +3,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { CheckCell } from '../cell/check-cell'
 
 import type { MergedCuttingItem } from './table'
-import { DataTableColumnHeader } from '@/components/shared'
+import { DataTableColumnHeader } from '@/components/data-table-column-header'
 
 export const columns: ColumnDef<MergedCuttingItem>[] = [
     {
@@ -12,11 +12,11 @@ export const columns: ColumnDef<MergedCuttingItem>[] = [
             <DataTableColumnHeader
                 column={column}
                 title='Size'
-                sortable={false}
             />
         ),
         cell: ({ row }) => <div className='text-center'>{row.original?.size || '-'}</div>,
-        size: 84
+        size: 84,
+        enableSorting: false
     },
     {
         accessorKey: 'length',
@@ -24,13 +24,13 @@ export const columns: ColumnDef<MergedCuttingItem>[] = [
             <DataTableColumnHeader
                 column={column}
                 title='Length'
-                sortable={false}
             />
         ),
         cell: ({ row }) => (
             <div className='text-center'>{row.original?.length || '-'}</div>
         ),
-        size: 100
+        size: 100,
+        enableSorting: false
     },
     {
         accessorKey: 'total',
@@ -38,10 +38,10 @@ export const columns: ColumnDef<MergedCuttingItem>[] = [
             <DataTableColumnHeader
                 column={column}
                 title='Total'
-                sortable={false}
             />
         ),
-        size: 80
+        size: 80,
+        enableSorting: false
     },
     {
         accessorKey: 'cutting_complete',
@@ -49,17 +49,15 @@ export const columns: ColumnDef<MergedCuttingItem>[] = [
             <DataTableColumnHeader
                 column={column}
                 title='Cutting Complete'
-                sortable={false}
             />
         ),
-        cell: ({ row }) => {
-            return (
-                <CheckCell
-                    autoids={row.original?.autoids}
-                    complete={row.original?.cutting_complete}
-                />
-            )
-        },
-        size: 164
+        cell: ({ row }) => (
+            <CheckCell
+                autoids={row.original?.autoids}
+                complete={row.original?.cutting_complete}
+            />
+        ),
+        size: 164,
+        enableSorting: false
     }
 ]

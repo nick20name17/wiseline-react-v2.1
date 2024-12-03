@@ -26,7 +26,7 @@ interface MultipatchPopoverProps {
     table: Table<EBMSItemsData>
 }
 
-export const MultipatchPopover: React.FC<MultipatchPopoverProps> = ({ table }) => {
+export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
     // const [isAnimate, setIsAnimate] = useState(false)
 
     const [category] = useQueryState('category')

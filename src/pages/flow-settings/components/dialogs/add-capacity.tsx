@@ -44,11 +44,11 @@ const capacitySchema = z.object({
 
 type FormData = zodInfer<typeof capacitySchema>
 
-export const AddCapacityDialog: React.FC<AddCapacityDialogProps> = ({
+export const AddCapacityDialog = ({
     categoryId,
     capacity,
     capacityId
-}) => {
+}: AddCapacityDialogProps) => {
     const form = useForm({
         defaultValues: { per_day: String(capacity ?? '') },
         resolver: zodResolver(capacitySchema)

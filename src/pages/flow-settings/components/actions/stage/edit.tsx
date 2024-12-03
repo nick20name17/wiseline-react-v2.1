@@ -43,12 +43,7 @@ const stageSchema = z.object({
 
 type EditStatusFormData = zodInfer<typeof stageSchema>
 
-export const EditStatus: React.FC<EditStatusProps> = ({
-    id,
-    name,
-    description,
-    color
-}) => {
+export const EditStatus = ({ id, name, description, color }: EditStatusProps) => {
     const form = useForm({
         defaultValues: { name, description: description || '' },
         resolver: zodResolver(stageSchema)

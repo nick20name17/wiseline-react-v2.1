@@ -16,11 +16,7 @@ interface OnHandCellProps {
     cellKey: 'orders' | 'items'
 }
 
-export const OnHandCell: React.FC<OnHandCellProps> = ({
-    originItem,
-    disabled,
-    cellKey
-}) => {
+export const OnHandCell = ({ originItem, disabled, cellKey }: OnHandCellProps) => {
     const [patchItemMFG] = usePatchItemMFGMutation()
     const [patchMFG] = usePatchMFGMutation()
 

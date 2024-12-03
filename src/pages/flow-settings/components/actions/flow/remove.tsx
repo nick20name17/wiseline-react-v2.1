@@ -18,7 +18,7 @@ interface RemoveFlowProps {
     name: string
 }
 
-export const RemoveFlow: React.FC<RemoveFlowProps> = ({ id, name }) => {
+export const RemoveFlow = ({ id, name }: RemoveFlowProps) => {
     const [removeFlow, { isLoading }] = useRemoveFlowMutation()
 
     const [open, setOpen] = useState(false)

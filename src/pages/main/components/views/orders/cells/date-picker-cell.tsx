@@ -1,12 +1,22 @@
 import { format, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon, RotateCcw } from 'lucide-react'
 import { animate } from 'motion/react'
-import * as React from 'react'
+import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 import { toast } from 'sonner'
-import { BooleanParam, useQueryParam } from 'use-query-params'
 
+import type { OrdersData } from '@/api/ebms/ebms.types'
+import { useMultiPatchItemsMutation } from '@/api/multiupdates/multiupdate'
+import { useGetCompanyProfilesQuery } from '@/api/profiles/profiles'
+import {
+    useAddSalesOrderMutation,
+    usePatchSalesOrderMutation
+} from '@/api/sales-orders/sales-orders'
+import type {
+    SalesOrdersAddData,
+    SalesOrdersPatchPayload
+} from '@/api/sales-orders/sales-orders.types'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -16,19 +26,8 @@ import {
     TooltipProvider,
     TooltipTrigger
 } from '@/components/ui/tooltip'
-import { useCurrentUserRole } from '@/hooks'
+import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { cn } from '@/lib/utils'
-import type { OrdersData } from '@/store/api/ebms/ebms.types'
-import { useMultiPatchItemsMutation } from '@/store/api/multiupdates/multiupdate'
-import { useGetCompanyProfilesQuery } from '@/store/api/profiles/profiles'
-import {
-    useAddSalesOrderMutation,
-    usePatchSalesOrderMutation
-} from '@/store/api/sales-orders/sales-orders'
-import type {
-    SalesOrdersAddData,
-    SalesOrdersPatchData
-} from '@/store/api/sales-orders/sales-orders.types'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 interface DatePickerCellProps {
@@ -49,14 +48,14 @@ export const getDateToastMessage = (
         return `Production date has been changed to ${format(date, 'MM/dd/yy EEE')}. Order moved to Scheduled`
     }
 
-    if (isEmptyDate && scheduled === undefined) {
+    if (isEmptyDate && scheduled === null) {
         return 'Production date has been reset'
     }
 
     return `Production date has been changed to ${format(date || '', 'MM/dd/yy EEE')}`
 }
 
-export const DatePickerCell: React.FC<DatePickerCellProps> = ({ order }) => {
+export const DatePickerCell = ({ order }: DatePickerCellProps) => {
     const productionDate = order.sales_order?.production_date
         ? parseISO(order.sales_order?.production_date)
         : undefined
@@ -68,7 +67,9 @@ export const DatePickerCell: React.FC<DatePickerCellProps> = ({ order }) => {
     const salesOrderId = order.sales_order?.id
     const orderId = order.id
 
-    const [scheduled] = useQueryParam('scheduled', BooleanParam)
+    const [scheduled] = useQueryState('scheduled', {
+        parse: Boolean
+    })
 
     const [open, setOpen] = useState(false)
 
@@ -93,7 +94,7 @@ export const DatePickerCell: React.FC<DatePickerCellProps> = ({ order }) => {
             description
         })
 
-    const handlePatchSalesOrder = async (data: SalesOrdersPatchData) => {
+    const handlePatchSalesOrder = async (data: SalesOrdersPatchPayload) => {
         try {
             await patchSalesOrder(data)
                 .unwrap()
@@ -139,7 +140,7 @@ export const DatePickerCell: React.FC<DatePickerCellProps> = ({ order }) => {
                 id: salesOrderId!,
                 data
             }).then(() => {
-                // setIsAnimate(scheduled === undefined ? false : true)
+                // setIsAnimate(scheduled === null ? false : true)
             })
         }
 

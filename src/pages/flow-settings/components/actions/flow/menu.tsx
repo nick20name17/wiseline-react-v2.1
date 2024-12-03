@@ -10,7 +10,7 @@ interface FlowMenuProps {
     name: string
 }
 
-export const FlowMenu: React.FC<FlowMenuProps> = ({ id, name }) => {
+export const FlowMenu = ({ id, name }: FlowMenuProps) => {
     return (
         <Popover>
             <PopoverTrigger onClick={(e) => e.stopPropagation()}>

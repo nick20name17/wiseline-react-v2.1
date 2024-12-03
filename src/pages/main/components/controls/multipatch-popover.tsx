@@ -25,7 +25,7 @@ interface MultipatchPopoverProps {
     table: Table<OrdersData>
 }
 
-export const MultipatchPopover: React.FC<MultipatchPopoverProps> = ({ table }) => {
+export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
     const [open, setOpen] = useState(false)
     const [date, setDate] = useState<Date>()
     const [shipDate, setShipDate] = useState<Date>()

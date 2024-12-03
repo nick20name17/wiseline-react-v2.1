@@ -45,7 +45,7 @@ interface SortableCardProps {
     stage: StageData
 }
 
-export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) => {
+export const FlowAccordionItem = ({ flow }: FlowAccordionItemProps) => {
     const [patchStage] = usePatchStageMutation()
 
     const currentStages = flow?.stages || []
@@ -195,7 +195,7 @@ export const FlowAccordionItem: React.FC<FlowAccordionItemProps> = ({ flow }) =>
     )
 }
 
-const SortableCard: React.FC<SortableCardProps> = ({ stage }) => {
+const SortableCard = ({ stage }: SortableCardProps) => {
     const disabled = stage.name === 'Unscheduled' || stage.name === 'Done'
 
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({

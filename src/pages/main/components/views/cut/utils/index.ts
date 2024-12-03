@@ -1,9 +1,8 @@
-import type { Column, Row } from '@tanstack/react-table'
+import type { Row } from '@tanstack/react-table'
 
 import type { MergedCuttingItem } from '../table/table'
 
-import { cn } from '@/lib/utils'
-import type { CuttingItem } from '@/store/api/ebms/cutting/cutting.types'
+import type { CuttingItem } from '@/api/ebms/cutting/cutting.types'
 
 export const groupByPriority = (
     data: Row<MergedCuttingItem>[]
@@ -108,15 +107,4 @@ export const mergeItems = (data: CuttingItem[]) => {
     }
 
     return result
-}
-
-export const getCommonPinningStyles = <T>(column: Column<T>) => {
-    const isPinned = column.getIsPinned()
-
-    return cn({
-        'sticky top-0 bg-secondary dark:bg-background z-10': isPinned,
-        'right-0 border-l border-border': isPinned === 'right',
-        'left-0 border-r border-border': isPinned === 'left',
-        relative: !isPinned
-    })
 }

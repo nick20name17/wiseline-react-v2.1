@@ -1,25 +1,25 @@
 import { type Row, flexRender } from '@tanstack/react-table'
+import { useQueryState } from 'nuqs'
 import { useState } from 'react'
-import { StringParam, useQueryParam } from 'use-query-params'
 
 import { subColumns } from './sub-columns'
 import { SubSubTable } from './sub-sub-table/sub-sub-table'
+import type { EBMSItemsData } from '@/api/ebms/ebms.types'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { trimOnlyColumns } from '@/config/table'
 import { cn } from '@/lib/utils'
-import type { EBMSItemsData } from '@/store/api/ebms/ebms.types'
 
 interface CollapsibleRowProps {
     row: Row<EBMSItemsData>
 }
 
-export const CollapsibleRow: React.FC<CollapsibleRowProps> = ({ row }) => {
+export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
     const [open, setOpen] = useState(false)
 
     const cuttingItems = row.original.cutting_items
 
-    const [category] = useQueryParam('category', StringParam)
+    const [category] = useQueryState('category')
 
     const colSpan = subColumns.length + 1
 

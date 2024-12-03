@@ -14,12 +14,12 @@ interface DatePickerProps {
     placeholder?: string
 }
 
-export const DatePicker: React.FC<DatePickerProps> = ({
+export const DatePicker = ({
     date,
     setDate,
     disabled = false,
     placeholder = 'Pick a date'
-}) => {
+}: DatePickerProps) => {
     return (
         <Popover>
             <PopoverTrigger asChild>

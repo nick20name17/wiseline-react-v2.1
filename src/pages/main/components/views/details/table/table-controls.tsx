@@ -2,7 +2,6 @@ import { useQueryState } from 'nuqs'
 import { useEffect, useRef } from 'react'
 
 import { CategoryFilter } from '../../../controls/category-filter'
-import { Filters } from '../../../controls/filters'
 import { FlowFilter } from '../../../controls/flow-filter'
 import { StageFilter } from '../../../controls/stage-filter'
 import { Statuses } from '../../../controls/statuses'
@@ -54,7 +53,7 @@ export const TableControls = () => {
                     isSticky ? 'border-b bg-background py-2 shadow-sm' : ''
                 )}
             >
-                <Filters />
+                {/* <Filters /> */}
 
                 <CategoryFilter />
 
@@ -82,7 +81,7 @@ export const TableControls = () => {
             </div>
 
             <div className='flex items-center gap-x-4'>
-                <Filters />
+                {/* <Filters /> */}
                 <CategoryFilter />
                 <FlowFilter />
                 <StageFilter />

@@ -25,7 +25,7 @@ export const useWebSocket = <T extends UseWebsocketProps>({
     const [dataToRender, setDataToRender] = useState<(OrdersData | EBMSItemsData)[]>(
         currentData || []
     )
-    const [category] = ['']
+    const [category] = ['All']
 
     useEffect(() => {
         setDataToRender(currentData || [])

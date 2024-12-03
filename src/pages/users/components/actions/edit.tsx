@@ -1,5 +1,5 @@
 import { Edit2Icon, Loader2 } from 'lucide-react'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z, type infer as zodInfer } from 'zod'
@@ -49,7 +49,7 @@ interface EditUserProps {
     user: User
 }
 
-export const EditUser: React.FC<EditUserProps> = ({ user }) => {
+export const EditUser = ({ user }: EditUserProps) => {
     const userName = `${user.first_name} ${user.last_name}`
     const isSelf = user.id === useAppSelector(selectUser)?.id
 

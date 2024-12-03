@@ -4,10 +4,11 @@ import {
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
-import { StringParam, useQueryParam } from 'use-query-params'
+import { useQueryState } from 'nuqs'
 
 import { CollapsibleRow } from './collapsbile-row'
 import { subColumns } from './sub-columns'
+import type { EBMSItemsData } from '@/api/ebms/ebms.types'
 import {
     Table,
     TableBody,
@@ -18,13 +19,12 @@ import {
 } from '@/components/ui/table'
 import { trimOnlyColumns } from '@/config/table'
 import { cn } from '@/lib/utils'
-import type { EBMSItemsData } from '@/store/api/ebms/ebms.types'
 
 interface SubTableProps {
     data: EBMSItemsData[]
 }
 
-export const SubTable: React.FC<SubTableProps> = ({ data }) => {
+export const SubTable = ({ data }: SubTableProps) => {
     const subTable = useReactTable({
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
@@ -33,7 +33,7 @@ export const SubTable: React.FC<SubTableProps> = ({ data }) => {
         autoResetPageIndex: false
     })
 
-    const [category] = useQueryParam('category', StringParam)
+    const [category] = useQueryState('category')
 
     const originItemsRows = subTable.getRowModel().rows
 

@@ -1,6 +1,6 @@
 import type { Row } from '@tanstack/react-table'
 
-import type { EBMSItemData, EBMSItemsData } from '@/store/api/ebms/ebms.types'
+import type { EBMSItemData, EBMSItemsData } from '@/api/ebms/ebms.types'
 
 export const statusFn = (
     rowA: Row<EBMSItemData | EBMSItemsData>,

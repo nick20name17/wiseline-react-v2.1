@@ -14,10 +14,7 @@ export const OrdersHeader = () => {
                     <OrdersViewTabs />
                 </div>
 
-                {/* <div className='flex items-center gap-x-6'> */}
-                {/* <WeekFilters /> */}
                 <ProfileMenu />
-                {/* </div> */}
             </div>
         </header>
     )

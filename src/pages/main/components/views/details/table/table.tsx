@@ -339,14 +339,14 @@ interface GroupedRowsProps {
     groupKey: 'production_date' | 'order'
 }
 
-const GroupedRows: React.FC<GroupedRowsProps> = ({
+const GroupedRows = ({
     groupByOrder,
     columnsCount,
     category,
     isClientOrWorker,
     shouldRenderCell,
     groupKey
-}) => {
+}: GroupedRowsProps) => {
     // const MotionTableRow = motion(TableRow, {
     //     forwardMotionProps: true
     // })

@@ -17,7 +17,7 @@ interface PaginationProps {
     isDataLoading: boolean
 }
 
-export const Pagination: React.FC<PaginationProps> = ({ pageCount, isDataLoading }) => {
+export const Pagination = ({ pageCount, isDataLoading }: PaginationProps) => {
     const [offset, setOffset] = useQueryState('offset', {
         parse: Number,
         // clearOnDefault: false,

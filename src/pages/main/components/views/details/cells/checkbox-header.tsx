@@ -9,7 +9,7 @@ interface CheckboxHeaderProps {
     table: Table<EBMSItemsData>
 }
 
-export const CheckboxHeader: React.FC<CheckboxHeaderProps> = ({ table }) => {
+export const CheckboxHeader = ({ table }: CheckboxHeaderProps) => {
     return (
         <>
             <div className='flex items-center justify-center'>

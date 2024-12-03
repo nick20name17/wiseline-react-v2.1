@@ -2,10 +2,10 @@ import { CheckCircle2, Circle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
+import { usePatchItemCuttingCompleteMutation } from '@/api/items/items'
 import { Toggle } from '@/components/ui/toggle'
-import { useCurrentUserRole } from '@/hooks'
+import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { cn } from '@/lib/utils'
-import { usePatchItemCuttingCompleteMutation } from '@/store/api/items/items'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 interface CheckCellProps {
@@ -13,7 +13,7 @@ interface CheckCellProps {
     complete: boolean
 }
 
-export const CheckCell: React.FC<CheckCellProps> = ({ autoids, complete }) => {
+export const CheckCell = ({ autoids, complete }: CheckCellProps) => {
     const [isChecked, setIsChecked] = useState(complete)
 
     const [patchItemCuttingComplete, { isLoading }] =

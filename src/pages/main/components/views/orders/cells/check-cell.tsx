@@ -3,15 +3,15 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useDebouncedCallback } from 'use-debounce'
 
-import { Toggle } from '@/components/ui/toggle'
-import { cn } from '@/lib/utils'
 import {
     useAddSalesOrderMutation,
     usePatchSalesOrderMutation
-} from '@/store/api/sales-orders/sales-orders'
+} from '@/api/sales-orders/sales-orders'
+import { Toggle } from '@/components/ui/toggle'
+import { cn } from '@/lib/utils'
 import { useAppSelector } from '@/store/hooks/hooks'
 import { selectUser } from '@/store/slices/auth'
-import { isErrorWithMessage } from '@/utils'
+import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 interface CheckCellProps {
     disabled?: boolean
@@ -22,14 +22,14 @@ interface CheckCellProps {
     itemId: number
 }
 
-export const CheckCell: React.FC<CheckCellProps> = ({
+export const CheckCell = ({
     disabled = false,
     checked,
     orderId,
     invoice,
     name,
     itemId
-}) => {
+}: CheckCellProps) => {
     const [addSalesOrder, { isLoading: isLoadingAdd }] = useAddSalesOrderMutation()
     const [patchSalesOrder, { isLoading: isLoadingPatch }] = usePatchSalesOrderMutation()
 

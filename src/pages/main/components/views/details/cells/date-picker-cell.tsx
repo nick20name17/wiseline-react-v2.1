@@ -2,7 +2,6 @@ import { format, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon, RotateCcw } from 'lucide-react'
 import { animate } from 'motion/react'
 import { useQueryState } from 'nuqs'
-import * as React from 'react'
 import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 import { toast } from 'sonner'
@@ -42,14 +41,14 @@ export const getDateToastMessage = (
         return `Production date has been changed to ${date}. Line item moved to Scheduled`
     }
 
-    if (isEmptyDate && scheduled === undefined) {
+    if (isEmptyDate && scheduled === null) {
         return 'Production date has been reset'
     }
 
     return `Production date has been changed to ${date}`
 }
 
-export const DatePickerCell: React.FC<DatePickerCellProps> = ({ originItem }) => {
+export const DatePickerCell = ({ originItem }: DatePickerCellProps) => {
     const [isAnimate, setIsAnimate] = useState(false)
     const productionDate = originItem?.item?.production_date
         ? parseISO(originItem?.item?.production_date)

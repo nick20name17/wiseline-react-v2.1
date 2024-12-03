@@ -25,7 +25,7 @@ interface FlowCellProps {
     item: EBMSItemData | EBMSItemsData | undefined
 }
 
-export const FlowCell: React.FC<FlowCellProps> = ({ item }) => {
+export const FlowCell = ({ item }: FlowCellProps) => {
     const [category] = useQueryState('category')
 
     const { data: categoriesData } = useGetAllCategoriesQuery()

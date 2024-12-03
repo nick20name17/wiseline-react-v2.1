@@ -5,7 +5,6 @@ import { useQueryState } from 'nuqs'
 interface DataTableColumnHeaderProps<TData, TValue> {
     column: Column<TData, TValue>
     title: string
-    sortable?: boolean
 }
 
 export const DataTableColumnHeader = <TData, TValue>({

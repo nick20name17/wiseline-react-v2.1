@@ -4,7 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { isAdminRoute, routes } from '@/config/routes'
 import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 
-export const RoleProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const RoleProvider = ({ children }: PropsWithChildren) => {
     const location = useLocation()
     const isWorkerOrClient = useCurrentUserRole(['worker', 'client'])
 

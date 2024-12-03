@@ -1,13 +1,13 @@
+import { useQueryState } from 'nuqs'
 import { useMemo } from 'react'
-import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Controls } from './controls'
 import { useCuttingItemsWebSocket } from './hooks/use-cutting-view-websocket'
 import { AllOrdersTable } from './table/all-orders-table'
 import { columns } from './table/columns'
 import { CutViewTable } from './table/table'
+import { useGetCuttingViewItemsQuery } from '@/api/ebms/cutting/cutting'
 import { useCurrentValue } from '@/hooks/use-current-value'
-import { useGetCuttingViewItemsQuery } from '@/store/api/ebms/cutting/cutting'
 
 export interface CuttingItemsToDisplay {
     total: number
@@ -22,11 +22,17 @@ export interface CuttingItemsToDisplay {
 }
 
 export const CutView = () => {
-    const [cutView] = useQueryParam('cut-view', StringParam)
-    const [color] = useQueryParam('color', StringParam)
-    const [offset] = useQueryParam('offset', NumberParam)
-    const [limit] = useQueryParam('limit', NumberParam)
-    const [cuttingComplete] = useQueryParam('cutting_complete', BooleanParam)
+    const [cutView] = useQueryState('cut-view')
+    const [color] = useQueryState('color')
+    const [offset] = useQueryState('offset', {
+        parse: Number
+    })
+    const [limit] = useQueryState('limit', {
+        parse: Number
+    })
+    const [cuttingComplete] = useQueryState('cutting_complete', {
+        parse: Boolean
+    })
 
     const {
         currentData: cuttingItems,

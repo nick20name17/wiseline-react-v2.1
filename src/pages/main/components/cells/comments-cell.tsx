@@ -47,7 +47,7 @@ interface CommentsCellProps {
 }
 type CommentsCellFormData = zodInfer<typeof commentSchema>
 
-export const CommentsCell: React.FC<CommentsCellProps> = ({ originItem }) => {
+export const CommentsCell = ({ originItem }: CommentsCellProps) => {
     const [category] = useQueryState('category')
 
     const originItemId = originItem?.id

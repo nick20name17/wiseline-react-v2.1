@@ -38,7 +38,7 @@ const stageSchema = z.object({
 
 type AddStatusFormData = zodInfer<typeof stageSchema>
 
-export const AddStatus: React.FC<AddStatusProps> = ({ flowId }) => {
+export const AddStatus = ({ flowId }: AddStatusProps) => {
     const form = useForm({
         defaultValues: {
             name: '',

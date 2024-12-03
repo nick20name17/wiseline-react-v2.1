@@ -1,8 +1,8 @@
 import type { ColumnDef } from '@tanstack/react-table'
 
-import { DataTableColumnHeader } from '@/components/shared'
+import type { EBMSItemData } from '@/api/ebms/ebms.types'
+import { DataTableColumnHeader } from '@/components/data-table-column-header'
 import { Button } from '@/components/ui/button'
-import type { EBMSItemData } from '@/store/api/ebms/ebms.types'
 
 export const subSubColumns: ColumnDef<EBMSItemData>[] = [
     {
@@ -13,7 +13,6 @@ export const subSubColumns: ColumnDef<EBMSItemData>[] = [
                 title='Prod. category'
             />
         ),
-        // cell: ({ row }) => <div className='px-1'>{row.original?.category}</div>,
         enableHiding: false,
         size: 160
     },
@@ -84,7 +83,6 @@ export const subSubColumns: ColumnDef<EBMSItemData>[] = [
             />
         ),
         size: 112
-        // cell: ({ row }) => <div className='w-28 px-1'>{row.original?.id_inven}</div>
     },
     {
         accessorKey: 'bends',

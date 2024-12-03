@@ -47,7 +47,7 @@ export const DetailsView = () => {
         production_date: date ? date : undefined
     }
 
-    const { currentData, isLoading, isFetching, refetch } = useGetItemsQuery(queryParams)
+    const { currentData, isLoading, isFetching } = useGetItemsQuery(queryParams)
 
     const currentCount = useCurrentValue(currentData?.count)
 
