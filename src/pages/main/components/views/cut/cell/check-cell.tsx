@@ -1,5 +1,4 @@
 import { CheckCircle2, Circle } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { usePatchItemCuttingCompleteMutation } from '@/api/items/items'
@@ -14,14 +13,8 @@ interface CheckCellProps {
 }
 
 export const CheckCell = ({ autoids, complete }: CheckCellProps) => {
-    const [isChecked, setIsChecked] = useState(complete)
-
     const [patchItemCuttingComplete, { isLoading }] =
         usePatchItemCuttingCompleteMutation()
-
-    useEffect(() => {
-        setIsChecked(complete)
-    }, [complete])
 
     const isWorkerOrUser = useCurrentUserRole(['worker', 'client'])
 
@@ -59,7 +52,6 @@ export const CheckCell = ({ autoids, complete }: CheckCellProps) => {
     }
 
     const onPressChanage = (checked: boolean) => {
-        setIsChecked(checked)
         autoids.forEach((autoid) => handlePatchSalesOrder(checked, autoid))
     }
 
@@ -78,7 +70,7 @@ export const CheckCell = ({ autoids, complete }: CheckCellProps) => {
             ) : (
                 <Toggle
                     disabled={isLoading}
-                    pressed={isChecked}
+                    pressed={complete}
                     onPressedChange={onPressChanage}
                     className={cn(
                         'h-8 w-16 cursor-pointer data-[state=on]:border-green-600 data-[state=on]:bg-green-700/10',
@@ -88,7 +80,7 @@ export const CheckCell = ({ autoids, complete }: CheckCellProps) => {
                     asChild
                     aria-label='Toggle grouped'
                 >
-                    {isChecked ? (
+                    {complete ? (
                         <div>
                             <CheckCircle2 className='mr-1.5 h-4 w-4 flex-shrink-0 text-green-700' />
                             Yes

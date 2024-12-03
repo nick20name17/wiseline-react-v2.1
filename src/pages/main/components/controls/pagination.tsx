@@ -20,12 +20,10 @@ interface PaginationProps {
 export const Pagination = ({ pageCount, isDataLoading }: PaginationProps) => {
     const [offset, setOffset] = useQueryState('offset', {
         parse: Number,
-        // clearOnDefault: false,
         defaultValue: tableConfig.pagination.pageIndex * tableConfig.pagination.pageSize
     })
     const [limit, setLimit] = useQueryState('limit', {
         parse: Number,
-        // clearOnDefault: false,
         defaultValue: tableConfig.pagination.pageSize
     })
 

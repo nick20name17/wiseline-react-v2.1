@@ -50,7 +50,7 @@ export const TableControls = () => {
             </div>
 
             <div className='flex items-center gap-4'>
-                {/* <Filters /> */}
+                <Filters />
                 <CategoryFilter />
             </div>
         </div>

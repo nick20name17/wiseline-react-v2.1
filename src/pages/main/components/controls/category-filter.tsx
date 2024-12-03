@@ -1,5 +1,4 @@
 import { useQueryState } from 'nuqs'
-import { useEffect } from 'react'
 
 import { useGetAllCategoriesQuery } from '@/api/ebms/categories/categories'
 import {
@@ -13,7 +12,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
 export const CategoryFilter = () => {
-    const [category, setCategory] = useQueryState('category')
+    const [category, setCategory] = useQueryState('category', {
+        defaultValue: 'All'
+    })
     const [_, setOffset] = useQueryState('offset', {
         parse: Number
     })
@@ -26,10 +27,6 @@ export const CategoryFilter = () => {
         setOffset(0)
         setCategory(value)
     }
-
-    useEffect(() => {
-        setCategory(category || 'All')
-    }, [])
 
     if (isLoading) {
         return <Skeleton className='h-9 w-40' />

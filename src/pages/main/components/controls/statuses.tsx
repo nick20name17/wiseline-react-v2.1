@@ -30,7 +30,7 @@ export const Statuses = () => {
     const getDefaultValue = () => {
         switch (scheduled) {
             case false:
-                setOverdue(null)
+                // setOverdue(null)
                 return 'unscheduled'
             case true:
                 return 'scheduled'

@@ -40,8 +40,7 @@ export const UsersTable = <_, TValue>({
     })
 
     const [searchTerm] = useQueryState('search', {
-        defaultValue: '',
-        clearOnDefault: false
+        defaultValue: ''
     })
 
     const filteredData = searchTerm

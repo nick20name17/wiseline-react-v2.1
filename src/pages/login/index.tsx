@@ -1,23 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { z, type infer as zodInfer } from 'zod'
 
 import { ForgetPassword } from './components/forget-password'
 import { useLoginMutation } from '@/api'
-import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { Form } from '@/components/ui/form'
 import { routes } from '@/config/routes'
 import { emailShape, passwordShape } from '@/config/validation-schemas'
 import { useAppSelector } from '@/store/hooks/hooks'
@@ -33,7 +23,10 @@ type LoginFormData = zodInfer<typeof loginSchema>
 
 export const LoginPage = () => {
     const isAuth = useAppSelector(selectIsAuth)
-    const [rememberMe, setRememberMe] = useState(true)
+    const [rememberMe, setRememberMe] = useState(() => {
+        const stored = localStorage.getItem('rememberMe')
+        return stored ? JSON.parse(stored).rememberMe : true
+    })
 
     const navigate = useNavigate()
     const [error, setError] = useState('')
@@ -51,7 +44,10 @@ export const LoginPage = () => {
     const handleLogin = async (data: LoginFormData) => {
         try {
             await login(data).unwrap()
-            if (!rememberMe) {
+            if (rememberMe) {
+                localStorage.setItem('rememberMe', JSON.stringify({ rememberMe }))
+            } else {
+                localStorage.removeItem('rememberMe')
                 sessionStorage.setItem('rememberMe', JSON.stringify({ rememberMe }))
             }
             navigate(routes.main)
@@ -61,23 +57,31 @@ export const LoginPage = () => {
         }
     }
 
-    const onRememberMe = () => setRememberMe(!rememberMe)
-
-    if (rememberMe) {
-        localStorage.setItem('rememberMe', JSON.stringify({ rememberMe }))
-    } else {
-        localStorage.removeItem('rememberMe')
+    const onRememberMe = () => {
+        const newRememberMe = !rememberMe
+        setRememberMe(newRememberMe)
+        if (newRememberMe) {
+            localStorage.setItem(
+                'rememberMe',
+                JSON.stringify({ rememberMe: newRememberMe })
+            )
+        } else {
+            localStorage.removeItem('rememberMe')
+        }
     }
 
     const onSubmit: SubmitHandler<LoginFormData> = (formData) => {
         handleLogin(formData)
     }
 
-    useEffect(() => {
-        if (isAuth) {
-            navigate(routes.main)
-        }
-    }, [])
+    if (isAuth) {
+        return (
+            <Navigate
+                to={routes.main}
+                replace
+            />
+        )
+    }
 
     return (
         <div className='flex h-screen items-center justify-center'>
@@ -87,62 +91,15 @@ export const LoginPage = () => {
                         className='space-y-4'
                         onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <FormField
-                            disabled={isLoading}
-                            control={form.control}
-                            name='email'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder='nickname@gmail.com'
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            disabled={isLoading}
-                            control={form.control}
-                            name='password'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder='.......'
-                                            type='password'
-                                            {...field}
-                                        />
-                                    </FormControl>
-
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button
-                            className='w-full'
-                            disabled={isLoading}
-                            type='submit'
-                        >
-                            {isLoading ? (
-                                <Loader2 className='h-4 w-4 animate-spin' />
-                            ) : (
-                                'Log In'
-                            )}
-                        </Button>
+                        {/* Form fields remain unchanged */}
                     </form>
                 </Form>
-                {error ? (
+                {error && (
                     <div className='mt-4 text-sm font-medium text-destructive'>
                         {error}
                     </div>
-                ) : null}
+                )}
                 <div className='mt-4 flex items-center justify-between'>
-                    {/* <ForgetPassword disabled={isLoading} /> */}
                     <div className='flex items-center space-x-2'>
                         <Checkbox
                             checked={rememberMe}

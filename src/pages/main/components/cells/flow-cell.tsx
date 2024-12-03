@@ -1,5 +1,5 @@
 import { useQueryState } from 'nuqs'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { toast } from 'sonner'
 
 import { useGetAllCategoriesQuery } from '@/api/ebms/categories/categories'
@@ -27,22 +27,21 @@ interface FlowCellProps {
 
 export const FlowCell = ({ item }: FlowCellProps) => {
     const [category] = useQueryState('category')
-
     const { data: categoriesData } = useGetAllCategoriesQuery()
 
-    const flows = categoriesData?.find(
-        (category) => category.name.toLowerCase() === item?.category?.toLowerCase()
-    )
-    const flowsData = flows?.flows || []
+    const flowsData = useMemo(() => {
+        const flows = categoriesData?.find(
+            (category) => category.name.toLowerCase() === item?.category?.toLowerCase()
+        )
+        return flows?.flows || []
+    }, [categoriesData, item?.category])
 
     const { flow, id: itemId } = item?.item || {}
     const flowId = flow?.id
-
-    const [defalutValue, setDefaultValue] = useState(flowId ? String(flowId) : '')
+    const defaultValue = flowId ? String(flowId) : ''
 
     const [patchItemStatus] = usePatchItemMutation()
     const [patchOrderStatus] = usePatchOrderItemMutation()
-
     const [addItem] = useAddItemMutation()
     const [addOrderItem] = useAddOrderItemMutation()
 
@@ -72,18 +71,15 @@ export const FlowCell = ({ item }: FlowCellProps) => {
 
     const onValueChange = (value: string) => {
         const flowName = flowsData?.find((flow) => flow.id === +value)?.name
-
         const data = {
             flow: +value,
             flowName,
             order: item?.origin_order
         }
 
-        setDefaultValue(value)
-
         if (itemId) {
             handlePatchItem({
-                id: itemId!,
+                id: itemId,
                 data
             })
         } else {
@@ -96,31 +92,29 @@ export const FlowCell = ({ item }: FlowCellProps) => {
         }
     }
 
-    useEffect(() => {
-        setDefaultValue(flowId ? String(flowId) : '')
-    }, [flowId])
-
     const isClient = useCurrentUserRole('client')
     const isWorker = useCurrentUserRole('worker')
+    const isDisabled = !flowsData?.length || isClient
 
-    return isClient || (isWorker && !item?.production_date) ? (
-        <Button
-            variant='ghost'
-            className='pointer-events-none w-full text-center font-normal'
-        >
-            <span>
-                {' '}
-                {item?.item?.flow?.name || (
-                    <span className='opacity-50'>Not selected</span>
-                )}
-            </span>
-        </Button>
-    ) : (
+    if (isClient || (isWorker && !item?.production_date)) {
+        return (
+            <Button
+                variant='ghost'
+                className='pointer-events-none w-full text-center font-normal'
+            >
+                <span>
+                    {item?.item?.flow?.name || (
+                        <span className='opacity-50'>Not selected</span>
+                    )}
+                </span>
+            </Button>
+        )
+    }
+
+    return (
         <Select
-            // key={defalueValue}
-            disabled={!flowsData?.length || isClient}
-            defaultValue={defalutValue}
-            value={defalutValue}
+            disabled={isDisabled}
+            defaultValue={defaultValue}
             onValueChange={onValueChange}
         >
             <SelectTrigger className='w-full text-left'>

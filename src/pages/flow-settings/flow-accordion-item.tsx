@@ -14,7 +14,6 @@ import {
     verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { FlowMenu } from './components/actions/flow/menu'
@@ -47,23 +46,11 @@ interface SortableCardProps {
 
 export const FlowAccordionItem = ({ flow }: FlowAccordionItemProps) => {
     const [patchStage] = usePatchStageMutation()
-
     const currentStages = flow?.stages || []
 
-    const [items, setItems] = useState(currentStages)
-
     const sensors = useSensors(
-        useSensor(MouseSensor, {
-            activationConstraint: {
-                distance: 12
-            }
-        }),
-        useSensor(TouchSensor, {
-            activationConstraint: {
-                delay: 50,
-                tolerance: 8
-            }
-        })
+        useSensor(MouseSensor, { activationConstraint: { distance: 12 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 50, tolerance: 8 } })
     )
 
     const handlePatchStage = async (data: StagePatchPayload) => {
@@ -77,24 +64,17 @@ export const FlowAccordionItem = ({ flow }: FlowAccordionItemProps) => {
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event
-
         if (active.id !== over?.id) {
-            setItems((items) => {
-                const oldIndex = items.findIndex((item) => item.id === active.id)
-                const newIndex = items.findIndex((item) => item.id === over?.id)
+            const oldIndex = currentStages.findIndex((item) => item.id === active.id)
+            const newIndex = currentStages.findIndex((item) => item.id === over?.id)
+            const newStages = arrayMove(currentStages, oldIndex, newIndex)
 
-                return arrayMove(items, oldIndex, newIndex)
-            })
-        }
-
-        const currentData = event.over?.data?.current!
-
-        if (currentData.stageName !== 'Unscheduled' && currentData.stageName !== 'Done') {
-            handlePatchStage({
-                id: event.active.id as number,
-                data: {
-                    position: currentData.position as unknown as number,
-                    flow: flow.id
+            newStages.forEach((stage, index) => {
+                if (stage.position !== index) {
+                    handlePatchStage({
+                        id: stage.id,
+                        data: { position: index, flow: flow.id }
+                    })
                 }
             })
         }
@@ -102,10 +82,6 @@ export const FlowAccordionItem = ({ flow }: FlowAccordionItemProps) => {
 
     const doneStage = currentStages.find((stage) => stage.name === 'Done')
     const unscheduledStage = currentStages.find((stage) => stage.name === 'Unscheduled')
-
-    useEffect(() => {
-        setItems(currentStages)
-    }, [currentStages])
 
     return (
         <AccordionItem
@@ -154,10 +130,10 @@ export const FlowAccordionItem = ({ flow }: FlowAccordionItemProps) => {
                             onDragEnd={handleDragEnd}
                         >
                             <SortableContext
-                                items={items}
+                                items={currentStages}
                                 strategy={verticalListSortingStrategy}
                             >
-                                {items.map((stage) =>
+                                {currentStages.map((stage) =>
                                     stage.name !== 'Done' &&
                                     stage.name !== 'Unscheduled' ? (
                                         <SortableCard

@@ -18,7 +18,9 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
 export const Colorfilter = () => {
-    const [colorParam, setColorParam] = useQueryState('color')
+    const [colorParam, setColorParam] = useQueryState('color', {
+        defaultValue: 'all'
+    })
     const [open, setOpen] = useState(false)
     const [view] = useQueryState('view')
     const [, setOffset] = useQueryState('offset', {
@@ -40,10 +42,6 @@ export const Colorfilter = () => {
             setColorParam('all')
         }
     }, [view])
-
-    useEffect(() => {
-        setColorParam(colorParam || 'all')
-    }, [colorParam])
 
     useEffect(() => {
         return () => {

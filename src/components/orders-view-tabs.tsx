@@ -1,41 +1,36 @@
+'use client'
+
 import { useQueryState } from 'nuqs'
-import { useEffect } from 'react'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { tableConfig } from '@/config/table'
 
+const VIEW_CONFIG: Record<string, { ordering: string | null }> = {
+    orders: { ordering: '-priority' },
+    lines: { ordering: 'order' },
+    cut: { ordering: null }
+}
+
 export const OrdersViewTabs = () => {
-    const [view = 'orders', setView] = useQueryState('view')
-    const [, setOffset] = useQueryState('offset', {
-        parse: Number
+    const [view, setView] = useQueryState('view', {
+        defaultValue: 'orders'
     })
-    const [, setLimit] = useQueryState('limit', {
-        parse: Number
-    })
+
+    const [, setOffset] = useQueryState('offset', { parse: Number })
+    const [, setLimit] = useQueryState('limit', { parse: Number })
     const [, setOrdering] = useQueryState('ordering')
 
-    useEffect(() => {
-        setView(view || 'orders')
-    }, [])
-
-    const onValueChange = (value: string) => {
+    const handleViewChange = (newView: string) => {
+        setView(newView)
         setOffset(0)
         setLimit(tableConfig.pagination.pageSize)
-        setView(value)
-
-        if (value === 'lines') {
-            setOrdering('order')
-        } else if (value === 'orders') {
-            setOrdering('-priority')
-        } else {
-            setOrdering(null)
-        }
+        setOrdering(VIEW_CONFIG[newView].ordering)
     }
 
     return (
         <Tabs
-            onValueChange={onValueChange}
-            defaultValue={view!}
+            onValueChange={handleViewChange}
+            value={view}
         >
             <TabsList>
                 <TabsTrigger value='orders'>All Orders</TabsTrigger>

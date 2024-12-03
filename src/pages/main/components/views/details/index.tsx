@@ -80,7 +80,7 @@ export const DetailsView = () => {
     ])
 
     return (
-        <section className='mt-4 px-4'>
+        <>
             <TableControls />
             <DetailsViewTable
                 columns={columns}
@@ -89,6 +89,6 @@ export const DetailsView = () => {
                 isDataFetching={isFetching}
                 pageCount={pageCount}
             />
-        </section>
+        </>
     )
 }

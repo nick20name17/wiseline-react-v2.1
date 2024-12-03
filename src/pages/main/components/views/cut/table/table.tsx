@@ -135,7 +135,7 @@ export const CutViewTable = ({
     const colSpan = columns.length + trimColumns.length + 1
 
     return (
-        <div className='mt-4 overflow-hidden'>
+        <div className='overflow-hidden'>
             <div
                 ref={tableRef}
                 className='relative h-fit overflow-y-auto rounded-md border'

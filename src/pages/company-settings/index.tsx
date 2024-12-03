@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import {
@@ -12,21 +11,17 @@ import { Switch } from '@/components/ui/switch'
 import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
+const errorToast = (description: string) =>
+    toast.error('Change Password', { description })
+
 export const CompanySettingsPage = () => {
     const isAdmin = useCurrentUserRole('admin')
-
     const { data, isLoading } = useGetCompanyProfilesQuery()
-
-    const [checked, setChecked] = useState(data?.working_weekend)
-
     const [addCompanyProfiles] = useAddCompanyProfilesMutation()
 
-    const errorToast = (description: string) =>
-        toast.error('Change Password', { description })
-
-    const handleAddCompanyProfiles = async (data: CompanyProfileData) => {
+    const handleAddCompanyProfiles = async (newData: CompanyProfileData) => {
         try {
-            addCompanyProfiles(data).unwrap()
+            await addCompanyProfiles(newData).unwrap()
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
             errorToast(isErrorMessage ? error.data.detail : 'Something went wrong')
@@ -34,13 +29,8 @@ export const CompanySettingsPage = () => {
     }
 
     const onCheckedChange = (checked: boolean) => {
-        setChecked(checked)
         handleAddCompanyProfiles({ working_weekend: checked })
     }
-
-    useEffect(() => {
-        setChecked(data?.working_weekend)
-    }, [data?.working_weekend])
 
     return (
         <>
@@ -50,7 +40,7 @@ export const CompanySettingsPage = () => {
                     <Label htmlFor='working_weekend'>Working weekend</Label>
                     <Switch
                         disabled={!isAdmin || isLoading}
-                        checked={checked}
+                        checked={data?.working_weekend ?? false}
                         onCheckedChange={onCheckedChange}
                         id='working_weekend'
                     />

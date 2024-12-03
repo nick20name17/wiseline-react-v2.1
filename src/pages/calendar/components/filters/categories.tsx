@@ -1,19 +1,13 @@
 import { useQueryState } from 'nuqs'
-import { useEffect } from 'react'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export const Categories = () => {
     const [category, setCategory] = useQueryState('category', {
-        defaultValue: 'Rollforming',
-        clearOnDefault: false
+        defaultValue: 'Rollforming'
     })
 
     const onValueChange = (value: string) => setCategory(value)
-
-    useEffect(() => {
-        setCategory(category)
-    }, [])
 
     return (
         <Tabs
