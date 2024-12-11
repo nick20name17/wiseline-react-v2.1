@@ -1,10 +1,10 @@
 import { format, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon, RotateCcw } from 'lucide-react'
 import { animate } from 'motion/react'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 import { toast } from 'sonner'
+import { BooleanParam, useQueryParam } from 'use-query-params'
 
 import type { EBMSItemsData } from '@/api/ebms/ebms.types'
 import { useAddItemMutation, usePatchItemMutation } from '@/api/items/items'
@@ -51,9 +51,7 @@ export const DatePickerCell = ({ originItem }: DatePickerCellProps) => {
 
     const [date, setDate] = useState<Date | undefined>(productionDate)
 
-    const [scheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
 
     const [open, setOpen] = useState(false)
     const [disabledDays, setDisabledDays] = useState<Matcher[]>([])

@@ -1,5 +1,5 @@
-import { useQueryState } from 'nuqs'
 import { useEffect, useMemo } from 'react'
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { columns } from '../../orders/table/columns'
 import { OrdersViewTable } from '../../orders/table/table'
@@ -8,14 +8,10 @@ import { useGetOrdersQuery } from '@/api/ebms/ebms'
 import { useCurrentValue } from '@/hooks/use-current-value'
 
 export const AllOrdersTable = () => {
-    const [offsetParam] = useQueryState('offset', {
-        parse: Number
-    })
-    const [limitParam] = useQueryState('limit', {
-        parse: Number
-    })
-    const [ordering, setOrdering] = useQueryState('ordering')
-    const [cutView] = useQueryState('cut-view')
+    const [offsetParam] = useQueryParam('offset', NumberParam)
+    const [limitParam] = useQueryParam('limit', NumberParam)
+    const [ordering, setOrdering] = useQueryParam('ordering', StringParam)
+    const [cutView] = useQueryParam('cut-view', StringParam)
 
     const { currentData, isLoading, isFetching } = useGetOrdersQuery({
         limit: limitParam!,

@@ -1,8 +1,8 @@
 import { RefreshCcw } from 'lucide-react'
 import { animate } from 'motion/react'
-import { useQueryState } from 'nuqs'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
+import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { useLazyGetOrderQuery } from '@/api/ebms/ebms'
 import type { EBMSItemData, EBMSItemsData } from '@/api/ebms/ebms.types'
@@ -34,10 +34,8 @@ export const StatusCell = ({ item }: StatusCellProps) => {
     const originOrderId = item?.origin_order
     const invoice = item?.order
 
-    const [view] = useQueryState('view')
-    const [completed] = useQueryState('completed', {
-        parse: Boolean
-    })
+    const [view] = useQueryParam('view', StringParam)
+    const [completed] = useQueryParam('completed', BooleanParam)
 
     const [trigger] = useLazyGetOrderQuery()
 

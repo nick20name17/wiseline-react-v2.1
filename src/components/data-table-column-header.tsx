@@ -1,6 +1,8 @@
+'use no memo'
+
 import type { Column } from '@tanstack/react-table'
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react'
-import { useQueryState } from 'nuqs'
+import { BooleanParam, useQueryParam } from 'use-query-params'
 
 interface DataTableColumnHeaderProps<TData, TValue> {
     column: Column<TData, TValue>
@@ -11,13 +13,9 @@ export const DataTableColumnHeader = <TData, TValue>({
     column,
     title
 }: DataTableColumnHeaderProps<TData, TValue>) => {
-    const [grouped] = useQueryState('grouped', {
-        parse: Boolean
-    })
-    const [completed] = useQueryState('completed', {
-        parse: Boolean
-    })
-    const [view] = useQueryState('view')
+    const [grouped] = useQueryParam('grouped', BooleanParam)
+    const [completed] = useQueryParam('completed', BooleanParam)
+    const [view] = useQueryParam('view')
 
     const isLinesDisabled = view === 'lines' && (completed! || grouped!)
 

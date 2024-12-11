@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import type { EBMSItemsData, OrdersData } from '@/api/ebms/ebms.types'
 import type { AccessToken } from '@/api/types/auth'
@@ -25,7 +26,7 @@ export const useWebSocket = <T extends UseWebsocketProps>({
     const [dataToRender, setDataToRender] = useState<(OrdersData | EBMSItemsData)[]>(
         currentData || []
     )
-    const [category] = ['All']
+    const [category = 'All'] = useQueryParam('category', StringParam)
 
     useEffect(() => {
         setDataToRender(currentData || [])

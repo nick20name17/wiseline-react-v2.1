@@ -1,6 +1,6 @@
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { useGetColorsQuery } from '@/api/ebms/cutting/cutting'
 import { Button } from '@/components/ui/button'
@@ -17,15 +17,17 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
+const defaultColorParam = 'all'
+
 export const Colorfilter = () => {
-    const [colorParam, setColorParam] = useQueryState('color', {
-        defaultValue: 'all'
-    })
     const [open, setOpen] = useState(false)
-    const [cutView] = useQueryState('cut-view')
-    const [, setOffset] = useQueryState('offset', {
-        parse: Number
-    })
+
+    const [colorParam = defaultColorParam, setColorParam] = useQueryParam(
+        'color',
+        StringParam
+    )
+    const [cutView] = useQueryParam('cut-view', StringParam)
+    const [, setOffset] = useQueryParam('offset', NumberParam)
 
     const { data: colorsData, isLoading } = useGetColorsQuery()
 
@@ -39,7 +41,7 @@ export const Colorfilter = () => {
 
     useEffect(() => {
         if (cutView === 'pipeline') {
-            setColorParam('all')
+            setColorParam(defaultColorParam)
         }
     }, [cutView])
 

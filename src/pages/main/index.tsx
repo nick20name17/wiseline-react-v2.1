@@ -1,5 +1,5 @@
-import { useQueryState } from 'nuqs'
 import { useMemo } from 'react'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { CutView } from './components/views/cut'
 import { DetailsView } from './components/views/details'
@@ -10,7 +10,7 @@ import { useBodyScrollLock } from '@/hooks/use-body-scroll-lock'
 import { useMatchMedia } from '@/hooks/use-match-media'
 
 export const MainPage = () => {
-    const [view] = useQueryState('view')
+    const [view] = useQueryParam('view', StringParam)
 
     const { isTablet } = useMatchMedia()
 

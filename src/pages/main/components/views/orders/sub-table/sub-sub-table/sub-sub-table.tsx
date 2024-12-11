@@ -4,7 +4,7 @@ import {
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
-import { useQueryState } from 'nuqs'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { subSubColumns } from './sub-sub-columns'
 import type { EBMSItemData } from '@/api/ebms/ebms.types'
@@ -30,7 +30,7 @@ export const SubSubTable = ({ data }: SubSubTableProps) => {
         columns: subSubColumns
     })
 
-    const [category] = useQueryState('category')
+    const [category] = useQueryParam('category', StringParam)
 
     return (
         <div className='relative max-h-[390px] overflow-y-auto rounded-md !border'>

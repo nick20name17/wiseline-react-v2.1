@@ -1,9 +1,9 @@
 import type { Table } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { BooleanParam, useQueryParam } from 'use-query-params'
 
 // import { DatePicker } from '@/components/ui/multipatch-date-picker'
 import type { OrdersData } from '@/api/ebms/ebms.types'
@@ -45,12 +45,8 @@ export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
     const [patchItems, { isLoading }] = useMultiPatchItemsMutation()
     const [patchOrders] = useMultiPatchOrdersMutation()
 
-    const [scheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
-    const [completed] = useQueryState('completed', {
-        parse: Boolean
-    })
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
+    const [completed] = useQueryParam('completed', BooleanParam)
 
     const successToast = (
         date: string,

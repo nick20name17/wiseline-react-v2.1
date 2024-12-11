@@ -1,4 +1,3 @@
-import { NuqsAdapter } from 'nuqs/adapters/react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 import { MainPage } from './pages/main'
@@ -69,8 +68,4 @@ const router = createBrowserRouter([
     }
 ])
 
-export const App = () => (
-    <NuqsAdapter>
-        <RouterProvider router={router} />
-    </NuqsAdapter>
-)
+export const App = () => <RouterProvider router={router} />

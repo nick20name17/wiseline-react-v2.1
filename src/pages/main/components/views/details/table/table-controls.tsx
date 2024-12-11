@@ -1,5 +1,5 @@
-import { useQueryState } from 'nuqs'
 import { useEffect, useRef } from 'react'
+import { BooleanParam, useQueryParam } from 'use-query-params'
 
 import { CategoryFilter } from '../../../controls/category-filter'
 import { Filters } from '../../../controls/filters'
@@ -18,12 +18,8 @@ export const TableControls = () => {
 
     const { isTablet } = useMatchMedia()
 
-    const [grouped, setGrouped] = useQueryState('grouped', {
-        parse: Boolean
-    })
-    const [_, setCompleted] = useQueryState('completed', {
-        parse: Boolean
-    })
+    const [grouped, setGrouped] = useQueryParam('grouped', BooleanParam)
+    const [_, setCompleted] = useQueryParam('completed', BooleanParam)
 
     const handleSetGrouped = (value: boolean) => {
         if (value) {

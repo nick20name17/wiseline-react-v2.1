@@ -146,7 +146,10 @@ export const CutViewTable = ({
                                 const groupedItems = groupByFields(cuttingItems)
 
                                 return isDataLoading || isLoadingTrimFlows ? (
-                                    <TableSkeleton columnsCount={allColumns.length} />
+                                    <TableSkeleton
+                                        key={priority}
+                                        columnsCount={allColumns.length}
+                                    />
                                 ) : (
                                     <Fragment key={priority}>
                                         <TableRow className='!p-0'>
@@ -291,6 +294,9 @@ export const CutViewTable = ({
                                                                             (row) => {
                                                                                 return (
                                                                                     <GroupedByColorRow
+                                                                                        key={
+                                                                                            row.id
+                                                                                        }
                                                                                         row={
                                                                                             row
                                                                                         }

@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 //     row: Row<OrdersData>
 // }
 // export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
-//     const [category] = useQueryState('category')
+//     const [category] = useQueryParam('category', StringParam)
 //     const [open, setOpen] = useState(false)
 //     const { isTablet } = useMatchMedia()
 //     const originItems = row.original.origin_items
@@ -80,8 +80,8 @@ import { format } from 'date-fns'
 //     )
 // }
 import { motion } from 'motion/react'
-import { useQueryState } from 'nuqs'
 import { Fragment } from 'react'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { SubTable } from '../sub-table/sub-table'
 
@@ -168,7 +168,7 @@ export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
         forwardMotionProps: true
     })
 
-    const [category] = useQueryState('category')
+    const [category] = useQueryParam('category', StringParam)
     // const { isTablet } = useMatchMedia()
 
     const isClientOrWorker = useCurrentUserRole(['client', 'worker'])

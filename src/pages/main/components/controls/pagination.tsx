@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight, SkipBack, SkipForward } from 'lucide-react'
-import { useQueryState } from 'nuqs'
+import { NumberParam, useQueryParam } from 'use-query-params'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -16,20 +16,17 @@ interface PaginationProps {
     isDataLoading: boolean
 }
 
-export const Pagination = ({ pageCount, isDataLoading }: PaginationProps) => {
-    const [offset, setOffset] = useQueryState('offset', {
-        parse: Number,
-        defaultValue: tableConfig.pagination.pageIndex * tableConfig.pagination.pageSize
-    })
-    const [limit, setLimit] = useQueryState('limit', {
-        parse: Number,
-        defaultValue: tableConfig.pagination.pageSize
-    })
+const defaultOffset = tableConfig.pagination.pageIndex * tableConfig.pagination.pageSize
+const defaultLimit = tableConfig.pagination.pageSize
 
-    const currentPage = Math.floor(offset / limit) + 1
+export const Pagination = ({ pageCount, isDataLoading }: PaginationProps) => {
+    const [offset = defaultOffset, setOffset] = useQueryParam('offset', NumberParam)
+    const [limit = defaultLimit, setLimit] = useQueryParam('limit', NumberParam)
+
+    const currentPage = Math.floor(offset || defaultOffset / (limit || defaultLimit)) + 1
 
     const handlePageChange = (newPage: number) => {
-        const newOffset = (newPage - 1) * limit
+        const newOffset = (newPage - 1) * (limit || defaultLimit)
         setOffset(newOffset)
     }
 

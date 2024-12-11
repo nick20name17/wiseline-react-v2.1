@@ -1,9 +1,9 @@
 import { format, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 import { toast } from 'sonner'
+import { BooleanParam, useQueryParam } from 'use-query-params'
 
 import { usePatchEBMSOrdersMutation } from '@/api/ebms/ebms'
 import type { EBMSOrdersPatchPayload, OrdersData } from '@/api/ebms/ebms.types'
@@ -24,9 +24,7 @@ export const ShipDatePickerCell = ({ order }: ShipDatePickerCellProps) => {
 
     const [date, setDate] = useState<Date | undefined>(shipDate)
 
-    const [scheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
 
     const [open, setOpen] = useState(false)
     const [disabledDays, setDisabledDays] = useState<Matcher[]>([])

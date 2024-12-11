@@ -1,40 +1,28 @@
-import { useQueryState } from 'nuqs'
 import { useEffect, useMemo } from 'react'
+import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { columns } from './table/columns'
 import { DetailsViewTable } from './table/table'
 import { TableControls } from './table/table-controls'
 import { useGetItemsQuery } from '@/api/ebms/ebms'
 import type { EBMSItemsQueryParams } from '@/api/ebms/ebms.types'
-import { tableConfig } from '@/config/table'
 import { useCurrentValue } from '@/hooks/use-current-value'
+import { useWebSocket } from '@/hooks/use-web-socket'
 import { useAppDispatch } from '@/store/hooks/hooks'
 import { setCurrentQueryParams } from '@/store/slices/query-params'
 
 export const DetailsView = () => {
-    const [overdue] = useQueryState('overdue', {
-        parse: Boolean
-    })
-    const [completed] = useQueryState('completed', {
-        parse: Boolean
-    })
-    const [scheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
-    const [search] = useQueryState('search')
-    const [offset] = useQueryState('offset', {
-        parse: Number,
-        defaultValue: tableConfig.pagination.pageIndex * tableConfig.pagination.pageSize
-    })
-    const [limit] = useQueryState('limit', {
-        parse: Number,
-        defaultValue: tableConfig.pagination.pageSize
-    })
-    const [date] = useQueryState('date')
-    const [flow] = useQueryState('flow')
-    const [stage] = useQueryState('stage')
-    const [category] = useQueryState('category')
-    const [ordering] = useQueryState('ordering')
+    const [overdue] = useQueryParam('overdue', BooleanParam)
+    const [completed] = useQueryParam('completed', BooleanParam)
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
+    const [offset] = useQueryParam('offset', NumberParam)
+    const [limit] = useQueryParam('limit', NumberParam)
+    const [search] = useQueryParam('search', StringParam)
+    const [date] = useQueryParam('date', StringParam)
+    const [flow] = useQueryParam('flow', StringParam)
+    const [stage] = useQueryParam('stage', StringParam)
+    const [category] = useQueryParam('category', StringParam)
+    const [ordering] = useQueryParam('ordering', StringParam)
 
     const queryParams: Partial<EBMSItemsQueryParams> = {
         offset: offset!,
@@ -50,7 +38,7 @@ export const DetailsView = () => {
         production_date: date ? date : undefined
     }
 
-    const { currentData, isLoading, isFetching } = useGetItemsQuery(queryParams)
+    const { currentData, isLoading, isFetching, refetch } = useGetItemsQuery(queryParams)
 
     const currentCount = useCurrentValue(currentData?.count)
 
@@ -59,11 +47,11 @@ export const DetailsView = () => {
         [isLoading, limit, currentCount]
     )
 
-    // const { dataToRender } = useWebSocket({
-    //     currentData: currentData?.results || [],
-    //     endpoint: 'items',
-    //     refetch
-    // })
+    const { dataToRender } = useWebSocket({
+        currentData: currentData?.results || [],
+        endpoint: 'items',
+        refetch
+    })
 
     const dispatch = useAppDispatch()
 
@@ -87,7 +75,7 @@ export const DetailsView = () => {
             <TableControls />
             <DetailsViewTable
                 columns={columns}
-                data={currentData?.results || []}
+                data={dataToRender}
                 isDataLoading={isLoading}
                 isDataFetching={isFetching}
                 pageCount={pageCount}

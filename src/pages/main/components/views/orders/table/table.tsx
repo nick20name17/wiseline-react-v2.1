@@ -5,8 +5,8 @@ import {
     useReactTable
 } from '@tanstack/react-table'
 import { AnimatePresence } from 'motion/react'
-import { useQueryState } from 'nuqs'
 import { useRef } from 'react'
+import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { CollapsibleRow } from './collapsible-row'
 import { TableFooter } from './table-footer'
@@ -46,11 +46,9 @@ export const OrdersViewTable = ({
     isDataFetching,
     pageCount
 }: DataTableProps<OrdersData, OrdersData>) => {
-    const [category] = useQueryState('category')
-    const [view] = useQueryState('view')
-    const [completed] = useQueryState('completed', {
-        parse: Boolean
-    })
+    const [category] = useQueryParam('category', StringParam)
+    const [view] = useQueryParam('view', StringParam)
+    const [completed] = useQueryParam('completed', BooleanParam)
 
     const { data: usersProfilesData } = useGetUsersProfilesQuery()
     const [addUsersProfiles] = useAddUsersProfilesMutation()

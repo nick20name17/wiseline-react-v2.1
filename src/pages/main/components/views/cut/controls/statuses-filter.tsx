@@ -1,4 +1,4 @@
-import { useQueryState } from 'nuqs'
+import { BooleanParam, useQueryParam } from 'use-query-params'
 
 import {
     Select,
@@ -8,6 +8,8 @@ import {
     SelectValue
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
+
+const defaultCuttingComplete = null
 
 const getDefaultValue = (cuttingComplete: boolean) => {
     switch (cuttingComplete) {
@@ -21,10 +23,10 @@ const getDefaultValue = (cuttingComplete: boolean) => {
 }
 
 export const StatusesFilter = () => {
-    const [cuttingComplete, setCuttingComplete] = useQueryState('cutting_complete', {
-        parse: Boolean,
-        defaultValue: null
-    })
+    const [cuttingComplete = defaultCuttingComplete, setCuttingComplete] = useQueryParam(
+        'cutting_complete',
+        BooleanParam
+    )
 
     const onCuttingComplete = (value: string | null) => {
         if (value === 'all') {

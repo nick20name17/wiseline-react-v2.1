@@ -1,5 +1,5 @@
-import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { useGetFlowsQuery } from '@/api/flows/flows'
 import {
@@ -12,13 +12,13 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
+const defaultFlow = 'all'
+
 export const FlowFilter = () => {
-    const [category] = useQueryState('category')
-    const [_, setStage] = useQueryState('stage')
-    const [flow, setFlow] = useQueryState('flow')
-    const [, setOffset] = useQueryState('offset', {
-        parse: Number
-    })
+    const [category] = useQueryParam('category', StringParam)
+    const [_, setStage] = useQueryParam('stage', StringParam)
+    const [flow = defaultFlow, setFlow] = useQueryParam('flow', StringParam)
+    const [, setOffset] = useQueryParam('offset')
 
     const onValueChange = (value: string) => {
         if (value === 'all') {
@@ -57,14 +57,14 @@ export const FlowFilter = () => {
     return category === 'All' ? null : (
         <Select
             key={flow! + category}
-            defaultValue={flow || 'all'}
+            defaultValue={flow || defaultFlow}
             disabled={isLoading || isFetching || !flowsData?.results?.length}
             onValueChange={onValueChange}
         >
             <SelectTrigger
                 className={cn(
                     '!w-40 text-left font-medium',
-                    flow ? 'border-primary text-primary' : ''
+                    flow !== 'all' ? 'border-primary text-primary' : ''
                 )}
             >
                 <SelectValue placeholder='Select flow' />

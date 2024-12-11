@@ -1,22 +1,14 @@
-import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
+import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export const Statuses = () => {
-    const [category] = useQueryState('category')
-    const [scheduled, setScheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
-    const [, setOverdue] = useQueryState('overdue', {
-        parse: Boolean
-    })
-    const [, setOffset] = useQueryState('offset', {
-        parse: Number
-    })
-    const [, setCompleted] = useQueryState('completed', {
-        parse: Boolean
-    })
+    const [category] = useQueryParam('category', StringParam)
+    const [scheduled, setScheduled] = useQueryParam('scheduled', BooleanParam)
+    const [, setOverdue] = useQueryParam('overdue', BooleanParam)
+    const [, setOffset] = useQueryParam('offset', NumberParam)
+    const [, setCompleted] = useQueryParam('completed', BooleanParam)
 
     const onValueChange = (tab: string) => {
         if (tab === 'unscheduled') {
@@ -30,7 +22,7 @@ export const Statuses = () => {
     const getDefaultValue = () => {
         switch (scheduled) {
             case false:
-                // setOverdue(null)
+                setOverdue(null)
                 return 'unscheduled'
             case true:
                 return 'scheduled'

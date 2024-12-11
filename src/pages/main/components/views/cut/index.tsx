@@ -1,5 +1,5 @@
-import { useQueryState } from 'nuqs'
 import { useMemo } from 'react'
+import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Controls } from './controls'
 import { AllOrdersTable } from './table/all-orders-table'
@@ -20,20 +20,14 @@ export interface CuttingItemsToDisplay {
     autoid: string
 }
 
+const defaultCutView = 'pipeline'
+
 export const CutView = () => {
-    const [cutView] = useQueryState('cut-view', {
-        defaultValue: 'pipeline'
-    })
-    const [color] = useQueryState('color')
-    const [offset] = useQueryState('offset', {
-        parse: Number
-    })
-    const [limit] = useQueryState('limit', {
-        parse: Number
-    })
-    const [cuttingComplete] = useQueryState('cutting_complete', {
-        parse: Boolean
-    })
+    const [cutView = defaultCutView] = useQueryParam('cut-view', StringParam)
+    const [color] = useQueryParam('color', StringParam)
+    const [offset] = useQueryParam('offset', NumberParam)
+    const [limit] = useQueryParam('limit', NumberParam)
+    const [cuttingComplete] = useQueryParam('cutting_complete', BooleanParam)
 
     const {
         currentData: cuttingItems,

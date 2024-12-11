@@ -1,9 +1,9 @@
 import type { Table } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { MultipatchDatePicker } from './multipatch-date-picker'
 import type { EBMSItemsData } from '@/api/ebms/ebms.types'
@@ -29,13 +29,9 @@ interface MultipatchPopoverProps {
 export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
     // const [isAnimate, setIsAnimate] = useState(false)
 
-    const [category] = useQueryState('category')
-    const [scheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
-    const [completed] = useQueryState('completed', {
-        parse: Boolean
-    })
+    const [category] = useQueryParam('category', StringParam)
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
+    const [completed] = useQueryParam('completed', BooleanParam)
 
     const rows = table.getSelectedRowModel().rows.map((row) => row.original)
 

@@ -1,33 +1,28 @@
 import { CircleCheck, Clock } from 'lucide-react'
-import { useQueryState } from 'nuqs'
+import { useEffect } from 'react'
+import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Toggle } from '@/components/ui/toggle'
 
+const defaultCompleted = false
+
 export const Filters = () => {
-    // const [, setDate] = useQueryState('date')
-    const [overdue, setOverdue] = useQueryState('overdue', {
-        parse: Boolean
-    })
-    const [completed, setCompleted] = useQueryState('completed', {
-        parse: Boolean,
-        defaultValue: false
-    })
+    const [, setDate] = useQueryParam('date', StringParam)
+    const [overdue, setOverdue] = useQueryParam('overdue', BooleanParam)
+    const [completed = defaultCompleted, setCompleted] = useQueryParam(
+        'completed',
+        BooleanParam
+    )
 
-    const [scheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
-    const [, setOffset] = useQueryState('offset', {
-        parse: Number
-    })
-    const [, setGrouped] = useQueryState('grouped', {
-        parse: Boolean
-    })
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
+    const [, setOffset] = useQueryParam('offset', NumberParam)
+    const [, setGrouped] = useQueryParam('grouped', BooleanParam)
 
-    // useEffect(() => {
-    //     if (overdue) {
-    //         setDate(null)
-    //     }
-    // }, [overdue])
+    useEffect(() => {
+        if (overdue) {
+            setDate(null)
+        }
+    }, [overdue])
 
     const handleSetCompleted = (value: boolean) => {
         setCompleted(value ? true : false)

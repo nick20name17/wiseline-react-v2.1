@@ -1,9 +1,9 @@
 import type { SortingState } from '@tanstack/react-table'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 export const useSorting = (defaultValues: SortingState) => {
-    const [ordering, setOrdering] = useQueryState('ordering')
+    const [ordering, setOrdering] = useQueryParam('ordering', StringParam)
 
     const getInitialSorting = () => {
         if (ordering) {

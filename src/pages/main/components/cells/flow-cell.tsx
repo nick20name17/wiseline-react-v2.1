@@ -1,6 +1,6 @@
-import { useQueryState } from 'nuqs'
 import { useMemo } from 'react'
 import { toast } from 'sonner'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { useGetAllCategoriesQuery } from '@/api/ebms/categories/categories'
 import type { EBMSItemData, EBMSItemsData } from '@/api/ebms/ebms.types'
@@ -26,7 +26,7 @@ interface FlowCellProps {
 }
 
 export const FlowCell = ({ item }: FlowCellProps) => {
-    const [category] = useQueryState('category')
+    const [category] = useQueryParam('category', StringParam)
     const { data: categoriesData } = useGetAllCategoriesQuery()
 
     const flowsData = useMemo(() => {

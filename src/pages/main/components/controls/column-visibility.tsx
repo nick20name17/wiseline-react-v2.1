@@ -1,6 +1,6 @@
 import type { Table } from '@tanstack/react-table'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import type { EBMSItemsData, OrdersData } from '@/api/ebms/ebms.types'
 import {
@@ -40,7 +40,7 @@ export const ColumnVisibility = ({
     table,
     isDataLoading
 }: ColumnVisibilityProps) => {
-    const [category] = useQueryState('category')
+    const [category] = useQueryParam('category', StringParam)
 
     const alwaysVisibleColumns =
         page === 'orders' ? alwaysVisibleOrdersColumns : alwayVisibleItemsColumns

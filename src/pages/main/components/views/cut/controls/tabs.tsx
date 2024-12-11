@@ -1,32 +1,31 @@
-import { useQueryState } from 'nuqs'
+import { useEffect } from 'react'
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-export const CutViewTabs = () => {
-    const [cutView, setCutView] = useQueryState('cut-view', {
-        defaultValue: 'pipeline'
-    })
+const defaultCutView = 'pipeline'
 
-    const [, setOffset] = useQueryState('offset', {
-        parse: Number
-    })
+export const CutViewTabs = () => {
+    const [cutView = defaultCutView, setCutView] = useQueryParam('cut-view', StringParam)
+
+    const [, setOffset] = useQueryParam('offset', NumberParam)
 
     const onValueChange = (tab: string) => {
         setCutView(tab)
         setOffset(0)
     }
 
-    // useEffect(() => {
-    //     setCutView(cutView)
-    //     return () => {
-    //         setCutView(null)
-    //     }
-    // }, [])
+    useEffect(() => {
+        setCutView(cutView)
+        return () => {
+            setCutView(null)
+        }
+    }, [])
 
     return (
         <Tabs
             onValueChange={onValueChange}
-            defaultValue={cutView || 'pipeline'}
+            defaultValue={cutView || defaultCutView}
             className='w-fit'
         >
             <TabsList>

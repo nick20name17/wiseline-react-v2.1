@@ -5,7 +5,7 @@ import {
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
-import { useQueryState } from 'nuqs'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import type { User } from '@/api/users/users.types'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
@@ -25,6 +25,7 @@ interface UsersTableProps<TData, TValue> {
     isLoading: boolean
 }
 
+const defaultSearchTerm = ''
 export const UsersTable = <_, TValue>({
     columns,
     data,
@@ -39,9 +40,7 @@ export const UsersTable = <_, TValue>({
         enableMultiSort: true
     })
 
-    const [searchTerm] = useQueryState('search', {
-        defaultValue: ''
-    })
+    const [searchTerm = defaultSearchTerm] = useQueryParam('search', StringParam)
 
     const filteredData = searchTerm
         ? table

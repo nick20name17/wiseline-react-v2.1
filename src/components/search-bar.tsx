@@ -1,5 +1,5 @@
-import { useQueryState } from 'nuqs'
 import { useDebouncedCallback } from 'use-debounce'
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Input } from '@/components/ui/input'
 
@@ -8,16 +8,14 @@ interface SearchBarProps {
     resetOffset?: boolean
 }
 
+const defaultSearch = ''
+
 export const SearchBar = ({
     placeholder = 'Search...',
     resetOffset = true
 }: SearchBarProps) => {
-    const [search, setSearch] = useQueryState('search', {
-        defaultValue: ''
-    })
-    const [, setOffset] = useQueryState('offset', {
-        parse: Number
-    })
+    const [search = defaultSearch, setSearch] = useQueryParam('search', StringParam)
+    const [, setOffset] = useQueryParam('offset', NumberParam)
 
     const debouncedSetSearch = useDebouncedCallback((searchTerm: string | null) => {
         setSearch(searchTerm)
@@ -33,7 +31,7 @@ export const SearchBar = ({
 
     return (
         <Input
-            defaultValue={search}
+            defaultValue={search || defaultSearch}
             onChange={handleSearch}
             className='w-48'
             placeholder={placeholder}

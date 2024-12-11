@@ -1,6 +1,6 @@
 'use client'
 
-import { useQueryState } from 'nuqs'
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { tableConfig } from '@/config/table'
@@ -11,14 +11,14 @@ const VIEW_CONFIG: Record<string, { ordering: string | null }> = {
     cut: { ordering: null }
 }
 
-export const OrdersViewTabs = () => {
-    const [view, setView] = useQueryState('view', {
-        defaultValue: 'orders'
-    })
+const defaultView = 'orders'
 
-    const [, setOffset] = useQueryState('offset', { parse: Number })
-    const [, setLimit] = useQueryState('limit', { parse: Number })
-    const [, setOrdering] = useQueryState('ordering')
+export const OrdersViewTabs = () => {
+    const [view = defaultView, setView] = useQueryParam('view', StringParam)
+
+    const [, setOffset] = useQueryParam('offset', NumberParam)
+    const [, setLimit] = useQueryParam('limit', NumberParam)
+    const [, setOrdering] = useQueryParam('ordering')
 
     const handleViewChange = (newView: string) => {
         setView(newView)
@@ -30,7 +30,7 @@ export const OrdersViewTabs = () => {
     return (
         <Tabs
             onValueChange={handleViewChange}
-            value={view}
+            value={view || defaultView}
         >
             <TabsList>
                 <TabsTrigger value='orders'>All Orders</TabsTrigger>

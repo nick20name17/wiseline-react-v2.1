@@ -1,6 +1,6 @@
 import { type Row, flexRender } from '@tanstack/react-table'
 import { motion } from 'motion/react'
-import { useQueryState } from 'nuqs'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { SubSubTable } from './sub-sub-table/sub-sub-table'
 import type { EBMSItemsData } from '@/api/ebms/ebms.types'
@@ -14,7 +14,7 @@ interface CollapsibleRowProps {
 }
 
 export const SubCollapsibleRow: React.FC<CollapsibleRowProps> = ({ row }) => {
-    const [category] = useQueryState('category')
+    const [category] = useQueryParam('category', StringParam)
 
     const MotionTableRow = motion(TableRow, {
         forwardMotionProps: true

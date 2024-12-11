@@ -9,8 +9,8 @@ import {
     startOfWeek
 } from 'date-fns'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { CalendarBody } from './components/calendar-body'
 import { Categories } from './components/filters/categories'
@@ -24,9 +24,9 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 export const CalendarPage = () => {
     const today = startOfToday()
 
-    const [category] = useQueryState('category')
-    const [monthQuery, setMonthQuery] = useQueryState('month')
-    const [yearQuery, setYearQuery] = useQueryState('year')
+    const [category] = useQueryParam('category', StringParam)
+    const [monthQuery, setMonthQuery] = useQueryParam('month', StringParam)
+    const [yearQuery, setYearQuery] = useQueryParam('year', StringParam)
 
     const initialDate =
         monthQuery && yearQuery

@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { Loader2, PlusCircleIcon, Send } from 'lucide-react'
-import { useQueryState } from 'nuqs'
 import { type SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { StringParam, useQueryParam } from 'use-query-params'
 import { z, type infer as zodInfer } from 'zod'
 
 import {
@@ -48,7 +48,7 @@ interface CommentsCellProps {
 type CommentsCellFormData = zodInfer<typeof commentSchema>
 
 export const CommentsCell = ({ originItem }: CommentsCellProps) => {
-    const [category] = useQueryState('category')
+    const [category] = useQueryParam('category', StringParam)
 
     const originItemId = originItem?.id
     const originOrderId = originItem?.origin_order

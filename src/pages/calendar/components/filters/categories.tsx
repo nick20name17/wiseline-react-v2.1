@@ -1,18 +1,21 @@
-import { useQueryState } from 'nuqs'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
+const defaultCategory = 'Rollforming'
+
 export const Categories = () => {
-    const [category, setCategory] = useQueryState('category', {
-        defaultValue: 'Rollforming'
-    })
+    const [category = defaultCategory, setCategory] = useQueryParam(
+        'category',
+        StringParam
+    )
 
     const onValueChange = (value: string) => setCategory(value)
 
     return (
         <Tabs
             onValueChange={onValueChange}
-            defaultValue={category}
+            defaultValue={category || defaultCategory}
         >
             <TabsList>
                 <TabsTrigger

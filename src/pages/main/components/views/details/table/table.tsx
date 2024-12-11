@@ -7,8 +7,8 @@ import {
 } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { AnimatePresence, motion } from 'motion/react'
-import { useQueryState } from 'nuqs'
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { TableFooter } from './table-footer'
 import type { EBMSItemsData } from '@/api/ebms/ebms.types'
@@ -49,16 +49,10 @@ export function DetailsViewTable({
     isDataLoading,
     isDataFetching
 }: DataTableProps<EBMSItemsData, EBMSItemsData>) {
-    const [grouped] = useQueryState('grouped', {
-        parse: Boolean
-    })
-    const [category] = useQueryState('category')
-    const [scheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
-    const [completed] = useQueryState('completed', {
-        parse: Boolean
-    })
+    const [grouped] = useQueryParam('grouped', BooleanParam)
+    const [category] = useQueryParam('category', StringParam)
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
+    const [completed] = useQueryParam('completed', BooleanParam)
 
     const { data: usersProfilesData } = useGetUsersProfilesQuery()
 

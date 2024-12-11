@@ -1,5 +1,5 @@
-import { useQueryState } from 'nuqs'
 import { useEffect } from 'react'
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { useGetStagesQuery } from '@/api/stages/stages'
 import {
@@ -12,13 +12,13 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
+const defaultStage = 'all'
+
 export const StageFilter = () => {
-    const [stage, setStage] = useQueryState('stage')
-    const [flow] = useQueryState('flow')
-    const [category] = useQueryState('category')
-    const [, setOffset] = useQueryState('offset', {
-        parse: Number
-    })
+    const [stage = defaultStage, setStage] = useQueryParam('stage', StringParam)
+    const [flow = 'all'] = useQueryParam('flow', StringParam)
+    const [category] = useQueryParam('category', StringParam)
+    const [, setOffset] = useQueryParam('offset', NumberParam)
 
     const {
         data: stages,
@@ -53,16 +53,16 @@ export const StageFilter = () => {
         return <Skeleton className='h-9 w-40' />
     }
 
-    return category !== 'All' && flow ? (
+    return category !== 'All' && flow !== 'all' ? (
         <Select
-            defaultValue={stage! || 'all'}
+            defaultValue={stage || defaultStage}
             disabled={isLoading || isFetching || !stages?.results?.length}
             onValueChange={onValueChange}
         >
             <SelectTrigger
                 className={cn(
                     '!w-40 text-left font-medium',
-                    stage ? 'border-primary text-primary' : ''
+                    stage !== 'all' ? 'border-primary text-primary' : ''
                 )}
             >
                 <SelectValue placeholder='Select Stage' />

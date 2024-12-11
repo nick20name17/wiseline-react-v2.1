@@ -1,4 +1,4 @@
-import { useQueryState } from 'nuqs'
+import { NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { useGetAllCategoriesQuery } from '@/api/ebms/categories/categories'
 import {
@@ -11,13 +11,14 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 
+const defaultCategory = 'All'
+
 export const CategoryFilter = () => {
-    const [category, setCategory] = useQueryState('category', {
-        defaultValue: 'All'
-    })
-    const [_, setOffset] = useQueryState('offset', {
-        parse: Number
-    })
+    const [category = defaultCategory, setCategory] = useQueryParam(
+        'category',
+        StringParam
+    )
+    const [_, setOffset] = useQueryParam('offset', NumberParam)
 
     const { data: categoriesData, isLoading } = useGetAllCategoriesQuery()
 
@@ -35,7 +36,7 @@ export const CategoryFilter = () => {
     return (
         <Select
             key={category}
-            defaultValue={category!}
+            defaultValue={category || defaultCategory}
             disabled={isLoading || categoriesData?.length === 0}
             onValueChange={onValueChange}
         >

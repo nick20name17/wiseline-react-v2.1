@@ -1,10 +1,10 @@
 import { format, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon, RotateCcw } from 'lucide-react'
 import { animate } from 'motion/react'
-import { useQueryState } from 'nuqs'
 import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 import { toast } from 'sonner'
+import { BooleanParam, useQueryParam } from 'use-query-params'
 
 import type { OrdersData } from '@/api/ebms/ebms.types'
 import { useMultiPatchItemsMutation } from '@/api/multiupdates/multiupdate'
@@ -62,9 +62,7 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
     const salesOrderId = order.sales_order?.id
     const orderId = order.id
 
-    const [scheduled] = useQueryState('scheduled', {
-        parse: Boolean
-    })
+    const [scheduled] = useQueryParam('scheduled', BooleanParam)
 
     const [open, setOpen] = useState(false)
 

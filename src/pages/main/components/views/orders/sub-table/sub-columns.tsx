@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table'
-import { useQueryState } from 'nuqs'
+import { StringParam, useQueryParam } from 'use-query-params'
 
 import { CommentsCell } from '../../../cells/comments-cell'
 import { FlowCell } from '../../../cells/flow-cell'
@@ -16,7 +16,7 @@ export const subColumns: ColumnDef<EBMSItemsData>[] = [
     {
         id: 'arrow',
         header: ({ column }) => {
-            const [category] = useQueryState('category')
+            const [category] = useQueryParam('category', StringParam)
 
             return category === 'Trim' ? (
                 <DataTableColumnHeader
@@ -26,7 +26,7 @@ export const subColumns: ColumnDef<EBMSItemsData>[] = [
             ) : null
         },
         cell: ({ row }) => {
-            const [category] = useQueryState('category')
+            const [category] = useQueryParam('category', StringParam)
 
             return category === 'Trim' ? (
                 <CollapsibleCell disabled={!row.original?.cutting_items?.length} />
