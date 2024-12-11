@@ -1,10 +1,10 @@
 import { useQueryState } from 'nuqs'
-import { useEffect } from 'react'
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export const CutViewTabs = () => {
-    const [cutView = 'pipeline', setCutView] = useQueryState('cut-view')
+    const [cutView, setCutView] = useQueryState('cut-view')
+
     const [, setOffset] = useQueryState('offset', {
         parse: Number
     })
@@ -14,21 +14,20 @@ export const CutViewTabs = () => {
         setOffset(0)
     }
 
-    useEffect(() => {
-        setCutView(cutView)
-
-        return () => {
-            setCutView(null)
-        }
-    }, [])
+    // useEffect(() => {
+    //     setCutView(cutView)
+    //     return () => {
+    //         setCutView(null)
+    //     }
+    // }, [])
 
     return (
         <Tabs
             onValueChange={onValueChange}
-            defaultValue={cutView!}
+            defaultValue={cutView || 'pipeline'}
             className='w-fit'
         >
-            <TabsList className='bg-secondary'>
+            <TabsList>
                 <TabsTrigger value='pipeline'>Cut List Pipeline</TabsTrigger>
                 <TabsTrigger value='orders'>Orders</TabsTrigger>
             </TabsList>

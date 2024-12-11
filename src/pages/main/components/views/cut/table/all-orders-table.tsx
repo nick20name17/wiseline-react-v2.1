@@ -6,7 +6,6 @@ import { OrdersViewTable } from '../../orders/table/table'
 
 import { useGetOrdersQuery } from '@/api/ebms/ebms'
 import { useCurrentValue } from '@/hooks/use-current-value'
-import { useWebSocket } from '@/hooks/use-web-socket'
 
 export const AllOrdersTable = () => {
     const [offsetParam] = useQueryState('offset', {
@@ -18,7 +17,7 @@ export const AllOrdersTable = () => {
     const [ordering, setOrdering] = useQueryState('ordering')
     const [cutView] = useQueryState('cut-view')
 
-    const { currentData, isLoading, isFetching, refetch } = useGetOrdersQuery({
+    const { currentData, isLoading, isFetching } = useGetOrdersQuery({
         limit: limitParam!,
         offset: offsetParam!,
         category: 'Trim',
@@ -33,11 +32,11 @@ export const AllOrdersTable = () => {
         [isLoading, limitParam, currentCount]
     )
 
-    const { dataToRender } = useWebSocket({
-        currentData: currentData?.results || [],
-        endpoint: 'orders',
-        refetch
-    })
+    // const { dataToRender } = useWebSocket({
+    //     currentData: currentData?.results || [],
+    //     endpoint: 'orders',
+    //     refetch
+    // })
 
     useEffect(() => {
         return () => {
@@ -47,7 +46,7 @@ export const AllOrdersTable = () => {
 
     return (
         <OrdersViewTable
-            data={dataToRender || []}
+            data={currentData?.results || []}
             isDataFetching={isFetching}
             isDataLoading={isLoading}
             pageCount={pageCount}

@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 
 import { AuthProvider } from './auth'
 import { ThemeProvider } from './theme'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { store } from '@/store/index'
 
 export const Providers = ({ children }: PropsWithChildren) => {
@@ -13,7 +14,7 @@ export const Providers = ({ children }: PropsWithChildren) => {
                     defaultTheme='light'
                     storageKey='vite-ui-theme'
                 >
-                    {children}
+                    <TooltipProvider>{children}</TooltipProvider>
                 </ThemeProvider>
             </AuthProvider>
         </Provider>

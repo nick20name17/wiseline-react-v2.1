@@ -33,6 +33,8 @@ export const CutView = () => {
         parse: Boolean
     })
 
+    console.log(cutView)
+
     const {
         currentData: cuttingItems,
         isLoading,

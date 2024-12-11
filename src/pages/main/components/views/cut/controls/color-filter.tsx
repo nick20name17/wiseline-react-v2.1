@@ -22,7 +22,7 @@ export const Colorfilter = () => {
         defaultValue: 'all'
     })
     const [open, setOpen] = useState(false)
-    const [view] = useQueryState('view')
+    const [cutView] = useQueryState('cut-view')
     const [, setOffset] = useQueryState('offset', {
         parse: Number
     })
@@ -38,10 +38,10 @@ export const Colorfilter = () => {
     ]
 
     useEffect(() => {
-        if (view === 'pipeline') {
+        if (cutView === 'pipeline') {
             setColorParam('all')
         }
-    }, [view])
+    }, [cutView])
 
     useEffect(() => {
         return () => {

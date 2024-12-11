@@ -16,7 +16,7 @@ const DEFAULT_COLUMNS = {
 export const useColumnOrder = (usersProfilesData: UsersProfileData[], page: PageType) => {
     const defaultOrder =
         usersProfilesData
-            .find((profile) => profile.page === page)
+            ?.find((profile) => profile.page === page)
             ?.show_columns?.split(',') ?? []
 
     const [columnOrder, setColumnOrder] = useState<string[]>(defaultOrder)
@@ -38,7 +38,7 @@ export const useColumnVisibility = <TData, TValue>(
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
     useEffect(() => {
-        const profile = usersProfilesData.find((p) => p.page === page)
+        const profile = usersProfilesData?.find((p) => p.page === page)
         if (!profile) return
 
         const showColumns = profile.show_columns?.split(',') ?? []

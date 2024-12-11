@@ -9,9 +9,21 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
+const getDefaultValue = (cuttingComplete: boolean) => {
+    switch (cuttingComplete) {
+        case false:
+            return 'active'
+        case true:
+            return 'archived'
+        default:
+            return 'all'
+    }
+}
+
 export const StatusesFilter = () => {
     const [cuttingComplete, setCuttingComplete] = useQueryState('cutting_complete', {
-        parse: Boolean
+        parse: Boolean,
+        defaultValue: null
     })
 
     const onCuttingComplete = (value: string | null) => {
@@ -22,26 +34,15 @@ export const StatusesFilter = () => {
         }
     }
 
-    const getDefaultValue = () => {
-        switch (cuttingComplete) {
-            case false:
-                return 'active'
-            case true:
-                return 'archived'
-            default:
-                return 'all'
-        }
-    }
-
     return (
         <Select
-            defaultValue={getDefaultValue()}
+            defaultValue={getDefaultValue(cuttingComplete!)}
             onValueChange={onCuttingComplete}
         >
             <SelectTrigger
                 className={cn(
                     '!w-40 text-left font-medium',
-                    cuttingComplete !== undefined ? 'border-primary text-primary' : ''
+                    cuttingComplete !== null ? 'border-primary text-primary' : ''
                 )}
             >
                 <SelectValue placeholder='Select flow' />

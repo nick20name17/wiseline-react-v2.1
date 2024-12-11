@@ -20,12 +20,7 @@ import type {
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger
-} from '@/components/ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { cn } from '@/lib/utils'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
@@ -263,23 +258,21 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
                     >
                         Cancel
                     </Button>
-                    <TooltipProvider>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    disabled={!productionDate}
-                                    onClick={handleResetDate}
-                                    size='icon'
-                                    variant='destructive'
-                                >
-                                    <RotateCcw className='h-4 w-4' />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <span>Reset date</span>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                disabled={!productionDate}
+                                onClick={handleResetDate}
+                                size='icon'
+                                variant='destructive'
+                            >
+                                <RotateCcw className='h-4 w-4' />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <span>Reset date</span>
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
             </PopoverContent>
         </Popover>
