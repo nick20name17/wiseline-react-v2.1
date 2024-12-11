@@ -6,6 +6,7 @@ import { DetailsViewTable } from './table/table'
 import { TableControls } from './table/table-controls'
 import { useGetItemsQuery } from '@/api/ebms/ebms'
 import type { EBMSItemsQueryParams } from '@/api/ebms/ebms.types'
+import { tableConfig } from '@/config/table'
 import { useCurrentValue } from '@/hooks/use-current-value'
 import { useAppDispatch } from '@/store/hooks/hooks'
 import { setCurrentQueryParams } from '@/store/slices/query-params'
@@ -22,10 +23,12 @@ export const DetailsView = () => {
     })
     const [search] = useQueryState('search')
     const [offset] = useQueryState('offset', {
-        parse: Number
+        parse: Number,
+        defaultValue: tableConfig.pagination.pageIndex * tableConfig.pagination.pageSize
     })
     const [limit] = useQueryState('limit', {
-        parse: Number
+        parse: Number,
+        defaultValue: tableConfig.pagination.pageSize
     })
     const [date] = useQueryState('date')
     const [flow] = useQueryState('flow')

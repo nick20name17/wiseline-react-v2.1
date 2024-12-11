@@ -43,7 +43,6 @@ export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
     //     if (isAnimate) {
     //         rows.forEach((row) => {
     //             const element = document.getElementById('tr-' + row.id)!
-    //             console.log(element)
 
     //             animate(
     //                 element,

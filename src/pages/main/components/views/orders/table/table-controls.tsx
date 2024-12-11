@@ -28,7 +28,7 @@ export const TableControls = () => {
             <div
                 ref={ref}
                 className={cn(
-                    'sticky left-0 top-0 z-[1000] mb-1 mt-4 flex w-full items-center gap-2 transition-all max-sm:w-full',
+                    'sticky left-0 top-0 z-50 mb-1 mt-4 flex w-full items-center gap-2 transition-all max-sm:w-full',
                     isSticky ? 'border-b bg-background py-2 shadow-sm' : ''
                 )}
             >

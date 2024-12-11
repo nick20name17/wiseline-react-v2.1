@@ -1,6 +1,5 @@
 import { ArrowLeft, ArrowRight, SkipBack, SkipForward } from 'lucide-react'
 import { useQueryState } from 'nuqs'
-import { useEffect } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -38,16 +37,6 @@ export const Pagination = ({ pageCount, isDataLoading }: PaginationProps) => {
         setLimit(newLimit)
         setOffset(0)
     }
-
-    useEffect(() => {
-        if (!offset) {
-            setOffset(offset)
-        }
-
-        if (!limit) {
-            setLimit(limit)
-        }
-    }, [])
 
     return (
         <div className='flex items-center space-x-2'>

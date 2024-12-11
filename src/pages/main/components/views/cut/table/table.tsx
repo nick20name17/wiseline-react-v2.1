@@ -17,7 +17,6 @@ import { useGetAllFlowsQuery } from '@/api/flows/flows'
 import type { FlowData } from '@/api/flows/flows.types'
 import { DataTableColumnHeader } from '@/components/data-table-column-header'
 import { TableSkeleton } from '@/components/table-skeleton'
-import { Button } from '@/components/ui/button'
 import {
     Collapsible,
     CollapsibleContent,
@@ -135,7 +134,7 @@ export const CutViewTable = ({
     const colSpan = columns.length + trimColumns.length + 1
 
     return (
-        <div className='overflow-hidden'>
+        <div className='mt-4 overflow-hidden'>
             <div
                 ref={tableRef}
                 className='relative h-fit overflow-y-auto rounded-md border'
@@ -152,7 +151,7 @@ export const CutViewTable = ({
                                     <Fragment key={priority}>
                                         <TableRow className='!p-0'>
                                             <TableCell
-                                                className='py-2 pl-7 font-bold'
+                                                className='bg-gray-400/50 pl-6 font-bold'
                                                 colSpan={colSpan}
                                             >
                                                 <div className='flex items-center gap-x-2'>
@@ -181,21 +180,19 @@ export const CutViewTable = ({
                                                         <>
                                                             <TableRow className='!p-0'>
                                                                 <TableCell
-                                                                    className='!p-0'
+                                                                    className='bg-gray-200 !p-0'
                                                                     colSpan={colSpan}
                                                                 >
-                                                                    <div className='flex w-full items-center gap-x-2 bg-foreground/5 py-2 pl-5'>
+                                                                    <div className='flex h-8 w-full items-center gap-x-2 bg-foreground/5 pl-5'>
                                                                         <CollapsibleTrigger
-                                                                            className='duration-15 transition-transform data-[state=open]:-rotate-90'
-                                                                            asChild
+                                                                            data-icon
+                                                                            className='group flex h-full w-8 items-center justify-center bg-transparent'
                                                                         >
-                                                                            <Button
-                                                                                className='size-8'
-                                                                                variant='ghost'
-                                                                                size='icon'
-                                                                            >
-                                                                                <ChevronDown className='duration-15 size-4 transition-transform' />
-                                                                            </Button>
+                                                                            <ChevronDown
+                                                                                className={cn(
+                                                                                    'size-4 transition-transform group-data-[state=open]:-rotate-90'
+                                                                                )}
+                                                                            />
                                                                         </CollapsibleTrigger>
 
                                                                         <div className='grid w-[490px] grid-cols-3 items-center gap-x-6'>
@@ -223,16 +220,16 @@ export const CutViewTable = ({
                                                             </TableRow>
                                                             <CollapsibleContent asChild>
                                                                 <Table>
-                                                                    <TableHeader className='bg-background py-0.5'>
+                                                                    <TableHeader className='border-b py-0.5'>
                                                                         {isLoadingTrimFlows ? (
                                                                             <TableRow className='p-0'>
                                                                                 <TableCell
                                                                                     colSpan={
                                                                                         colSpan
                                                                                     }
-                                                                                    className='h-[41px] !px-0 py-1.5'
+                                                                                    className='h-8 !px-0 py-1.5'
                                                                                 >
-                                                                                    <Skeleton className='h-[41px] w-full' />
+                                                                                    <Skeleton className='h-8 w-full' />
                                                                                 </TableCell>
                                                                             </TableRow>
                                                                         ) : (
@@ -253,6 +250,7 @@ export const CutViewTable = ({
                                                                                                 ) => {
                                                                                                     return (
                                                                                                         <TableHead
+                                                                                                            className='bg-gray-200/50'
                                                                                                             key={
                                                                                                                 header.id
                                                                                                             }
@@ -321,7 +319,7 @@ export const CutViewTable = ({
                             <TableRow>
                                 <TableCell
                                     colSpan={colSpan}
-                                    className='h-24 pl-4 text-left'
+                                    className='h-24 pl-10 pt-9 text-left'
                                 >
                                     No results
                                 </TableCell>

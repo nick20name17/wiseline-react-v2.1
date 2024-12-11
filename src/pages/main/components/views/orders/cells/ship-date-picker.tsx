@@ -103,11 +103,11 @@ export const ShipDatePickerCell = ({ order }: ShipDatePickerCellProps) => {
         <Button
             variant='ghost'
             className={cn(
-                'pointer-events-none w-full justify-start px-2 text-left font-normal',
+                'pointer-events-none w-full justify-start text-left font-normal',
                 !date && 'text-muted-foreground'
             )}
         >
-            <CalendarIcon className='mr-2 size-3 flex-shrink-0' />
+            <CalendarIcon className='flex-shrink-0' />
 
             {date ? format(date, 'dd.MM.yyyy EEE') : <span>Not selected</span>}
         </Button>
@@ -121,11 +121,11 @@ export const ShipDatePickerCell = ({ order }: ShipDatePickerCellProps) => {
                     disabled={order?.completed}
                     variant='outline'
                     className={cn(
-                        'w-full justify-start px-2 text-left font-normal',
+                        'w-full justify-start text-left font-normal',
                         !date && 'text-muted-foreground'
                     )}
                 >
-                    <CalendarIcon className='mr-2 size-3 flex-shrink-0' />
+                    <CalendarIcon className='flex-shrink-0' />
 
                     {date ? format(date, 'dd.MM.yyyy EEE') : <span>Pick a date</span>}
                 </Button>

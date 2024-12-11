@@ -31,7 +31,7 @@ export const DatePicker = ({
                         !date && 'text-muted-foreground'
                     )}
                 >
-                    <CalendarIcon className='mr-2 size-4' />
+                    <CalendarIcon />
                     {date ? format(date, 'dd.MM.yyyy EEE') : <span>{placeholder}</span>}
                 </Button>
             </PopoverTrigger>

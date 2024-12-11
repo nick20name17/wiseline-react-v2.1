@@ -30,7 +30,7 @@ export const MainPage = () => {
     }, [view])
 
     return (
-        <section className='space-y-4 px-4'>
+        <section className='px-4'>
             <OrdersHeader />
             {ordersView}
         </section>

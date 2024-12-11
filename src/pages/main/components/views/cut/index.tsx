@@ -21,7 +21,9 @@ export interface CuttingItemsToDisplay {
 }
 
 export const CutView = () => {
-    const [cutView] = useQueryState('cut-view')
+    const [cutView] = useQueryState('cut-view', {
+        defaultValue: 'pipeline'
+    })
     const [color] = useQueryState('color')
     const [offset] = useQueryState('offset', {
         parse: Number
@@ -32,8 +34,6 @@ export const CutView = () => {
     const [cuttingComplete] = useQueryState('cutting_complete', {
         parse: Boolean
     })
-
-    console.log(cutView)
 
     const {
         currentData: cuttingItems,

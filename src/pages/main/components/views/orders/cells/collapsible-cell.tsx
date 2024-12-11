@@ -11,6 +11,7 @@ export const CollapsibleCell = ({ disabled = false }: CollapsibleCellProps) => {
     return (
         <CollapsibleTrigger
             data-icon
+            disabled={disabled}
             className='group flex !size-full items-center justify-center bg-transparent'
         >
             <ChevronDown

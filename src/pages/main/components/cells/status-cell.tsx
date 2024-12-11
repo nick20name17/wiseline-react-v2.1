@@ -179,7 +179,6 @@ export const StatusCell = ({ item }: StatusCellProps) => {
                 })
                 .then(() => successToast(data.stageName!, data.stageColor!))
         } catch (error) {
-            // const isErrorMessage = isErrorWithMessage(error)
             errorToast('Something went wrong')
         }
     }

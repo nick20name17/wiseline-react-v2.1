@@ -112,7 +112,7 @@ export const CommentsCell = ({ originItem }: CommentsCellProps) => {
                         </div>
                     ) : (
                         <>
-                            <PlusCircleIcon className='mr-1 h-4 w-4' />
+                            <PlusCircleIcon className='mr-1' />
                             Add note
                         </>
                     )}
@@ -187,13 +187,13 @@ export const CommentsCell = ({ originItem }: CommentsCellProps) => {
                             <Button
                                 disabled={isItemLoading || isOrderLoading || !inputValue}
                                 size='icon'
-                                className='absolute right-1.5 top-1/2 h-[calc(100%-10px)] -translate-y-1/2 transition-all'
+                                className='absolute right-1.5 top-1/2 h-[calc(100%-10px)] shrink-0 -translate-y-1/2 transition-all'
                                 type='submit'
                             >
                                 {isItemLoading || isOrderLoading ? (
-                                    <Loader2 className='h-4 w-4 animate-spin' />
+                                    <Loader2 className='animate-spin' />
                                 ) : (
-                                    <Send className='h-5 w-5' />
+                                    <Send />
                                 )}
                             </Button>
                         </form>

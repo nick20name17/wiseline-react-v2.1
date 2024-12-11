@@ -76,7 +76,7 @@ export const ForgetPassword = () => {
             open={open}
             onOpenChange={setOpen}
         >
-            <DialogTrigger className='text-sm text-neutral-400 transition-colors hover:text-neutral-600'>
+            <DialogTrigger className='text-sm text-gray-400 transition-colors hover:text-gray-600'>
                 Forgot password?
             </DialogTrigger>
             <DialogContent className='mx-2 rounded-md'>

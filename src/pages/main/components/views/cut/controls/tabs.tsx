@@ -3,7 +3,9 @@ import { useQueryState } from 'nuqs'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 export const CutViewTabs = () => {
-    const [cutView, setCutView] = useQueryState('cut-view')
+    const [cutView, setCutView] = useQueryState('cut-view', {
+        defaultValue: 'pipeline'
+    })
 
     const [, setOffset] = useQueryState('offset', {
         parse: Number

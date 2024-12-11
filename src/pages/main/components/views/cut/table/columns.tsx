@@ -57,7 +57,7 @@ export const columns: ColumnDef<MergedCuttingItem>[] = [
                 complete={row.original?.cutting_complete}
             />
         ),
-        size: 164,
+        size: 140,
         enableSorting: false
     }
 ]

@@ -120,7 +120,7 @@ export const columns: ColumnDef<OrdersData>[] = [
         ),
         cell: ({ row }) => <DatePickerCell order={row.original} />,
         enableHiding: false,
-        size: 152
+        size: 160
     },
     {
         accessorKey: 'ship_date',
@@ -131,7 +131,7 @@ export const columns: ColumnDef<OrdersData>[] = [
             />
         ),
         cell: ({ row }) => <ShipDatePickerCell order={row.original} />,
-        size: 152
+        size: 160
     },
     {
         accessorKey: 'assigned',

@@ -6,6 +6,7 @@ import {
     useReactTable
 } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { AnimatePresence, motion } from 'motion/react'
 import { useQueryState } from 'nuqs'
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 
@@ -135,13 +136,13 @@ export function DetailsViewTable({
         [completed, groupByDate, groupByOrder]
     )
 
-    // const MotionTableRow = motion(TableRow, {
-    //     forwardMotionProps: true
-    // })
+    const MotionTableRow = motion(TableRow, {
+        forwardMotionProps: true
+    })
 
-    // const MotionTableCell = motion(TableCell, {
-    //     forwardMotionProps: true
-    // })
+    const MotionTableCell = motion(TableCell, {
+        forwardMotionProps: true
+    })
 
     return (
         <div className='mt-4 overflow-clip'>
@@ -220,94 +221,105 @@ export function DetailsViewTable({
                         </TableHeader>
 
                         <TableBody>
-                            {/* <AnimatePresence initial={false}> */}
-                            {isDataLoading ? (
-                                <TableSkeleton columnsCount={columns.length} />
-                            ) : table.getRowModel().rows?.length ? (
-                                grouped || completed ? (
-                                    <GroupedRows
-                                        groupByOrder={groupedData}
-                                        columnsCount={columns?.length + 1}
-                                        category={category!}
-                                        isClientOrWorker={isClientOrWorker}
-                                        shouldRenderCell={shouldRenderCell}
-                                        groupKey={completed ? 'production_date' : 'order'}
-                                    />
-                                ) : (
-                                    table.getRowModel().rows.map((row) => (
-                                        <TableRow
-                                            // initial={false}
-                                            // layout
-                                            // exit={{
-                                            //     opacity: 0,
-                                            //     transition: {
-                                            //         duration: 0.15,
-                                            //         type: 'spring'
-                                            //     }
-                                            // }}
-                                            id={'tr-' + row.original.id}
-                                            key={row.original.id}
-                                            data-state={row.getIsSelected() && 'selected'}
-                                        >
-                                            {row.getVisibleCells().map((cell, index) => {
-                                                const shouldRender = shouldRenderCell(
-                                                    cell.column.id,
-                                                    category!,
-                                                    isClientOrWorker,
-                                                    index
-                                                )
-
-                                                if (!shouldRender) {
-                                                    return null
+                            <AnimatePresence initial={false}>
+                                {isDataLoading ? (
+                                    <TableSkeleton columnsCount={columns.length} />
+                                ) : table.getRowModel().rows?.length ? (
+                                    grouped || completed ? (
+                                        <GroupedRows
+                                            groupByOrder={groupedData}
+                                            columnsCount={columns?.length + 1}
+                                            category={category!}
+                                            isClientOrWorker={isClientOrWorker}
+                                            shouldRenderCell={shouldRenderCell}
+                                            groupKey={
+                                                completed ? 'production_date' : 'order'
+                                            }
+                                        />
+                                    ) : (
+                                        table.getRowModel().rows.map((row) => (
+                                            <MotionTableRow
+                                                initial={false}
+                                                layout
+                                                exit={{
+                                                    opacity: 0,
+                                                    transition: {
+                                                        duration: 0.15,
+                                                        type: 'spring'
+                                                    }
+                                                }}
+                                                id={'tr-' + row.original.id}
+                                                key={row.original.id}
+                                                data-state={
+                                                    row.getIsSelected() && 'selected'
                                                 }
-                                                return (
-                                                    <TableCell
-                                                        // initial={false}
-                                                        // layout
-                                                        // exit={{
-                                                        //     opacity: 0,
-                                                        //     transition: {
-                                                        //         duration: 0.15,
-                                                        //         type: 'spring'
-                                                        //     }
-                                                        // }}
-                                                        className={cn(
-                                                            cell.column.getIsPinned()
-                                                                ? 'sticky left-0 top-7 z-30 border-r-0 bg-secondary shadow-[inset_-1px_0_0] shadow-border'
-                                                                : ''
-                                                        )}
-                                                        style={{
-                                                            minWidth:
-                                                                cell.column.columnDef
-                                                                    .size,
-                                                            maxWidth:
-                                                                cell.column.columnDef.size
-                                                        }}
-                                                        key={cell.id}
-                                                    >
-                                                        {flexRender(
-                                                            cell.column.columnDef.cell,
-                                                            cell.getContext()
-                                                        )}
-                                                    </TableCell>
-                                                )
-                                            })}
-                                        </TableRow>
-                                    ))
-                                )
-                            ) : isDataFetching ? (
-                                <TableSkeleton columnsCount={columns.length} />
-                            ) : (
-                                <TableRow className='!bg-transparent'>
-                                    <TableCell
-                                        colSpan={columns.length}
-                                        className='h-24 !bg-transparent pl-10 pt-9 text-left'
-                                    >
-                                        No results.
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                            {/* </AnimatePresence> */}
+                                            >
+                                                {row
+                                                    .getVisibleCells()
+                                                    .map((cell, index) => {
+                                                        const shouldRender =
+                                                            shouldRenderCell(
+                                                                cell.column.id,
+                                                                category!,
+                                                                isClientOrWorker,
+                                                                index
+                                                            )
+
+                                                        if (!shouldRender) {
+                                                            return null
+                                                        }
+                                                        return (
+                                                            <MotionTableCell
+                                                                initial={false}
+                                                                layout
+                                                                exit={{
+                                                                    opacity: 0,
+                                                                    transition: {
+                                                                        duration: 0.15,
+                                                                        type: 'spring'
+                                                                    }
+                                                                }}
+                                                                className={cn(
+                                                                    cell.column.getIsPinned()
+                                                                        ? 'sticky left-0 top-7 z-30 border-r-0 bg-secondary shadow-[inset_-1px_0_0] shadow-border'
+                                                                        : ''
+                                                                )}
+                                                                style={{
+                                                                    minWidth:
+                                                                        cell.column
+                                                                            .columnDef
+                                                                            .size,
+                                                                    maxWidth:
+                                                                        cell.column
+                                                                            .columnDef
+                                                                            .size
+                                                                }}
+                                                                key={cell.id}
+                                                            >
+                                                                {flexRender(
+                                                                    cell.column.columnDef
+                                                                        .cell,
+                                                                    cell.getContext()
+                                                                )}
+                                                            </MotionTableCell>
+                                                        )
+                                                    })}
+                                            </MotionTableRow>
+                                        ))
+                                    )
+                                ) : isDataFetching ? (
+                                    <TableSkeleton columnsCount={columns.length} />
+                                ) : (
+                                    <TableRow className='!bg-transparent'>
+                                        <TableCell
+                                            colSpan={columns.length}
+                                            className='h-24 !bg-transparent pl-10 pt-9 text-left'
+                                        >
+                                            No results.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </AnimatePresence>
                         </TableBody>
 
                         <ScrollBar orientation='horizontal' />
@@ -347,13 +359,13 @@ const GroupedRows = ({
     shouldRenderCell,
     groupKey
 }: GroupedRowsProps) => {
-    // const MotionTableRow = motion(TableRow, {
-    //     forwardMotionProps: true
-    // })
+    const MotionTableRow = motion(TableRow, {
+        forwardMotionProps: true
+    })
 
-    // const MotionTableCell = motion(TableCell, {
-    //     forwardMotionProps: true
-    // })
+    const MotionTableCell = motion(TableCell, {
+        forwardMotionProps: true
+    })
 
     return groupByOrder.map((group) =>
         group[1].map((row, index) => {
@@ -366,25 +378,25 @@ const GroupedRows = ({
             return (
                 <Fragment key={`${group[0]}-${row.original.id}-${index}`}>
                     {index === 0 && (
-                        <TableRow
-                            // initial={false}
-                            // layout
-                            // exit={{
-                            //     opacity: 0,
-                            //     transition: {
-                            //         duration: 0.15,
-                            //         type: 'spring'
-                            //     }
-                            // }}
+                        <MotionTableRow
+                            initial={false}
+                            layout
+                            exit={{
+                                opacity: 0,
+                                transition: {
+                                    duration: 0.15,
+                                    type: 'spring'
+                                }
+                            }}
                             id={'tr-header-' + row.original?.id}
                             className='!p-0'
                         >
-                            <TableCell
+                            <MotionTableCell
                                 colSpan={columnsCount}
                                 className='!p-0'
                             >
-                                <div className='!m-0 flex h-9 items-center !bg-neutral-300'>
-                                    <div className='sticky left-0 flex h-full w-10 items-center justify-center !bg-neutral-300 shadow-[inset_-1px_0_0] shadow-border'>
+                                <div className='!m-0 flex h-8 items-center !bg-gray-300 text-sm'>
+                                    <div className='sticky left-0 flex h-full w-10 items-center justify-center !bg-gray-300 shadow-[inset_-1px_0_0] shadow-border'>
                                         <Checkbox
                                             checked={isIndeterminate}
                                             value={row.id}
@@ -416,20 +428,20 @@ const GroupedRows = ({
                                         )}
                                     </div>
                                 </div>
-                            </TableCell>
-                        </TableRow>
+                            </MotionTableCell>
+                        </MotionTableRow>
                     )}
-                    <TableRow
+                    <MotionTableRow
                         id={'tr-' + row.original?.id}
-                        // initial={false}
-                        // layout
-                        // exit={{
-                        //     opacity: 0,
-                        //     transition: {
-                        //         duration: 0.15,
-                        //         type: 'spring'
-                        //     }
-                        // }}
+                        initial={false}
+                        layout
+                        exit={{
+                            opacity: 0,
+                            transition: {
+                                duration: 0.15,
+                                type: 'spring'
+                            }
+                        }}
                         className='even:bg-secondary/60'
                         data-state={row.getIsSelected() && 'selected'}
                     >
@@ -446,16 +458,16 @@ const GroupedRows = ({
                             }
 
                             return (
-                                <TableCell
-                                    // initial={false}
-                                    // layout
-                                    // exit={{
-                                    //     opacity: 0,
-                                    //     transition: {
-                                    //         duration: 0.15,
-                                    //         type: 'spring'
-                                    //     }
-                                    // }}
+                                <MotionTableCell
+                                    initial={false}
+                                    layout
+                                    exit={{
+                                        opacity: 0,
+                                        transition: {
+                                            duration: 0.15,
+                                            type: 'spring'
+                                        }
+                                    }}
                                     style={{
                                         minWidth: cell.column.columnDef.size,
                                         maxWidth: cell.column.columnDef.size
@@ -472,10 +484,10 @@ const GroupedRows = ({
                                         cell.column.columnDef.cell,
                                         cell.getContext()
                                     )}
-                                </TableCell>
+                                </MotionTableCell>
                             )
                         })}
-                    </TableRow>
+                    </MotionTableRow>
                 </Fragment>
             )
         })

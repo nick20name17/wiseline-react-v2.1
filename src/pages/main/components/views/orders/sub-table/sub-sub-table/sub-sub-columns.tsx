@@ -2,7 +2,6 @@ import type { ColumnDef } from '@tanstack/react-table'
 
 import type { EBMSItemData } from '@/api/ebms/ebms.types'
 import { DataTableColumnHeader } from '@/components/data-table-column-header'
-import { Button } from '@/components/ui/button'
 
 export const subSubColumns: ColumnDef<EBMSItemData>[] = [
     {
@@ -136,15 +135,14 @@ export const subSubColumns: ColumnDef<EBMSItemData>[] = [
     },
     {
         accessorKey: 'description',
-        header: () => (
-            <Button
-                variant='ghost'
-                className='size-full justify-start rounded-none px-1.5'
-            >
-                Description
-            </Button>
+        header: ({ column }) => (
+            <DataTableColumnHeader
+                column={column}
+                title='Description'
+            />
         ),
         cell: ({ row }) => <div>{row.original?.description}</div>,
-        size: 250
+        size: 250,
+        enableSorting: false
     }
 ]
