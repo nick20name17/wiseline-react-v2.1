@@ -1,5 +1,3 @@
-'use no memo'
-
 import type { Column } from '@tanstack/react-table'
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react'
 import { BooleanParam, useQueryParam } from 'use-query-params'

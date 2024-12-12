@@ -1,5 +1,3 @@
-'use no memo'
-
 import { useCallback, useEffect, useMemo } from 'react'
 import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
