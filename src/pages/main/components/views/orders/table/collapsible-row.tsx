@@ -106,7 +106,7 @@ export const CollapsibleGroupedRows = ({ groupByDate }: GroupedRowsProps) => {
                     : group[1].every((row) => row.getIsSelected())
 
             return (
-                <Fragment key={group[1][0].original.id}>
+                <Fragment>
                     {index === 0 && (
                         <TableRow
                             id={'tr-group=header-' + row.original?.id}
