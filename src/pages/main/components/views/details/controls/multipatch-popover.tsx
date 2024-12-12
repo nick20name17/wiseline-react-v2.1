@@ -29,7 +29,7 @@ interface MultipatchPopoverProps {
 export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
     // const [isAnimate, setIsAnimate] = useState(false)
 
-    const [category] = useQueryParam('category', StringParam)
+    const [category = 'All'] = useQueryParam('category', StringParam)
     const [scheduled] = useQueryParam('scheduled', BooleanParam)
     const [completed] = useQueryParam('completed', BooleanParam)
 

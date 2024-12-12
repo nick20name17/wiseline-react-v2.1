@@ -4,7 +4,6 @@ import {
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
-import { AnimatePresence } from 'motion/react'
 import { useRef } from 'react'
 import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
@@ -166,29 +165,31 @@ export const OrdersViewTable = ({
                         )}
                     </TableHeader>
                     <TableBody className='[&_tr:last-child]:!border-b-0'>
-                        <AnimatePresence initial={false}>
-                            {isDataLoading ? (
-                                <TableSkeleton columnsCount={columns.length} />
-                            ) : table.getRowModel().rows?.length ? (
-                                table.getRowModel().rows.map((row) => (
+                        {/* <AnimatePresence initial={false}> */}
+                        {isDataLoading ? (
+                            <TableSkeleton columnsCount={columns.length} />
+                        ) : table.getRowModel().rows?.length ? (
+                            table.getRowModel().rows.map((row) => {
+                                return (
                                     <CollapsibleRow
                                         key={row.original.id}
                                         row={row}
                                     />
-                                ))
-                            ) : isDataFetching ? (
-                                <TableSkeleton columnsCount={columns.length} />
-                            ) : (
-                                <TableRow className='!bg-transparent'>
-                                    <TableCell
-                                        colSpan={columns.length}
-                                        className='h-24 !bg-transparent pl-10 pt-9 text-left'
-                                    >
-                                        No results.
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </AnimatePresence>
+                                )
+                            })
+                        ) : isDataFetching ? (
+                            <TableSkeleton columnsCount={columns.length} />
+                        ) : (
+                            <TableRow className='!bg-transparent'>
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className='h-24 !bg-transparent pl-10 pt-9 text-left'
+                                >
+                                    No results.
+                                </TableCell>
+                            </TableRow>
+                        )}
+                        {/* </AnimatePresence> */}
                     </TableBody>
                 </Table>
                 <ScrollBar orientation='horizontal' />

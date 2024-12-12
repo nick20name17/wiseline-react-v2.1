@@ -6,7 +6,6 @@ import {
     useReactTable
 } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { AnimatePresence, motion } from 'motion/react'
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
 
@@ -130,13 +129,9 @@ export function DetailsViewTable({
         [completed, groupByDate, groupByOrder]
     )
 
-    const MotionTableRow = motion(TableRow, {
-        forwardMotionProps: true
-    })
+    const MotionTableRow = TableRow
 
-    const MotionTableCell = motion(TableCell, {
-        forwardMotionProps: true
-    })
+    const MotionTableCell = TableCell
 
     return (
         <div className='mt-4 overflow-clip'>
@@ -215,105 +210,78 @@ export function DetailsViewTable({
                         </TableHeader>
 
                         <TableBody>
-                            <AnimatePresence initial={false}>
-                                {isDataLoading ? (
-                                    <TableSkeleton columnsCount={columns.length} />
-                                ) : table.getRowModel().rows?.length ? (
-                                    grouped || completed ? (
-                                        <GroupedRows
-                                            groupByOrder={groupedData}
-                                            columnsCount={columns?.length + 1}
-                                            category={category!}
-                                            isClientOrWorker={isClientOrWorker}
-                                            shouldRenderCell={shouldRenderCell}
-                                            groupKey={
-                                                completed ? 'production_date' : 'order'
-                                            }
-                                        />
-                                    ) : (
-                                        table.getRowModel().rows.map((row) => (
-                                            <MotionTableRow
-                                                initial={false}
-                                                layout
-                                                exit={{
-                                                    opacity: 0,
-                                                    transition: {
-                                                        duration: 0.15,
-                                                        type: 'spring'
-                                                    }
-                                                }}
-                                                id={'tr-' + row.original.id}
-                                                key={row.original.id}
-                                                data-state={
-                                                    row.getIsSelected() && 'selected'
-                                                }
-                                            >
-                                                {row
-                                                    .getVisibleCells()
-                                                    .map((cell, index) => {
-                                                        const shouldRender =
-                                                            shouldRenderCell(
-                                                                cell.column.id,
-                                                                category!,
-                                                                isClientOrWorker,
-                                                                index
-                                                            )
-
-                                                        if (!shouldRender) {
-                                                            return null
-                                                        }
-                                                        return (
-                                                            <MotionTableCell
-                                                                initial={false}
-                                                                layout
-                                                                exit={{
-                                                                    opacity: 0,
-                                                                    transition: {
-                                                                        duration: 0.15,
-                                                                        type: 'spring'
-                                                                    }
-                                                                }}
-                                                                className={cn(
-                                                                    cell.column.getIsPinned()
-                                                                        ? 'sticky left-0 top-7 z-30 border-r-0 bg-secondary shadow-[inset_-1px_0_0] shadow-border'
-                                                                        : ''
-                                                                )}
-                                                                style={{
-                                                                    minWidth:
-                                                                        cell.column
-                                                                            .columnDef
-                                                                            .size,
-                                                                    maxWidth:
-                                                                        cell.column
-                                                                            .columnDef
-                                                                            .size
-                                                                }}
-                                                                key={cell.id}
-                                                            >
-                                                                {flexRender(
-                                                                    cell.column.columnDef
-                                                                        .cell,
-                                                                    cell.getContext()
-                                                                )}
-                                                            </MotionTableCell>
-                                                        )
-                                                    })}
-                                            </MotionTableRow>
-                                        ))
-                                    )
-                                ) : isDataFetching ? (
-                                    <TableSkeleton columnsCount={columns.length} />
+                            {/* <AnimatePresence initial={false}> */}
+                            {isDataLoading ? (
+                                <TableSkeleton columnsCount={columns.length} />
+                            ) : table.getRowModel().rows?.length ? (
+                                grouped || completed ? (
+                                    <GroupedRows
+                                        groupByOrder={groupedData}
+                                        columnsCount={columns?.length + 1}
+                                        category={category!}
+                                        isClientOrWorker={isClientOrWorker}
+                                        shouldRenderCell={shouldRenderCell}
+                                        groupKey={completed ? 'production_date' : 'order'}
+                                    />
                                 ) : (
-                                    <TableRow className='!bg-transparent'>
-                                        <TableCell
-                                            colSpan={columns.length}
-                                            className='h-24 !bg-transparent pl-10 pt-9 text-left'
+                                    table.getRowModel().rows.map((row) => (
+                                        <MotionTableRow
+                                            // layout
+                                            id={'tr-' + row.original.id}
+                                            key={row.original.id}
+                                            data-state={row.getIsSelected() && 'selected'}
                                         >
-                                            No results.
-                                        </TableCell>
-                                    </TableRow>
-                                )}
-                            </AnimatePresence>
+                                            {row.getVisibleCells().map((cell, index) => {
+                                                const shouldRender = shouldRenderCell(
+                                                    cell.column.id,
+                                                    category!,
+                                                    isClientOrWorker,
+                                                    index
+                                                )
+
+                                                if (!shouldRender) {
+                                                    return null
+                                                }
+                                                return (
+                                                    <MotionTableCell
+                                                        // layout
+                                                        className={cn(
+                                                            cell.column.getIsPinned()
+                                                                ? 'sticky left-0 top-7 z-30 border-r-0 bg-secondary shadow-[inset_-1px_0_0] shadow-border'
+                                                                : ''
+                                                        )}
+                                                        style={{
+                                                            minWidth:
+                                                                cell.column.columnDef
+                                                                    .size,
+                                                            maxWidth:
+                                                                cell.column.columnDef.size
+                                                        }}
+                                                        key={cell.id}
+                                                    >
+                                                        {flexRender(
+                                                            cell.column.columnDef.cell,
+                                                            cell.getContext()
+                                                        )}
+                                                    </MotionTableCell>
+                                                )
+                                            })}
+                                        </MotionTableRow>
+                                    ))
+                                )
+                            ) : isDataFetching ? (
+                                <TableSkeleton columnsCount={columns.length} />
+                            ) : (
+                                <TableRow className='!bg-transparent'>
+                                    <TableCell
+                                        colSpan={columns.length}
+                                        className='h-24 !bg-transparent pl-10 pt-9 text-left'
+                                    >
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                            {/* </AnimatePresence> */}
                         </TableBody>
 
                         <ScrollBar orientation='horizontal' />
@@ -353,13 +321,9 @@ const GroupedRows = ({
     shouldRenderCell,
     groupKey
 }: GroupedRowsProps) => {
-    const MotionTableRow = motion(TableRow, {
-        forwardMotionProps: true
-    })
+    const MotionTableRow = TableRow
 
-    const MotionTableCell = motion(TableCell, {
-        forwardMotionProps: true
-    })
+    const MotionTableCell = TableCell
 
     return groupByOrder.map((group) =>
         group[1].map((row, index) => {
@@ -373,15 +337,7 @@ const GroupedRows = ({
                 <Fragment key={`${group[0]}-${row.original.id}-${index}`}>
                     {index === 0 && (
                         <MotionTableRow
-                            initial={false}
-                            layout
-                            exit={{
-                                opacity: 0,
-                                transition: {
-                                    duration: 0.15,
-                                    type: 'spring'
-                                }
-                            }}
+                            // layout
                             id={'tr-header-' + row.original?.id}
                             className='!p-0'
                         >
@@ -427,15 +383,7 @@ const GroupedRows = ({
                     )}
                     <MotionTableRow
                         id={'tr-' + row.original?.id}
-                        initial={false}
-                        layout
-                        exit={{
-                            opacity: 0,
-                            transition: {
-                                duration: 0.15,
-                                type: 'spring'
-                            }
-                        }}
+                        // layout
                         className='even:bg-secondary/60'
                         data-state={row.getIsSelected() && 'selected'}
                     >
@@ -453,15 +401,7 @@ const GroupedRows = ({
 
                             return (
                                 <MotionTableCell
-                                    initial={false}
-                                    layout
-                                    exit={{
-                                        opacity: 0,
-                                        transition: {
-                                            duration: 0.15,
-                                            type: 'spring'
-                                        }
-                                    }}
+                                    // layout
                                     style={{
                                         minWidth: cell.column.columnDef.size,
                                         maxWidth: cell.column.columnDef.size

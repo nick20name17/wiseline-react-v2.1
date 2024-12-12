@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import type { CuttingItem } from '@/api/ebms/cutting/cutting.types'
 import type { AccessToken } from '@/api/types/auth'
@@ -14,41 +14,45 @@ export const useCuttingItemsWebSocket = ({
 }: CuttingItemsWebSocket) => {
     const [dataToRender, setDataToRender] = useState<CuttingItem[]>(currentData || [])
 
-    useEffect(() => {
-        setDataToRender(currentData || [])
-    }, [currentData])
-
-    const token = JSON.parse(
-        localStorage.getItem('token') || sessionStorage.getItem('token') || ''
-    ) as AccessToken
+    const stableRefetch = useCallback(() => {
+        refetch()
+    }, [refetch])
 
     useEffect(() => {
+        if (JSON.stringify(dataToRender) !== JSON.stringify(currentData)) {
+            setDataToRender(currentData || [])
+        }
+    }, [currentData, dataToRender])
+
+    useEffect(() => {
+        const tokenStr =
+            localStorage.getItem('token') || sessionStorage.getItem('token') || ''
+        const token = JSON.parse(tokenStr) as AccessToken
+
         const websocket = new WebSocket(
             'wss://api.wiseline.app/ws/cutting-view/',
             token.access
         )
 
-        websocket.addEventListener('message', (event) => {
+        const handleWebSocketMessage = (event: MessageEvent) => {
             const dataToPatch = JSON.parse(event.data) as CuttingItem
 
-            refetch()
-            setDataToRender((prevData) => {
-                const newData = prevData.map((item) => {
-                    if (item.autoid === dataToPatch.autoid) {
-                        return dataToPatch
-                    } else {
-                        return item
-                    }
-                })
-                return newData
-            })
-        })
+            setDataToRender((prevData) =>
+                prevData.map((item) =>
+                    item.autoid === dataToPatch.autoid ? dataToPatch : item
+                )
+            )
+
+            stableRefetch()
+        }
+
+        websocket.addEventListener('message', handleWebSocketMessage)
 
         return () => {
+            websocket.removeEventListener('message', handleWebSocketMessage)
             websocket.close()
-            websocket.removeEventListener('message', () => {})
         }
-    }, [])
+    }, [stableRefetch])
 
     return {
         dataToRender

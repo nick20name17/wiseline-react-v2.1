@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { StringParam, useQueryParam } from 'use-query-params'
 
 import type { EBMSItemsData, OrdersData } from '@/api/ebms/ebms.types'
@@ -26,16 +26,17 @@ export const useWebSocket = <T extends UseWebsocketProps>({
     const [dataToRender, setDataToRender] = useState<(OrdersData | EBMSItemsData)[]>(
         currentData || []
     )
-    const [category = 'All'] = useQueryParam('category', StringParam)
+    const [category] = useQueryParam('category', StringParam)
 
-    useEffect(() => {
-        setDataToRender(currentData || [])
-    }, [currentData])
+    const stableRefetch = useCallback(() => {
+        refetch()
+    }, [refetch])
 
     useEffect(() => {
         const tokenStr =
             localStorage.getItem('token') || sessionStorage.getItem('token') || ''
         const token = JSON.parse(tokenStr) as AccessToken
+
         const websocket = new WebSocket(
             `wss://api.wiseline.app/ws/${endpoint}/`,
             token.access
@@ -43,29 +44,28 @@ export const useWebSocket = <T extends UseWebsocketProps>({
 
         const handleWebSocketMessage = (event: MessageEvent) => {
             const dataToPatch = JSON.parse(event.data) as OrdersData | EBMSItemsData
-            refetch()
 
-            setDataToRender((prevData) => {
-                return prevData.map((item) => {
-                    if (item.id === dataToPatch.id) {
-                        if (endpoint === 'orders') {
-                            return {
-                                ...dataToPatch,
-                                origin_items:
-                                    category && category !== 'All'
-                                        ? (
-                                              dataToPatch as OrdersData
-                                          ).origin_items?.filter(
-                                              (item) => item?.category === category
-                                          )
-                                        : (dataToPatch as OrdersData).origin_items
-                            }
-                        }
-                        return dataToPatch
-                    }
-                    return item
-                })
-            })
+            setDataToRender((prevData) =>
+                prevData.map((item) =>
+                    item.id === dataToPatch.id
+                        ? endpoint === 'orders'
+                            ? {
+                                  ...dataToPatch,
+                                  origin_items:
+                                      category && category !== 'All'
+                                          ? (
+                                                dataToPatch as OrdersData
+                                            ).origin_items?.filter(
+                                                (item) => item?.category === category
+                                            )
+                                          : (dataToPatch as OrdersData).origin_items
+                              }
+                            : dataToPatch
+                        : item
+                )
+            )
+
+            stableRefetch()
         }
 
         websocket.addEventListener('message', handleWebSocketMessage)
@@ -74,7 +74,13 @@ export const useWebSocket = <T extends UseWebsocketProps>({
             websocket.removeEventListener('message', handleWebSocketMessage)
             websocket.close()
         }
-    }, [endpoint, refetch])
+    }, [endpoint, stableRefetch, category])
+
+    useEffect(() => {
+        if (JSON.stringify(dataToRender) !== JSON.stringify(currentData)) {
+            setDataToRender(currentData || [])
+        }
+    }, [currentData])
 
     return {
         dataToRender

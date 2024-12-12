@@ -161,13 +161,13 @@ export const StatusCell = ({ item }: StatusCellProps) => {
                                 ) {
                                     animate(
                                         trHeaderElement,
-                                        { x: '-100%', opacity: 0 },
-                                        { duration: 1.2, type: 'spring' }
+                                        { opacity: 0 },
+                                        { duration: 0.5, type: 'spring' }
                                     )
                                     animate(
                                         trElement,
-                                        { x: '-100%', opacity: 0 },
-                                        { duration: 1.2, type: 'spring' }
+                                        { opacity: 0 },
+                                        { duration: 0.5, type: 'spring' }
                                     )
                                 }
 
@@ -199,32 +199,6 @@ export const StatusCell = ({ item }: StatusCellProps) => {
             data,
             stageName,
             stageColor
-        }).then(() => {
-            if (
-                (!completed && stageName === 'Done') ||
-                (completed && stageName !== 'Done')
-            ) {
-                const currentId = view === 'lines' ? item?.id : item?.item?.id
-                const trHeaderElement = document?.getElementById(
-                    'tr-header-' + currentId
-                )!
-                const trElement = document?.getElementById('tr-' + currentId)!
-
-                if (trHeaderElement) {
-                    animate(
-                        trHeaderElement,
-                        { x: '-100%', opacity: 0 },
-                        { duration: 1.2, type: 'spring', delay: 0.2 }
-                    )
-                }
-                if (trElement) {
-                    animate(
-                        trElement,
-                        { x: '-100%', opacity: 0 },
-                        { duration: 1.2, type: 'spring', delay: 0.2 }
-                    )
-                }
-            }
         })
     }
 
@@ -278,7 +252,7 @@ export const StatusCell = ({ item }: StatusCellProps) => {
             disabled={isDisabled}
         >
             <SelectTrigger className='w-full'>
-                <span className='block w-full truncate text-left'>
+                <span className='block w-full text-left'>
                     <SelectValue placeholder='Select status' />
                 </span>
             </SelectTrigger>
@@ -297,14 +271,14 @@ export const StatusCell = ({ item }: StatusCellProps) => {
                             value={String(status.id)}
                         >
                             <div className='-mt-0.5 flex items-center justify-between gap-x-1.5'>
-                                <div className='flex items-center justify-between gap-x-1.5'>
+                                <div className='flex items-center justify-between gap-x-1.5 truncate'>
                                     <div
-                                        className='h-3 w-3 rounded-sm'
+                                        className='size-3 shrink-0 rounded-sm'
                                         style={{
                                             backgroundColor: status.color
                                         }}
                                     ></div>
-                                    {status.name}
+                                    <span className='truncate'> {status.name}</span>
                                 </div>
                             </div>
                         </SelectItem>

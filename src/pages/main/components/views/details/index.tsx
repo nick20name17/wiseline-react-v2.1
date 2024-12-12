@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { columns } from './table/columns'
@@ -15,29 +15,43 @@ export const DetailsView = () => {
     const [overdue] = useQueryParam('overdue', BooleanParam)
     const [completed] = useQueryParam('completed', BooleanParam)
     const [scheduled] = useQueryParam('scheduled', BooleanParam)
+    const [search] = useQueryParam('search', StringParam)
     const [offset] = useQueryParam('offset', NumberParam)
     const [limit] = useQueryParam('limit', NumberParam)
-    const [search] = useQueryParam('search', StringParam)
     const [date] = useQueryParam('date', StringParam)
     const [flow] = useQueryParam('flow', StringParam)
     const [stage] = useQueryParam('stage', StringParam)
     const [category] = useQueryParam('category', StringParam)
     const [ordering] = useQueryParam('ordering', StringParam)
 
-    const queryParams: Partial<EBMSItemsQueryParams> = {
-        offset: offset!,
-        limit: limit!,
-        ordering: ordering!,
-        search: search!,
-        flow_id: flow!,
-        is_scheduled: scheduled!,
-        category: category === 'All' ? undefined : category!,
-        completed: completed!,
-        over_due: overdue!,
-        stage_id: stage ? stage! : undefined,
-        production_date: date ? date : undefined
-    }
-
+    const queryParams = useMemo(
+        () => ({
+            offset: offset!,
+            limit: limit!,
+            ordering: ordering!,
+            search: search!,
+            flow_id: flow!,
+            is_scheduled: scheduled!,
+            category: category === 'All' ? undefined : category!,
+            completed: completed!,
+            over_due: overdue!,
+            stage_id: stage ? stage! : undefined,
+            production_date: date ? date : undefined
+        }),
+        [
+            offset,
+            limit,
+            ordering,
+            search,
+            flow,
+            scheduled,
+            category,
+            completed,
+            overdue,
+            stage,
+            date
+        ]
+    )
     const { currentData, isLoading, isFetching, refetch } = useGetItemsQuery(queryParams)
 
     const currentCount = useCurrentValue(currentData?.count)
@@ -55,27 +69,22 @@ export const DetailsView = () => {
 
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
+    const dispatchQueryParams = useCallback(() => {
         dispatch(setCurrentQueryParams(queryParams as EBMSItemsQueryParams))
-    }, [
-        overdue,
-        completed,
-        scheduled,
-        search,
-        flow,
-        stage,
-        date,
-        flow,
-        category,
-        ordering
-    ])
+    }, [dispatch, queryParams])
+
+    useEffect(() => {
+        dispatchQueryParams()
+    }, [dispatchQueryParams])
+
+    const tableData = useMemo(() => dataToRender || [], [dataToRender])
 
     return (
         <>
             <TableControls />
             <DetailsViewTable
                 columns={columns}
-                data={dataToRender}
+                data={tableData}
                 isDataLoading={isLoading}
                 isDataFetching={isFetching}
                 pageCount={pageCount}

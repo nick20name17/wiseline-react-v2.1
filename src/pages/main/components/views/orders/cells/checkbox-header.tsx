@@ -1,5 +1,7 @@
 import type { Table } from '@tanstack/react-table'
 
+import { MultipatchPopover } from '../../../controls/multipatch-popover'
+
 import type { OrdersData } from '@/api/ebms/ebms.types'
 import { Checkbox } from '@/components/ui/checkbox'
 
@@ -18,6 +20,7 @@ export const CheckboxHeader = ({ table }: CheckboxHeaderProps) => {
                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                 aria-label='Select all'
             />
+            <MultipatchPopover table={table} />
         </div>
     )
 }

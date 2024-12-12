@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowRight, SkipBack, SkipForward } from 'lucide-react'
+import { useEffect } from 'react'
 import { NumberParam, useQueryParam } from 'use-query-params'
 
 import { Button } from '@/components/ui/button'
@@ -16,17 +17,19 @@ interface PaginationProps {
     isDataLoading: boolean
 }
 
-const defaultOffset = tableConfig.pagination.pageIndex * tableConfig.pagination.pageSize
-const defaultLimit = tableConfig.pagination.pageSize
+export const Pagination: React.FC<PaginationProps> = ({ pageCount, isDataLoading }) => {
+    const [offset, setOffset] = useQueryParam('offset', NumberParam)
+    const [limit, setLimit] = useQueryParam('limit', NumberParam)
 
-export const Pagination = ({ pageCount, isDataLoading }: PaginationProps) => {
-    const [offset = defaultOffset, setOffset] = useQueryParam('offset', NumberParam)
-    const [limit = defaultLimit, setLimit] = useQueryParam('limit', NumberParam)
+    const offsetParam =
+        offset || tableConfig.pagination.pageIndex * tableConfig.pagination.pageSize
 
-    const currentPage = Math.floor(offset || defaultOffset / (limit || defaultLimit)) + 1
+    const limitParam = limit || tableConfig.pagination.pageSize
+
+    const currentPage = Math.floor(offsetParam / limitParam) + 1
 
     const handlePageChange = (newPage: number) => {
-        const newOffset = (newPage - 1) * (limit || defaultLimit)
+        const newOffset = (newPage - 1) * limitParam
         setOffset(newOffset)
     }
 
@@ -34,6 +37,16 @@ export const Pagination = ({ pageCount, isDataLoading }: PaginationProps) => {
         setLimit(newLimit)
         setOffset(0)
     }
+
+    useEffect(() => {
+        if (!offset) {
+            setOffset(offsetParam)
+        }
+
+        if (!limit) {
+            setLimit(limitParam)
+        }
+    }, [])
 
     return (
         <div className='flex items-center space-x-2'>

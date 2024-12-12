@@ -25,7 +25,7 @@ export const StageFilter = () => {
         isLoading,
         isFetching
     } = useGetStagesQuery({
-        flow: flow ? +flow! : null
+        flow: flow !== 'all' ? +flow! : null
     })
 
     useEffect(() => {

@@ -29,13 +29,6 @@ export const SubCollapsibleRow: React.FC<CollapsibleRowProps> = ({ row }) => {
             <>
                 <MotionTableRow
                     layout
-                    exit={{
-                        opacity: 0,
-                        transition: {
-                            duration: 0.15,
-                            type: 'spring'
-                        }
-                    }}
                     data-state={row.getIsSelected() ? 'selected' : undefined}
                 >
                     {row.getVisibleCells().map((cell) =>
@@ -43,13 +36,6 @@ export const SubCollapsibleRow: React.FC<CollapsibleRowProps> = ({ row }) => {
                         category !== 'Trim' ? null : (
                             <MotionTableCell
                                 layout
-                                exit={{
-                                    opacity: 0,
-                                    transition: {
-                                        duration: 0.15,
-                                        type: 'spring'
-                                    }
-                                }}
                                 className={cn(
                                     cell.column.getIsPinned()
                                         ? 'sticky left-0 top-7 z-30 border-r-0 bg-secondary shadow-[inset_-1px_0_0] shadow-border'
@@ -71,16 +57,7 @@ export const SubCollapsibleRow: React.FC<CollapsibleRowProps> = ({ row }) => {
                     )}
                 </MotionTableRow>
                 <CollapsibleContent asChild>
-                    <motion.tr
-                        layout
-                        exit={{
-                            opacity: 0,
-                            transition: {
-                                duration: 0.15,
-                                type: 'spring'
-                            }
-                        }}
-                    >
+                    <motion.tr layout>
                         <td
                             className='max-w-[100vw] bg-background py-2 pl-2 pr-3'
                             colSpan={row.getVisibleCells().length}

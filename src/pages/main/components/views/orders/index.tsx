@@ -1,4 +1,6 @@
-import { useEffect, useMemo } from 'react'
+'use no memo'
+
+import { useCallback, useEffect, useMemo } from 'react'
 import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { columns } from './table/columns'
@@ -36,13 +38,6 @@ export const OrdersView = () => {
 
     const { currentData, isLoading, isFetching, refetch } = useGetOrdersQuery(queryParams)
 
-    const currentCount = useCurrentValue(currentData?.count)
-
-    const pageCount = useMemo(
-        () => (currentCount ? Math.ceil(currentCount! / limit!) : 1),
-        [isLoading, limit, currentCount]
-    )
-
     const { dataToRender } = useWebSocket({
         currentData: currentData?.results || [],
         endpoint: 'orders',
@@ -51,16 +46,29 @@ export const OrdersView = () => {
 
     const dispatch = useAppDispatch()
 
-    useEffect(() => {
+    const dispatchQueryParams = useCallback(() => {
         dispatch(setCurrentQueryParams(queryParams as OrdersQueryParams))
-    }, [overdue, completed, scheduled, search, flow, flow, ordering, category])
+    }, [dispatch, queryParams])
+
+    useEffect(() => {
+        dispatchQueryParams()
+    }, [dispatchQueryParams])
+
+    const tableData = useMemo(() => dataToRender || [], [dataToRender])
+
+    const currentCount = useCurrentValue(currentData?.count)
+
+    const pageCount = useMemo(
+        () => (currentCount ? Math.ceil(currentCount! / limit!) : 1),
+        [isLoading, limit, currentCount]
+    )
 
     return (
         <>
             <TableControls />
             <OrdersViewTable
                 columns={columns}
-                data={dataToRender}
+                data={tableData}
                 isDataLoading={isLoading}
                 isDataFetching={isFetching}
                 pageCount={pageCount}

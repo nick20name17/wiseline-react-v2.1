@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { tableAnimation } from '@/config/table'
 import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { cn } from '@/lib/utils'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
@@ -56,8 +57,6 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
         : undefined
 
     const [date, setDate] = useState<Date | undefined>(productionDate)
-
-    const [isAnimate, setIsAnimate] = useState(false)
 
     const salesOrderId = order.sales_order?.id
     const orderId = order.id
@@ -126,14 +125,38 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
 
         if (!salesOrderId) {
             handleAddSalesOrder(data).then(() => {
-                setIsAnimate(!!scheduled)
+                const trHeaderElement = document?.getElementById(
+                    'tr-header-' + order?.id
+                )!
+                const trElement = document?.getElementById('tr-' + order?.id)!
+
+                if (!!scheduled) {
+                    if (trHeaderElement) {
+                        animate(trHeaderElement, tableAnimation)
+                    }
+                    if (trElement) {
+                        animate(trElement, tableAnimation)
+                    }
+                }
             })
         } else {
             handlePatchSalesOrder({
                 id: salesOrderId!,
                 data
             }).then(() => {
-                // setIsAnimate(scheduled === null ? false : true)
+                const trHeaderElement = document?.getElementById(
+                    'tr-header-' + order?.id
+                )!
+                const trElement = document?.getElementById('tr-' + order?.id)!
+
+                if (scheduled === null ? false : true) {
+                    if (trHeaderElement) {
+                        animate(trHeaderElement, tableAnimation)
+                    }
+                    if (trElement) {
+                        animate(trElement, tableAnimation)
+                    }
+                }
             })
         }
 
@@ -161,7 +184,17 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
                 order: orderId
             }
         }).then(() => {
-            setIsAnimate(!!scheduled)
+            const trHeaderElement = document?.getElementById('tr-header-' + order?.id)!
+            const trElement = document?.getElementById('tr-' + order?.id)!
+
+            if (!!scheduled) {
+                if (trHeaderElement) {
+                    animate(trHeaderElement, {})
+                }
+                if (trElement) {
+                    animate(trElement, { opacity: 0 }, { duration: 0.5, type: 'spring' })
+                }
+            }
         })
 
         setDate(undefined)
@@ -181,28 +214,6 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
     // }, [productionDate, order?.id])
 
     const isWorkerOrClient = useCurrentUserRole(['worker', 'client'])
-
-    useEffect(() => {
-        const trHeaderElement = document?.getElementById('tr-header-' + order?.id)!
-        const trElement = document?.getElementById('tr-' + order?.id)!
-
-        if (isAnimate) {
-            if (trHeaderElement) {
-                animate(
-                    trHeaderElement,
-                    { x: '-100%', opacity: 0 },
-                    { duration: 1.2, type: 'spring', delay: 0.2 }
-                )
-            }
-            if (trElement) {
-                animate(
-                    trElement,
-                    { x: '-100%', opacity: 0 },
-                    { duration: 1.2, type: 'spring', delay: 0.2 }
-                )
-            }
-        }
-    }, [isAnimate])
 
     return isWorkerOrClient ? (
         <Button

@@ -1,6 +1,6 @@
 import type { ColumnDef, Table, VisibilityState } from '@tanstack/react-table'
 import type { DragEvent } from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
 import type { UsersProfileData } from '@/api/profiles/profiles.types'
@@ -8,25 +8,31 @@ import { isErrorWithMessage } from '@/utils/is-error-with-message'
 
 type PageType = 'items' | 'orders'
 
-const DEFAULT_COLUMNS = {
+const DEFAULT_COLUMNS: Record<PageType, string[]> = {
     items: ['select', 'arrow', 'flow', 'status', 'production_date'],
     orders: ['select', 'arrow']
 }
 
 export const useColumnOrder = (usersProfilesData: UsersProfileData[], page: PageType) => {
-    const defaultOrder =
-        usersProfilesData
-            ?.find((profile) => profile.page === page)
-            ?.show_columns?.split(',') ?? []
+    const defaultOrder = useMemo(
+        () =>
+            usersProfilesData
+                ?.find((profile) => profile.page === page)
+                ?.show_columns?.split(',') ?? [],
+        [usersProfilesData, page]
+    )
 
     const [columnOrder, setColumnOrder] = useState<string[]>(defaultOrder)
 
     useEffect(() => {
         setColumnOrder(defaultOrder)
-    }, [usersProfilesData, page])
+    }, [defaultOrder])
 
     return {
-        columnOrder: [...DEFAULT_COLUMNS[page], ...columnOrder]
+        columnOrder: useMemo(
+            () => [...DEFAULT_COLUMNS[page], ...columnOrder],
+            [page, columnOrder]
+        )
     }
 }
 
@@ -61,7 +67,7 @@ export const useColumnDragDrop = <T>(
     table: Table<T>,
     page: PageType,
     // handleFunction: (arg: { show_columns: string; page: PageType }) => Promise<void>
-    handleFunction: any
+    handleFunction: (args: any) => any
 ) => {
     const [columnBeingDragged, setColumnBeingDragged] = useState<number | null>(null)
 
@@ -86,7 +92,7 @@ export const useColumnDragDrop = <T>(
             )
 
             handleFunction({ show_columns: filteredCols.join(','), page }).catch(
-                (error: any) => {
+                (error: unknown) => {
                     const message = isErrorWithMessage(error)
                         ? error.data.detail
                         : 'Something went wrong'

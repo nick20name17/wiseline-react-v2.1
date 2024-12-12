@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils'
 const defaultFlow = 'all'
 
 export const FlowFilter = () => {
-    const [category] = useQueryParam('category', StringParam)
+    const [category = 'All'] = useQueryParam('category', StringParam)
     const [_, setStage] = useQueryParam('stage', StringParam)
     const [flow = defaultFlow, setFlow] = useQueryParam('flow', StringParam)
     const [, setOffset] = useQueryParam('offset')

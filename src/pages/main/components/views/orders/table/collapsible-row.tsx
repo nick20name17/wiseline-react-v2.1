@@ -79,8 +79,7 @@ import { format } from 'date-fns'
 //         </Collapsible>
 //     )
 // }
-import { motion } from 'motion/react'
-import { Fragment } from 'react'
+import { Fragment, memo } from 'react'
 import { StringParam, useQueryParam } from 'use-query-params'
 
 import { SubTable } from '../sub-table/sub-table'
@@ -159,14 +158,10 @@ interface CollapsibleRowProps {
     row: Row<OrdersData>
 }
 
-export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
-    const MotionTableRow = motion(TableRow, {
-        forwardMotionProps: true
-    })
+export const CollapsibleRow = memo(({ row }: CollapsibleRowProps) => {
+    const MotionTableRow = TableRow
 
-    const MotionTableCell = motion(TableCell, {
-        forwardMotionProps: true
-    })
+    const MotionTableCell = TableCell
 
     const [category] = useQueryParam('category', StringParam)
     // const { isTablet } = useMatchMedia()
@@ -177,14 +172,9 @@ export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
         <Collapsible asChild>
             <>
                 <MotionTableRow
-                    layout
-                    exit={{
-                        opacity: 0,
-                        transition: {
-                            duration: 0.15,
-                            type: 'spring'
-                        }
-                    }}
+                    id={'tr-header-' + row.original.id}
+                    // initial={false}
+                    // layout
                     data-state={row.getIsSelected() ? 'selected' : undefined}
                 >
                     {row.getVisibleCells().map((cell, i) =>
@@ -195,14 +185,8 @@ export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
                             i
                         ) ? (
                             <MotionTableCell
-                                layout
-                                exit={{
-                                    opacity: 0,
-                                    transition: {
-                                        duration: 0.15,
-                                        type: 'spring'
-                                    }
-                                }}
+                                // initial={false}
+                                // layout
                                 className={cn(
                                     cell.column.getIsPinned()
                                         ? 'sticky left-0 top-7 z-30 border-r-0 bg-secondary shadow-[inset_-1px_0_0] shadow-border'
@@ -224,16 +208,11 @@ export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
                     )}
                 </MotionTableRow>
                 <CollapsibleContent asChild>
-                    <motion.tr
+                    <tr
+                        id={'tr-' + row.original.id}
+                        // initial={false}
+                        // layout
                         className='sticky top-[22px] z-20'
-                        layout
-                        exit={{
-                            opacity: 0,
-                            transition: {
-                                duration: 0.15,
-                                type: 'spring'
-                            }
-                        }}
                     >
                         {row
                             .getVisibleCells()
@@ -251,9 +230,9 @@ export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
                         >
                             <SubTable data={row.original.origin_items} />
                         </td>
-                    </motion.tr>
+                    </tr>
                 </CollapsibleContent>
             </>
         </Collapsible>
     )
-}
+})

@@ -30,7 +30,7 @@ export const columns: ColumnDef<OrdersData>[] = [
             />
         ),
         cell: ({ row }) => (
-            <CollapsibleCell disabled={!row.original?.origin_items.length} />
+            <CollapsibleCell disabled={row.original?.origin_items.length === 0} />
         ),
         enableHiding: false,
         enableSorting: false,

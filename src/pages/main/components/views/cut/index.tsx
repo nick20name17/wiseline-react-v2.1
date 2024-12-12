@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { BooleanParam, NumberParam, StringParam, useQueryParam } from 'use-query-params'
 
 import { Controls } from './controls'
+import { useCuttingItemsWebSocket } from './hooks/use-cutting-view-websocket'
 import { AllOrdersTable } from './table/all-orders-table'
 import { columns } from './table/columns'
 import { CutViewTable } from './table/table'
@@ -32,7 +33,8 @@ export const CutView = () => {
     const {
         currentData: cuttingItems,
         isLoading,
-        isFetching
+        isFetching,
+        refetch
     } = useGetCuttingViewItemsQuery({
         color: color === 'all' ? '' : color,
         limit: limit!,
@@ -40,10 +42,10 @@ export const CutView = () => {
         cutting_complete: cuttingComplete!
     })
 
-    // const { dataToRender } = useCuttingItemsWebSocket({
-    //     currentData: cuttingItems?.results || [],
-    //     refetch
-    // })
+    const { dataToRender } = useCuttingItemsWebSocket({
+        currentData: cuttingItems?.results || [],
+        refetch
+    })
 
     const currentCount = useCurrentValue(cuttingItems?.count)
 
@@ -52,13 +54,15 @@ export const CutView = () => {
         [isLoading, limit, currentCount]
     )
 
+    const tableData = useMemo(() => dataToRender || [], [dataToRender])
+
     return (
         <>
             <Controls />
             {cutView === 'pipeline' ? (
                 <CutViewTable
                     key={color}
-                    data={cuttingItems?.results || []}
+                    data={tableData}
                     isDataLoading={isLoading}
                     isDataFetching={isFetching}
                     columns={columns}
