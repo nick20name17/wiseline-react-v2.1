@@ -23,13 +23,18 @@ export const SubTable = ({ data }: SubTableProps) => {
     const table = useReactTable({
         data,
         columns: subColumns,
-        getCoreRowModel: getCoreRowModel()
+        getCoreRowModel: getCoreRowModel(),
+        enableColumnResizing: false,
+        defaultColumn: {
+            minSize: 0,
+            size: 0
+        }
     })
 
     const [category] = useQueryParam('category', StringParam)
 
     return (
-        <div className='relative max-h-[390px] overflow-y-auto rounded-md !border'>
+        <div className='relative max-h-[390px] overflow-y-auto rounded-md !border shadow-lg'>
             <Table className='overflow-clip'>
                 <TableHeader className='overflow-clip'>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -42,8 +47,14 @@ export const SubTable = ({ data }: SubTableProps) => {
                                 category !== 'Trim' ? null : (
                                     <TableHead
                                         style={{
-                                            minWidth: header.column.columnDef.size,
-                                            maxWidth: header.column.columnDef.size
+                                            minWidth:
+                                                header.column.columnDef.size !== 0
+                                                    ? header.column.columnDef.size
+                                                    : undefined,
+                                            maxWidth:
+                                                header.column.columnDef.size !== 0
+                                                    ? header.column.columnDef.size
+                                                    : undefined
                                         }}
                                         key={header.id}
                                         className={cn(
@@ -81,8 +92,14 @@ export const SubTable = ({ data }: SubTableProps) => {
                                         category !== 'Trim' ? null : (
                                         <TableCell
                                             style={{
-                                                minWidth: cell.column.columnDef.size,
-                                                maxWidth: cell.column.columnDef.size
+                                                minWidth:
+                                                    cell.column.columnDef.size !== 0
+                                                        ? cell.column.columnDef.size
+                                                        : undefined,
+                                                maxWidth:
+                                                    cell.column.columnDef.size !== 0
+                                                        ? cell.column.columnDef.size
+                                                        : undefined
                                             }}
                                             className={cn(
                                                 category !== 'Trim' ? 'first:hidden' : ''

@@ -77,7 +77,7 @@
         @apply border-border tabular-nums;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground antialiased;
     }
 
     input[type='number']::-webkit-inner-spin-button,

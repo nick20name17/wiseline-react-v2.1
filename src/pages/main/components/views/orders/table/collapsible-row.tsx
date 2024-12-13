@@ -16,8 +16,9 @@ import { cn } from '@/lib/utils'
 
 interface CollapsibleRowProps {
     row: Row<OrdersData>
+    index: number
 }
-export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
+export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
     const [category] = useQueryParam('category', StringParam)
     const [open, setOpen] = useState(false)
     const isClientOrWorker = useCurrentUserRole(['client', 'worker'])
@@ -49,8 +50,14 @@ export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
                                     cell.column.id === 'arrow' ? 'left-10' : ''
                                 )}
                                 style={{
-                                    maxWidth: cell.column.columnDef.size,
-                                    minWidth: cell.column.columnDef.size
+                                    maxWidth:
+                                        cell.column.columnDef.size !== 0
+                                            ? cell.column.columnDef.size
+                                            : undefined,
+                                    minWidth:
+                                        cell.column.columnDef.size !== 0
+                                            ? cell.column.columnDef.size
+                                            : undefined
                                 }}
                                 key={cell.id}
                             >
@@ -64,21 +71,25 @@ export const CollapsibleRow = ({ row }: CollapsibleRowProps) => {
                 </TableRow>
                 <CollapsibleContent asChild>
                     <tr
+                        style={{ zIndex: 30 - index }}
                         id={'tr-' + row.original?.id}
-                        className='sticky top-[22px] z-20'
+                        className='sticky top-[22px]'
                     >
                         {row
                             .getVisibleCells()
                             .slice(0, 2)
                             .map((_, index) => (
                                 <td
+                                    style={{
+                                        width: index === 0 ? '40px' : '48px'
+                                    }}
                                     key={`empty-${index}`}
                                     className='sticky left-10 top-8 z-20 bg-background p-0 first:left-0'
                                 ></td>
                             ))}
 
                         <td
-                            className='max-w-[100vw] py-2 pl-0 pr-3'
+                            className='max-w-[100vw] py-2 pl-0 pr-2'
                             colSpan={row.getVisibleCells().length - 2}
                         >
                             <SubTable data={row.original.origin_items} />
@@ -143,7 +154,10 @@ export const CollapsibleGroupedRows = ({ groupByDate }: GroupedRowsProps) => {
                             </TableCell>
                         </TableRow>
                     )}
-                    <CollapsibleRow row={group[1][0]} />
+                    <CollapsibleRow
+                        row={group[1][0]}
+                        index={index}
+                    />
                 </Fragment>
             )
         })

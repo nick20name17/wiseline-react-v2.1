@@ -73,11 +73,16 @@ const OrdersViewTable = memo(
             manualPagination: true,
             manualSorting: true,
             pageCount,
+            enableColumnResizing: false,
             state: {
                 columnVisibility,
                 sorting,
                 columnOrder,
                 columnPinning: { left: ['select', 'arrow'] }
+            },
+            defaultColumn: {
+                minSize: 0,
+                size: 0
             }
         })
 
@@ -136,8 +141,14 @@ const OrdersViewTable = memo(
                                     header.column.id === 'arrow' ? 'left-10' : ''
                                 )}
                                 style={{
-                                    maxWidth: header.column.columnDef.size,
-                                    minWidth: header.column.columnDef.size
+                                    maxWidth:
+                                        header.column.columnDef.size !== 0
+                                            ? header.column.columnDef.size
+                                            : undefined,
+                                    minWidth:
+                                        header.column.columnDef.size !== 0
+                                            ? header.column.columnDef.size
+                                            : undefined
                                 }}
                                 colSpan={header.colSpan}
                                 draggable={
@@ -181,8 +192,9 @@ const OrdersViewTable = memo(
                 return completed ? (
                     <CollapsibleGroupedRows groupByDate={groupData} />
                 ) : (
-                    table.getRowModel().rows.map((row) => (
+                    table.getRowModel().rows.map((row, index) => (
                         <CollapsibleRow
+                            index={index}
                             key={row.original.id}
                             row={row}
                         />
