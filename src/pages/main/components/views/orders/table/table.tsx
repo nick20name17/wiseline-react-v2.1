@@ -148,6 +148,10 @@ const OrdersViewTable = memo(
                                     minWidth:
                                         header.column.columnDef.size !== 0
                                             ? header.column.columnDef.size
+                                            : undefined,
+                                    width:
+                                        header.column.columnDef.size !== 0
+                                            ? header.column.columnDef.size
                                             : undefined
                                 }}
                                 colSpan={header.colSpan}

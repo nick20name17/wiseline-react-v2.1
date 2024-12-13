@@ -57,6 +57,10 @@ export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
                                     minWidth:
                                         cell.column.columnDef.size !== 0
                                             ? cell.column.columnDef.size
+                                            : undefined,
+                                    width:
+                                        cell.column.columnDef.size !== 0
+                                            ? cell.column.columnDef.size
                                             : undefined
                                 }}
                                 key={cell.id}
@@ -73,24 +77,14 @@ export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
                     <tr
                         style={{ zIndex: 30 - index }}
                         id={'tr-' + row.original?.id}
-                        className='sticky top-[22px]'
+                        className='sticky top-[18px] p-0'
                     >
-                        {row
-                            .getVisibleCells()
-                            .slice(0, 2)
-                            .map((_, index) => (
-                                <td
-                                    style={{
-                                        width: index === 0 ? '40px' : '48px'
-                                    }}
-                                    key={`empty-${index}`}
-                                    className='sticky left-10 top-8 z-20 bg-background p-0 first:left-0'
-                                ></td>
-                            ))}
+                        {/* <td className='sticky left-0 top-8 z-20 block w-10 max-w-10 p-0'></td>
+                        <td className='sticky left-10 top-8 z-20 block w-12 max-w-12 p-0'></td> */}
 
                         <td
-                            className='max-w-[100vw] py-2 pl-0 pr-2'
-                            colSpan={row.getVisibleCells().length - 2}
+                            className='max-w-[calc(100vw-28.5rem)] p-0 py-3 pl-40 pr-4'
+                            colSpan={columns.length}
                         >
                             <SubTable data={row.original.origin_items} />
                         </td>
