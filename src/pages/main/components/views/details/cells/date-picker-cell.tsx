@@ -1,10 +1,9 @@
 import { format, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon, RotateCcw } from 'lucide-react'
-import { animate } from 'motion/react'
 import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 import { toast } from 'sonner'
-import { BooleanParam, useQueryParam } from 'use-query-params'
+import { BooleanParam, StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 import type { EBMSItemsData } from '@/api/ebms/ebms.types'
 import { useAddItemMutation, usePatchItemMutation } from '@/api/items/items'
@@ -44,7 +43,9 @@ export const getDateToastMessage = (
 }
 
 export const DatePickerCell = ({ originItem }: DatePickerCellProps) => {
-    const [isAnimate, setIsAnimate] = useState(false)
+    const [, setIsAnimate] = useQueryParam('animate', withDefault(StringParam, null), {
+        removeDefaultsFromUrl: true
+    })
     const productionDate = originItem?.item?.production_date
         ? parseISO(originItem?.item?.production_date)
         : undefined
@@ -122,14 +123,19 @@ export const DatePickerCell = ({ originItem }: DatePickerCellProps) => {
                 id: itemId,
                 data
             }).then(() => {
-                // setIsAnimate(scheduled === true)
+                if (scheduled !== undefined) {
+                    setIsAnimate(scheduled !== true ? itemId.toString() : null)
+                }
+                // setIsAnimate(scheduled !== undefined ? scheduled !== true : false)
             })
         } else {
             handleAddItem({
                 ...data,
                 origin_item: originItem?.id!
             }).then(() => {
-                setIsAnimate(!!scheduled)
+                if (scheduled !== undefined) {
+                    setIsAnimate(scheduled !== true ? itemId.toString() : null)
+                }
             })
         }
 
@@ -144,7 +150,7 @@ export const DatePickerCell = ({ originItem }: DatePickerCellProps) => {
                 order: orderId
             }
         }).then(() => {
-            setIsAnimate(!!scheduled)
+            setIsAnimate(!!scheduled ? itemId.toString() : null)
         })
 
         setDate(undefined)
@@ -156,24 +162,6 @@ export const DatePickerCell = ({ originItem }: DatePickerCellProps) => {
             setDisabledDays([{ dayOfWeek: [0, 6] }])
         }
     }, [companyProfiles?.working_weekend])
-
-    // useEffect(() => {
-    //     setDate(productionDate ? new Date(productionDate) : undefined)
-    // }, [productionDate])
-
-    useEffect(() => {
-        const trHeaderElement = document?.getElementById('tr-header-' + originItem?.id)!
-        const trElement = document?.getElementById('tr-' + originItem?.id)!
-
-        if (isAnimate) {
-            if (trHeaderElement) {
-                animate(trHeaderElement, {})
-            }
-            if (trElement) {
-                animate(trElement, {})
-            }
-        }
-    }, [isAnimate])
 
     const isWorkerOrClient = useCurrentUserRole(['worker', 'client'])
 

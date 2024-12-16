@@ -4,8 +4,9 @@ import {
     getSortedRowModel,
     useReactTable
 } from '@tanstack/react-table'
+import { AnimatePresence } from 'motion/react'
 import { memo, useCallback, useMemo, useRef } from 'react'
-import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
+import { BooleanParam, StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 import { CollapsibleGroupedRows, CollapsibleRow } from './collapsible-row'
 import { TableFooter } from './table-footer'
@@ -53,6 +54,14 @@ const OrdersViewTable = memo(
 
         const { data: usersProfilesData } = useGetUsersProfilesQuery()
         const [addUsersProfiles] = useAddUsersProfilesMutation()
+
+        const [, setAnimate] = useQueryParam(
+            'animate',
+            withDefault(BooleanParam, false),
+            {
+                removeDefaultsFromUrl: true
+            }
+        )
 
         const { columnOrder } = useColumnOrder(usersProfilesData!, 'orders')
         const { columnVisibility } = useColumnVisibility(
@@ -193,16 +202,23 @@ const OrdersViewTable = memo(
             }
 
             if (table.getRowModel().rows?.length) {
-                return completed ? (
-                    <CollapsibleGroupedRows groupByDate={groupData} />
-                ) : (
-                    table.getRowModel().rows.map((row, index) => (
-                        <CollapsibleRow
-                            index={index}
-                            key={row.original.id}
-                            row={row}
-                        />
-                    ))
+                return (
+                    <AnimatePresence
+                        initial={false}
+                        onExitComplete={() => setAnimate(false)}
+                    >
+                        {completed ? (
+                            <CollapsibleGroupedRows groupByDate={groupData} />
+                        ) : (
+                            table.getRowModel().rows.map((row, index) => (
+                                <CollapsibleRow
+                                    index={index}
+                                    key={row.original.id}
+                                    row={row}
+                                />
+                            ))
+                        )}
+                    </AnimatePresence>
                 )
             }
 

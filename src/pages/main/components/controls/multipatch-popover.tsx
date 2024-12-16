@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { BooleanParam, useQueryParam } from 'use-query-params'
+import { BooleanParam, StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 // import { DatePicker } from '@/components/ui/multipatch-date-picker'
 import type { OrdersData } from '@/api/ebms/ebms.types'
@@ -44,6 +44,10 @@ export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
 
     const [patchItems, { isLoading }] = useMultiPatchItemsMutation()
     const [patchOrders] = useMultiPatchOrdersMutation()
+
+    const [, setAnimate] = useQueryParam('animate', withDefault(StringParam, null), {
+        removeDefaultsFromUrl: true
+    })
 
     const [scheduled] = useQueryParam('scheduled', BooleanParam)
     const [completed] = useQueryParam('completed', BooleanParam)
@@ -107,9 +111,17 @@ export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
         try {
             await patchItems(dataToPatch)
                 .unwrap()
-                .then((response) =>
+                .then((response) => {
                     successToast(format(response.production_date!, 'yyyy-MM-dd'))
-                )
+
+                    if (scheduled !== undefined) {
+                        setAnimate(
+                            scheduled !== true
+                                ? currentRows.map((row) => row.id).join(',')
+                                : null
+                        )
+                    }
+                })
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
             errorToast(isErrorMessage ? error.data.detail : 'Unknown error')

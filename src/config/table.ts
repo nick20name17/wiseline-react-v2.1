@@ -43,10 +43,3 @@ export const shouldRenderCell = (
         ? !trimOnlyColumns.includes(columnId) || category === 'Trim'
         : false
 }
-
-export const tableAnimation = {
-    exit: {
-        opacity: 0
-    },
-    transition: { duration: 0.7, type: 'spring' }
-}

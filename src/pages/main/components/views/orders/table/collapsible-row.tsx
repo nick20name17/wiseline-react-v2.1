@@ -1,7 +1,8 @@
 import { type Row, flexRender } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { motion } from 'motion/react'
 import { Fragment, useState } from 'react'
-import { StringParam, useQueryParam } from 'use-query-params'
+import { StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 import { SubTable } from '../sub-table/sub-table'
 
@@ -23,6 +24,20 @@ export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
     const [open, setOpen] = useState(false)
     const isClientOrWorker = useCurrentUserRole(['client', 'worker'])
 
+    const [animate] = useQueryParam('animate', withDefault(StringParam, null), {
+        removeDefaultsFromUrl: true
+    })
+
+    const MotionTableRow = motion(TableRow, {
+        forwardMotionProps: true
+    })
+
+    const MotionTableCell = motion(TableCell, {
+        forwardMotionProps: true
+    })
+
+    console.log(animate !== null ? !!animate : false)
+
     return (
         <Collapsible
             id={'tr-' + row.original?.id}
@@ -31,8 +46,8 @@ export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
             asChild
         >
             <>
-                <TableRow
-                    id={'tr-header-' + row.original?.id}
+                <MotionTableRow
+                    layout={animate !== null ? !!animate : false}
                     data-state={row.getIsSelected() ? 'selected' : undefined}
                 >
                     {row.getVisibleCells().map((cell, i) =>
@@ -42,7 +57,8 @@ export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
                             isClientOrWorker,
                             i
                         ) ? (
-                            <TableCell
+                            <MotionTableCell
+                                layout={animate !== null ? !!animate : false}
                                 className={cn(
                                     cell.column.getIsPinned()
                                         ? 'sticky left-0 top-7 z-30 border-r-0 bg-secondary shadow-[inset_-1px_0_0] shadow-border'
@@ -69,14 +85,14 @@ export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
                                     cell.column.columnDef.cell,
                                     cell.getContext()
                                 )}
-                            </TableCell>
+                            </MotionTableCell>
                         ) : null
                     )}
-                </TableRow>
+                </MotionTableRow>
                 <CollapsibleContent asChild>
-                    <tr
+                    <motion.tr
+                        layout={animate !== null ? !!animate : false}
                         style={{ zIndex: 30 - index }}
-                        id={'tr-' + row.original?.id}
                         className='sticky top-[18px] p-0'
                     >
                         <td className='sticky left-0 top-8 z-20 w-10 max-w-10 p-0'></td>
@@ -88,7 +104,7 @@ export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
                         >
                             <SubTable data={row.original.origin_items} />
                         </td>
-                    </tr>
+                    </motion.tr>
                 </CollapsibleContent>
             </>
         </Collapsible>
@@ -102,6 +118,18 @@ interface GroupedRowsProps {
 export const CollapsibleGroupedRows = ({ groupByDate }: GroupedRowsProps) => {
     const columnsCount = columns.length
 
+    const [animate] = useQueryParam('animate', withDefault(StringParam, null), {
+        removeDefaultsFromUrl: true
+    })
+
+    const MotionTableRow = motion(TableRow, {
+        forwardMotionProps: true
+    })
+
+    const MotionTableCell = motion(TableCell, {
+        forwardMotionProps: true
+    })
+
     return groupByDate.map((group) =>
         group[1].map((row, index) => {
             const isIndeterminate =
@@ -113,11 +141,12 @@ export const CollapsibleGroupedRows = ({ groupByDate }: GroupedRowsProps) => {
             return (
                 <Fragment>
                     {index === 0 && (
-                        <TableRow
-                            id={'tr-group=header-' + row.original?.id}
+                        <MotionTableRow
+                            layout={animate !== null ? !!animate : false}
                             className='bg-secondary !p-0'
                         >
-                            <TableCell
+                            <MotionTableCell
+                                layout={animate !== null ? !!animate : false}
                                 colSpan={columnsCount}
                                 className='!p-0'
                             >
@@ -145,8 +174,8 @@ export const CollapsibleGroupedRows = ({ groupByDate }: GroupedRowsProps) => {
                                             : '-'}
                                     </div>
                                 </div>
-                            </TableCell>
-                        </TableRow>
+                            </MotionTableCell>
+                        </MotionTableRow>
                     )}
                     <CollapsibleRow
                         row={group[1][0]}

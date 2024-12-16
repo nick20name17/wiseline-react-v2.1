@@ -45,7 +45,7 @@ export const SubSubTable = ({ data }: SubSubTableProps) => {
                                 return trimOnlyColumns.includes(header.id) &&
                                     category !== 'Trim' ? null : (
                                     <TableHead
-                                        className='shadow-gray-200'
+                                        className='shadow-gray-2x00'
                                         style={{
                                             maxWidth: header.column.columnDef.size,
                                             minWidth: header.column.columnDef.size

@@ -1,10 +1,9 @@
 import { format, parseISO } from 'date-fns'
 import { Calendar as CalendarIcon, RotateCcw } from 'lucide-react'
-import { animate } from 'motion/react'
 import { useEffect, useState } from 'react'
 import type { Matcher } from 'react-day-picker'
 import { toast } from 'sonner'
-import { BooleanParam, useQueryParam } from 'use-query-params'
+import { BooleanParam, StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 import type { OrdersData } from '@/api/ebms/ebms.types'
 import { useMultiPatchItemsMutation } from '@/api/multiupdates/multiupdate'
@@ -21,7 +20,6 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { tableAnimation } from '@/config/table'
 import { useCurrentUserRole } from '@/hooks/use-current-user-role'
 import { cn } from '@/lib/utils'
 import { isErrorWithMessage } from '@/utils/is-error-with-message'
@@ -57,6 +55,10 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
         : undefined
 
     const [date, setDate] = useState<Date | undefined>(productionDate)
+
+    const [, setAnimate] = useQueryParam('animate', withDefault(StringParam, null), {
+        removeDefaultsFromUrl: true
+    })
 
     const salesOrderId = order.sales_order?.id
     const orderId = order.id
@@ -125,18 +127,8 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
 
         if (!salesOrderId) {
             handleAddSalesOrder(data).then(() => {
-                const trHeaderElement = document?.getElementById(
-                    'tr-header-' + order?.id
-                )!
-                const trElement = document?.getElementById('tr-' + order?.id)!
-
-                if (!!scheduled) {
-                    if (trHeaderElement) {
-                        animate(trHeaderElement, tableAnimation)
-                    }
-                    if (trElement) {
-                        animate(trElement, tableAnimation)
-                    }
+                if (scheduled !== undefined && scheduled !== true) {
+                    setAnimate(orderId)
                 }
             })
         } else {
@@ -144,18 +136,8 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
                 id: salesOrderId!,
                 data
             }).then(() => {
-                const trHeaderElement = document?.getElementById(
-                    'tr-header-' + order?.id
-                )!
-                const trElement = document?.getElementById('tr-' + order?.id)!
-
-                if (scheduled === null ? false : true) {
-                    if (trHeaderElement) {
-                        animate(trHeaderElement, tableAnimation)
-                    }
-                    if (trElement) {
-                        animate(trElement, tableAnimation)
-                    }
+                if (scheduled !== undefined && scheduled !== true) {
+                    setAnimate(data.order)
                 }
             })
         }
@@ -184,17 +166,7 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
                 order: orderId
             }
         }).then(() => {
-            const trHeaderElement = document?.getElementById('tr-header-' + order?.id)!
-            const trElement = document?.getElementById('tr-' + order?.id)!
-
-            if (!!scheduled) {
-                if (trHeaderElement) {
-                    animate(trHeaderElement, {})
-                }
-                if (trElement) {
-                    animate(trElement, { opacity: 0 }, { duration: 0.5, type: 'spring' })
-                }
-            }
+            setAnimate(!!scheduled ? orderId : null)
         })
 
         setDate(undefined)
@@ -208,10 +180,6 @@ export const DatePickerCell = ({ order }: DatePickerCellProps) => {
             setDisabledDays([{ dayOfWeek: [0, 6] }])
         }
     }, [companyProfiles?.working_weekend])
-
-    // useEffect(() => {
-    //     setDate(productionDate)
-    // }, [productionDate, order?.id])
 
     const isWorkerOrClient = useCurrentUserRole(['worker', 'client'])
 

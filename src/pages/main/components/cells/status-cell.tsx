@@ -1,8 +1,7 @@
 import { RefreshCcw } from 'lucide-react'
-import { animate } from 'motion/react'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
-import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
+import { BooleanParam, StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 import { useLazyGetOrderQuery } from '@/api/ebms/ebms'
 import type { EBMSItemData, EBMSItemsData } from '@/api/ebms/ebms.types'
@@ -30,6 +29,10 @@ interface StatusCellProps {
 
 export const StatusCell = ({ item }: StatusCellProps) => {
     const { flow, stage, id: itemId } = item?.item || {}
+
+    const [, setAnimate] = useQueryParam('animate', withDefault(StringParam, null), {
+        removeDefaultsFromUrl: true
+    })
 
     const originOrderId = item?.origin_order
     const invoice = item?.order
@@ -144,13 +147,6 @@ export const StatusCell = ({ item }: StatusCellProps) => {
                         )
                             .unwrap()
                             .then((response) => {
-                                const trHeaderElement = document?.getElementById(
-                                    'tr-header-' + item?.item?.order || item?.id!
-                                )!
-                                const trElement = document?.getElementById(
-                                    'tr-' + item?.item?.order || item?.id!
-                                )!
-
                                 if (
                                     (!response.completed &&
                                         data.stageName !== 'Done' &&
@@ -159,16 +155,7 @@ export const StatusCell = ({ item }: StatusCellProps) => {
                                         response.completed &&
                                         !completed)
                                 ) {
-                                    animate(
-                                        trHeaderElement,
-                                        { opacity: 0 },
-                                        { duration: 0.5, type: 'spring' }
-                                    )
-                                    animate(
-                                        trElement,
-                                        { opacity: 0 },
-                                        { duration: 0.5, type: 'spring' }
-                                    )
+                                    setAnimate(response.id)
                                 }
 
                                 response.completed ? orderCompletedToast() : null

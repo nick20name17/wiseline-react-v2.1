@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { BooleanParam, StringParam, useQueryParam } from 'use-query-params'
+import { BooleanParam, StringParam, useQueryParam, withDefault } from 'use-query-params'
 
 import { MultipatchDatePicker } from './multipatch-date-picker'
 import type { EBMSItemsData } from '@/api/ebms/ebms.types'
@@ -27,27 +27,15 @@ interface MultipatchPopoverProps {
 }
 
 export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
-    // const [isAnimate, setIsAnimate] = useState(false)
+    const [, setAnimate] = useQueryParam('animate', withDefault(StringParam, null), {
+        removeDefaultsFromUrl: true
+    })
 
     const [category = 'All'] = useQueryParam('category', StringParam)
     const [scheduled] = useQueryParam('scheduled', BooleanParam)
     const [completed] = useQueryParam('completed', BooleanParam)
 
     const rows = table.getSelectedRowModel().rows.map((row) => row.original)
-
-    // useEffect(() => {
-    //     if (isAnimate) {
-    //         rows.forEach((row) => {
-    //             const element = document.getElementById('tr-' + row.id)!
-
-    //             animate(
-    //                 element,
-    //                 { opacity: 0, x: '-100%', opacity: 0 },
-    //                 { duration: 0.8, type: 'spring', delay: 0.2 }
-    //             )
-    //         })
-    //     }
-    // }, [isAnimate, rows])
 
     const handleRowReset = () => table.resetRowSelection()
 
@@ -126,7 +114,13 @@ export const MultipatchPopover = ({ table }: MultipatchPopoverProps) => {
                 .unwrap()
                 .then(() => {
                     successToast(dataToPatch.production_date!, flow)
-                    // if (date) setIsAnimate(true)
+                    if (scheduled !== undefined) {
+                        setAnimate(
+                            scheduled !== true
+                                ? currentRows.map((row) => row.id).join(',')
+                                : null
+                        )
+                    }
                 })
         } catch (error) {
             const isErrorMessage = isErrorWithMessage(error)
