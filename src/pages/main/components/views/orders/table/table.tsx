@@ -216,7 +216,7 @@ const OrdersViewTable = memo(
                         colSpan={columns.length}
                         className='h-24 !bg-transparent pl-10 pt-9 text-left'
                     >
-                        Немає результатів.
+                        No results.
                     </TableCell>
                 </TableRow>
             )

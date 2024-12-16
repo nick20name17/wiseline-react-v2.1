@@ -79,12 +79,12 @@ export const CollapsibleRow = ({ row, index }: CollapsibleRowProps) => {
                         id={'tr-' + row.original?.id}
                         className='sticky top-[18px] p-0'
                     >
-                        {/* <td className='sticky left-0 top-8 z-20 block w-10 max-w-10 p-0'></td>
-                        <td className='sticky left-10 top-8 z-20 block w-12 max-w-12 p-0'></td> */}
+                        <td className='sticky left-0 top-8 z-20 w-10 max-w-10 p-0'></td>
+                        <td className='sticky left-10 top-8 z-20 w-12 max-w-12 p-0'></td>
 
                         <td
-                            className='max-w-[calc(100vw-28.5rem)] p-0 py-3 pl-40 pr-4'
-                            colSpan={columns.length}
+                            className='max-w-[calc(100vw-28.5rem)] p-0 py-3 pr-4'
+                            colSpan={columns.length - 2}
                         >
                             <SubTable data={row.original.origin_items} />
                         </td>

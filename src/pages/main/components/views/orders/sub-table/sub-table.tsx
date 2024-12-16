@@ -58,7 +58,7 @@ export const SubTable = ({ data }: SubTableProps) => {
                                         }}
                                         key={header.id}
                                         className={cn(
-                                            'border-gray-300 bg-gray-200',
+                                            'bg-gray-200 shadow-gray-300',
                                             category !== 'Trim' ? 'first:hidden' : ''
                                         )}
                                     >

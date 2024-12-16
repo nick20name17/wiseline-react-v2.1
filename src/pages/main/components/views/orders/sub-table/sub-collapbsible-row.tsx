@@ -2,6 +2,7 @@ import { type Row, flexRender } from '@tanstack/react-table'
 import { motion } from 'motion/react'
 import { StringParam, useQueryParam } from 'use-query-params'
 
+import { subColumns } from './sub-columns'
 import { SubSubTable } from './sub-sub-table/sub-sub-table'
 import type { EBMSItemsData } from '@/api/ebms/ebms.types'
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible'
@@ -58,9 +59,10 @@ export const SubCollapsibleRow: React.FC<CollapsibleRowProps> = ({ row }) => {
                 </MotionTableRow>
                 <CollapsibleContent asChild>
                     <motion.tr layout>
+                        <td className='sticky left-0 top-8 z-20 w-10 max-w-10 p-0'></td>
                         <td
-                            className='max-w-[100vw] bg-background py-2 pl-2 pr-3'
-                            colSpan={row.getVisibleCells().length}
+                            className='max-w-[calc(100vw-28.5rem)] p-0 py-3 pr-4'
+                            colSpan={subColumns.length - 1}
                         >
                             <SubSubTable data={row.original.cutting_items} />
                         </td>
